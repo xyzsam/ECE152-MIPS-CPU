@@ -25,7 +25,7 @@ port (in0, in1, in2, in3, in4, in5, in6, in7,
       output: out std_logic_vector(31 downto 0));
 end component;
 
-component onehotdecoder32
+component decoder32to1
 port (input : in std_logic_vector(4 downto 0);
       output : out std_logic_vector(31 downto 0));
 end component;
@@ -74,6 +74,6 @@ begin
                                         ctrl_read(28), ctrl_read(29), ctrl_read(30), ctrl_read(31),
                                         ctrl_readRegB, data_readRegB);
     
-    decoder5to32 : onehotdecoder32 port map(ctrl_writeReg, write_ena_mask);       
+    decoder5to32 : decoder32to1 port map(ctrl_writeReg, write_ena_mask);       
                                 
 end structure;
