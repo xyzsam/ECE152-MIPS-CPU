@@ -19,17 +19,18 @@ signal bitmask : bitmask_type;
 
 begin
 
-    arr_a(0) <= ctrl xnor "00000";
-    arr_a(1) <= ctrl xnor "00001";
-    arr_a(2) <= ctrl xnor "00010";
-    arr_a(3) <= ctrl xnor "00011";
-    arr_a(4) <= ctrl xnor "00100";
-    arr_a(5) <= ctrl xnor "00101";
-    arr_a(6) <= ctrl xnor "00110";
-    arr_a(7) <= ctrl xnor "00111";
-    arr_a(8) <= ctrl xnor "01000";
-    arr_a(9) <= ctrl xnor "01001";
+    arr_a(0)  <= ctrl xnor "00000";
+    arr_a(1)  <= ctrl xnor "00001";
+    arr_a(2)  <= ctrl xnor "00010";
+    arr_a(3)  <= ctrl xnor "00011";
+    arr_a(4)  <= ctrl xnor "00100";
+    arr_a(5)  <= ctrl xnor "00101";
+    arr_a(6)  <= ctrl xnor "00110";
+    arr_a(7)  <= ctrl xnor "00111";
+    arr_a(8)  <= ctrl xnor "01000";
+    arr_a(9)  <= ctrl xnor "01001";
     arr_a(10) <= ctrl xnor "01010";
+    arr_a(11) <= ctrl xnor "01011";
     arr_a(12) <= ctrl xnor "01100";
     arr_a(13) <= ctrl xnor "01101";
     arr_a(14) <= ctrl xnor "01110";
@@ -45,6 +46,7 @@ begin
     arr_a(24) <= ctrl xnor "11000";
     arr_a(25) <= ctrl xnor "11001";
     arr_a(26) <= ctrl xnor "11010";
+    arr_a(27) <= ctrl xnor "11011";
     arr_a(28) <= ctrl xnor "11100";
     arr_a(29) <= ctrl xnor "11101";
     arr_a(30) <= ctrl xnor "11110";
