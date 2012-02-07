@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity CLA16bit is
 	port (data_A, data_B : in std_logic_vector(15 downto 0);
 		  c_in : in std_logic;
-		  sum : out std_logic_vector(16 downto 0);
+		  sum : out std_logic_vector(15 downto 0);
 		  c_out : out std_logic);
 end CLA16bit;
 
