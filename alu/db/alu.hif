@@ -1,0 +1,878 @@
+Quartus II
+Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
+7
+3700
+OFF
+OFF
+OFF
+ON
+ON
+ON
+FV_OFF
+Level2
+0
+0
+VRSM_ON
+VHSM_ON
+0
+-- Start Library Paths --
+-- End Library Paths --
+-- Start VHDL Libraries --
+-- End VHDL Libraries --
+# entity
+CLA16bit
+# storage
+db|alu.(2).cnf
+db|alu.(2).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|cla16bit.vhd
+814fe8cf413a5b4ef3a24b930a0f84c
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+15 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_b)
+15 downto 0
+PARAMETER_STRING
+USR
+ constraint(sum)
+15 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+adder:adder0|CLA16bit:adder_bottom
+adder:adder0|CLA16bit:adder_top_0
+adder:adder0|CLA16bit:adder_top_1
+adder:adder1|CLA16bit:adder_bottom
+adder:adder1|CLA16bit:adder_top_0
+adder:adder1|CLA16bit:adder_top_1
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+CLA8bit
+# storage
+db|alu.(3).cnf
+db|alu.(3).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|cla8bit.vhd
+8186fc765eb46d738f48e1245ce6198d
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+7 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_b)
+7 downto 0
+PARAMETER_STRING
+USR
+ constraint(sum)
+7 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+level0
+# storage
+db|alu.(4).cnf
+db|alu.(4).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|level0.vhd
+a11ddff5a19d9a8e209cfe67aa3712e
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# hierarchies {
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_0
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_1
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_2
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_3
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_4
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_5
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_6
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_7
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_0
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_1
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_2
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_3
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_4
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_5
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_6
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_7
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_0
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_1
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_2
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_3
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_4
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_5
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_6
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_7
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_0
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_1
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_2
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_3
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_4
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_5
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_6
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_7
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_0
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_1
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_2
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_3
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_4
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_5
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_6
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_7
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_0
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_1
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_2
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_3
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_4
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_5
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_6
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_7
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_0
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_1
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_2
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_3
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_4
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_5
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_6
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level0:level0_7
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_0
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_1
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_2
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_3
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_4
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_5
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_6
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_7
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_0
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_1
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_2
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_3
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_4
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_5
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_6
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level0:level0_7
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_0
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_1
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_2
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_3
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_4
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_5
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_6
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level0:level0_7
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_0
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_1
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_2
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_3
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_4
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_5
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_6
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level0:level0_7
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_0
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_1
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_2
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_3
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_4
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_5
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_6
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level0:level0_7
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+level1
+# storage
+db|alu.(5).cnf
+db|alu.(5).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|level1.vhd
+ef76b7b4e983d38f762964deef1a9162
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# hierarchies {
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+level2
+# storage
+db|alu.(6).cnf
+db|alu.(6).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|level2.vhd
+5d46cde6c6885668ce9b2fcbae3b29f
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# hierarchies {
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70
+adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70
+adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70
+adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70
+adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70
+adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70
+adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shift16
+# storage
+db|alu.(9).cnf
+db|alu.(9).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shift16.vhd
+1011f7add1abf991deed2b7078436dec
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|shift16:c_shift16
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shift8
+# storage
+db|alu.(10).cnf
+db|alu.(10).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shift8.vhd
+f45d75b28b694476a5f4c15dfb5cc67
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|shift8:c_shift8
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shift4
+# storage
+db|alu.(11).cnf
+db|alu.(11).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shift4.vhd
+dbdaf3c19be82d88531c4137a5bb14e
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|shift4:c_shift4
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shift2
+# storage
+db|alu.(12).cnf
+db|alu.(12).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shift2.vhd
+52b3d4f44c5528aa6fa1dda19ac935d9
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|shift2:c_shift2
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shift1
+# storage
+db|alu.(13).cnf
+db|alu.(13).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shift1.vhd
+3136662da52c66b76299d8019dd9d
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|shift1:c_shift1
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+mux8to1
+# storage
+db|alu.(15).cnf
+db|alu.(15).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+mux8to1.vhd
+84224be9759e79936d3ee7a67b751cb1
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(in0)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in1)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in2)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in3)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in4)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in5)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in6)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in7)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(ctrl)
+2 downto 0
+PARAMETER_STRING
+USR
+ constraint(output)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+mux8to1:mux
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+adder
+# storage
+db|alu.(1).cnf
+db|alu.(1).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|adder.vhd
+10df3f6585ae7f523f5958fa6dfeca3
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_addenda)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_addendb)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_sum)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+adder:adder0
+adder:adder1
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shifter
+# storage
+db|alu.(7).cnf
+db|alu.(7).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shifter.vhd
+a1902dcde9127ba67eec218594cbf5b6
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(ctrl_shamt)
+4 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+mux2to1_add
+# storage
+db|alu.(8).cnf
+db|alu.(8).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|mux2to1_add.vhd
+25ebbc35e35ec54ae1fd76c159a67aa4
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(in0)
+15 downto 0
+PARAMETER_STRING
+USR
+ constraint(in1)
+15 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_out)
+15 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+adder:adder0|mux2to1_add:mux_sum
+adder:adder1|mux2to1_add:mux_sum
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+mux2to1_shift
+# storage
+db|alu.(14).cnf
+db|alu.(14).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|mux2to1_shift.vhd
+ddb49d1da3c2b5899b54ae52c67c665
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(in0)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(in1)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_out)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0|mux2to1_shift:mux2_16
+shifter:shifter0|mux2to1_shift:mux2_8
+shifter:shifter0|mux2to1_shift:mux2_4
+shifter:shifter0|mux2to1_shift:mux2_2
+shifter:shifter0|mux2to1_shift:mux2_1
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+alu
+# storage
+db|alu.(0).cnf
+db|alu.(0).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+alu.vhd
+89ae8edc7b87a14792889e2e7acbf4d
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# hierarchies {
+|
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# complete
+

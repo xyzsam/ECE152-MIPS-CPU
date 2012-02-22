@@ -1,0 +1,776 @@
+Simulator report for alu
+Wed Feb 15 23:44:06 2012
+Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Simulator Summary
+  3. Simulator Settings
+  4. Simulation Waveforms
+  5. Coverage Summary
+  6. Complete 1/0-Value Coverage
+  7. Missing 1-Value Coverage
+  8. Missing 0-Value Coverage
+  9. Simulator INI Usage
+ 10. Simulator Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++--------------------------------------------+
+; Simulator Summary                          ;
++-----------------------------+--------------+
+; Type                        ; Value        ;
++-----------------------------+--------------+
+; Simulation Start Time       ; 0 ps         ;
+; Simulation End Time         ; 18.0 ms      ;
+; Simulation Netlist Size     ; 562 nodes    ;
+; Simulation Coverage         ;      89.32 % ;
+; Total Number of Transitions ; 3530         ;
+; Simulation Breakpoints      ; 0            ;
+; Family                      ; Stratix II   ;
+; Device                      ; EP2S15F484C3 ;
++-----------------------------+--------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Simulator Settings                                                                                                        ;
++--------------------------------------------------------------------------------------------+--------------+---------------+
+; Option                                                                                     ; Setting      ; Default Value ;
++--------------------------------------------------------------------------------------------+--------------+---------------+
+; Simulation mode                                                                            ; Timing       ; Timing        ;
+; Start time                                                                                 ; 0 ns         ; 0 ns          ;
+; Simulation results format                                                                  ; CVWF         ;               ;
+; Vector input source                                                                        ; test_alu.vwf ;               ;
+; Add pins automatically to simulation output waveforms                                      ; On           ; On            ;
+; Check outputs                                                                              ; Off          ; Off           ;
+; Report simulation coverage                                                                 ; On           ; On            ;
+; Display complete 1/0 value coverage report                                                 ; On           ; On            ;
+; Display missing 1-value coverage report                                                    ; On           ; On            ;
+; Display missing 0-value coverage report                                                    ; On           ; On            ;
+; Detect setup and hold time violations                                                      ; Off          ; Off           ;
+; Detect glitches                                                                            ; Off          ; Off           ;
+; Disable timing delays in Timing Simulation                                                 ; Off          ; Off           ;
+; Generate Signal Activity File                                                              ; Off          ; Off           ;
+; Generate VCD File for PowerPlay Power Analyzer                                             ; Off          ; Off           ;
+; Group bus channels in simulation results                                                   ; Off          ; Off           ;
+; Preserve fewer signal transitions to reduce memory requirements                            ; On           ; On            ;
+; Trigger vector comparison with the specified mode                                          ; INPUT_EDGE   ; INPUT_EDGE    ;
+; Disable setup and hold time violations detection in input registers of bi-directional pins ; Off          ; Off           ;
+; Overwrite Waveform Inputs With Simulation Outputs                                          ; Off          ;               ;
+; Perform Glitch Filtering in Timing Simulation                                              ; Auto         ; Auto          ;
++--------------------------------------------------------------------------------------------+--------------+---------------+
+
+
++----------------------+
+; Simulation Waveforms ;
++----------------------+
+Waveform report data cannot be output to ASCII.
+Please use Quartus II to view the waveform report data.
+
+
++--------------------------------------------------------------------+
+; Coverage Summary                                                   ;
++-----------------------------------------------------+--------------+
+; Type                                                ; Value        ;
++-----------------------------------------------------+--------------+
+; Total coverage as a percentage                      ;      89.32 % ;
+; Total nodes checked                                 ; 562          ;
+; Total output ports checked                          ; 562          ;
+; Total output ports with complete 1/0-value coverage ; 502          ;
+; Total output ports with no 1/0-value coverage       ; 52           ;
+; Total output ports with no 1-value coverage         ; 52           ;
+; Total output ports with no 0-value coverage         ; 60           ;
++-----------------------------------------------------+--------------+
+
+
+The following table displays output ports that toggle between 1 and 0 during simulation.
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Complete 1/0-Value Coverage                                                                                                                                                              ;
++-----------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------------+
+; Node Name                                                                         ; Output Port Name                                                                  ; Output Port Type ;
++-----------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------------+
+; |alu|mux8to1:mux|output~120                                                       ; |alu|mux8to1:mux|output~120                                                       ; combout          ;
+; |alu|mux8to1:mux|output~124                                                       ; |alu|mux8to1:mux|output~124                                                       ; combout          ;
+; |alu|mux8to1:mux|output~0                                                         ; |alu|mux8to1:mux|output~0                                                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[13]~2                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[13]~2                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[5]~2                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[5]~2                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[9]~3                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[9]~3                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[1]~3                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[1]~3                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[1]~0                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[1]~0                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[2]~4                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[2]~4                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[2]~1                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[2]~1                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[4]~6                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[4]~6                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[0]~7                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[0]~7                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[0]~1                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[0]~1                          ; combout          ;
+; |alu|mux8to1:mux|output~2                                                         ; |alu|mux8to1:mux|output~2                                                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[8]~8                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[8]~8                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[4]~2                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[4]~2                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[2]~2                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[2]~2                          ; combout          ;
+; |alu|mux8to1:mux|output~3                                                         ; |alu|mux8to1:mux|output~3                                                         ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[1]                     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[1]                     ; combout          ;
+; |alu|mux8to1:mux|output~4                                                         ; |alu|mux8to1:mux|output~4                                                         ; combout          ;
+; |alu|mux8to1:mux|output~5                                                         ; |alu|mux8to1:mux|output~5                                                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[9]~9                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[9]~9                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[5]~3                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[5]~3                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[3]~3                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[3]~3                          ; combout          ;
+; |alu|mux8to1:mux|output~6                                                         ; |alu|mux8to1:mux|output~6                                                         ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g10~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g10~0     ; combout          ;
+; |alu|mux8to1:mux|output~7                                                         ; |alu|mux8to1:mux|output~7                                                         ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|mux8to1:mux|output~8                                                         ; |alu|mux8to1:mux|output~8                                                         ; combout          ;
+; |alu|mux8to1:mux|output~9                                                         ; |alu|mux8to1:mux|output~9                                                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[10]~10                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[10]~10                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[4]~4                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[4]~4                          ; combout          ;
+; |alu|mux8to1:mux|output~10                                                        ; |alu|mux8to1:mux|output~10                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g21~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g21~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~0  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[3]                     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[3]                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~1  ; combout          ;
+; |alu|mux8to1:mux|output~11                                                        ; |alu|mux8to1:mux|output~11                                                        ; combout          ;
+; |alu|mux8to1:mux|output~12                                                        ; |alu|mux8to1:mux|output~12                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[5]~5                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[5]~5                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[4]~0                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[4]~0                          ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g32~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g32~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g_out~0   ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g_out~0   ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g_out~1   ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|g_out~1   ; combout          ;
+; |alu|mux8to1:mux|output~13                                                        ; |alu|mux8to1:mux|output~13                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~2  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|c_out3~2  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|p32~0     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_30|p32~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out4~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out4~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out4~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out4~1  ; combout          ;
+; |alu|mux8to1:mux|output~14                                                        ; |alu|mux8to1:mux|output~14                                                        ; combout          ;
+; |alu|mux8to1:mux|output~15                                                        ; |alu|mux8to1:mux|output~15                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[6]~6                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[6]~6                          ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[5]~1                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[5]~1                          ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out1~0  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out1~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[5]~0                   ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[5]~0                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out1~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out1~0  ; combout          ;
+; |alu|mux8to1:mux|output~16                                                        ; |alu|mux8to1:mux|output~16                                                        ; combout          ;
+; |alu|mux8to1:mux|output~17                                                        ; |alu|mux8to1:mux|output~17                                                        ; combout          ;
+; |alu|mux8to1:mux|output~18                                                        ; |alu|mux8to1:mux|output~18                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[31]~2                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[31]~2                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[13]~13                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[13]~13                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[9]~7                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[9]~7                          ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|g10~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|g10~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~0  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[6]                     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[6]                     ; combout          ;
+; |alu|mux8to1:mux|output~19                                                        ; |alu|mux8to1:mux|output~19                                                        ; combout          ;
+; |alu|mux8to1:mux|output~20                                                        ; |alu|mux8to1:mux|output~20                                                        ; combout          ;
+; |alu|mux8to1:mux|output~21                                                        ; |alu|mux8to1:mux|output~21                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[14]~14                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[14]~14                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[10]~8                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[10]~8                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[7]~4                          ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[7]~4                          ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]~1                   ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]~1                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]                     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]                     ; combout          ;
+; |alu|mux8to1:mux|output~22                                                        ; |alu|mux8to1:mux|output~22                                                        ; combout          ;
+; |alu|mux8to1:mux|output~23                                                        ; |alu|mux8to1:mux|output~23                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|p32~0     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|p32~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~2   ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~2   ; combout          ;
+; |alu|mux8to1:mux|output~25                                                        ; |alu|mux8to1:mux|output~25                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|p32~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|p32~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|g_out     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|g_out     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0   ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0   ; combout          ;
+; |alu|mux8to1:mux|output~27                                                        ; |alu|mux8to1:mux|output~27                                                        ; combout          ;
+; |alu|mux8to1:mux|output~28                                                        ; |alu|mux8to1:mux|output~28                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[16]~8                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[16]~8                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[16]~16                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[16]~16                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[12]~10                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[12]~10                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[10]~9                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[10]~9                         ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~0 ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~0 ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~0 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~0 ; combout          ;
+; |alu|mux8to1:mux|output~32                                                        ; |alu|mux8to1:mux|output~32                                                        ; combout          ;
+; |alu|mux8to1:mux|output~33                                                        ; |alu|mux8to1:mux|output~33                                                        ; combout          ;
+; |alu|mux8to1:mux|output~34                                                        ; |alu|mux8to1:mux|output~34                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[17]~9                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[17]~9                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[17]~17                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[17]~17                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[13]~11                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[13]~11                        ; combout          ;
+; |alu|mux8to1:mux|output~35                                                        ; |alu|mux8to1:mux|output~35                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~1 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|c_out1~1 ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_1|p_out     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_1|p_out     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out~1  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[2]~0                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[2]~0                  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[2]                    ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[2]                    ; combout          ;
+; |alu|mux8to1:mux|output~36                                                        ; |alu|mux8to1:mux|output~36                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~0     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~1     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~1     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g10~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g10~0    ; combout          ;
+; |alu|mux8to1:mux|output~37                                                        ; |alu|mux8to1:mux|output~37                                                        ; combout          ;
+; |alu|mux8to1:mux|output~38                                                        ; |alu|mux8to1:mux|output~38                                                        ; combout          ;
+; |alu|mux8to1:mux|output~39                                                        ; |alu|mux8to1:mux|output~39                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[18]~10                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[18]~10                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[18]~18                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[18]~18                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[14]~12                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[14]~12                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]~1                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]~1                  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]                    ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]                    ; combout          ;
+; |alu|mux8to1:mux|output~40                                                        ; |alu|mux8to1:mux|output~40                                                        ; combout          ;
+; |alu|mux8to1:mux|output~41                                                        ; |alu|mux8to1:mux|output~41                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[19]~11                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[19]~11                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[19]~19                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[19]~19                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[13]~12                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[13]~12                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|p32~0    ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|p32~0    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~0 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~0 ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~1 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~1 ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~2 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~2 ; combout          ;
+; |alu|mux8to1:mux|output~43                                                        ; |alu|mux8to1:mux|output~43                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|p32~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|p32~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30|g_out    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~2     ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c4~2     ; combout          ;
+; |alu|mux8to1:mux|output~44                                                        ; |alu|mux8to1:mux|output~44                                                        ; combout          ;
+; |alu|mux8to1:mux|output~45                                                        ; |alu|mux8to1:mux|output~45                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[20]~12                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[20]~12                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[20]~20                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[20]~20                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[16]~14                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[16]~14                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[14]~13                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[14]~13                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[13]~6                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[13]~6                         ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~0 ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~0 ; combout          ;
+; |alu|mux8to1:mux|output~46                                                        ; |alu|mux8to1:mux|output~46                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~0 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~0 ; combout          ;
+; |alu|mux8to1:mux|output~47                                                        ; |alu|mux8to1:mux|output~47                                                        ; combout          ;
+; |alu|mux8to1:mux|output~48                                                        ; |alu|mux8to1:mux|output~48                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out2~0 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out2~0 ; combout          ;
+; |alu|mux8to1:mux|output~49                                                        ; |alu|mux8to1:mux|output~49                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[21]~13                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[21]~13                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[21]~21                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[21]~21                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[17]~15                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[17]~15                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g10~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g10~0    ; combout          ;
+; |alu|mux8to1:mux|output~50                                                        ; |alu|mux8to1:mux|output~50                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~0  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~1  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~1  ; combout          ;
+; |alu|mux8to1:mux|output~51                                                        ; |alu|mux8to1:mux|output~51                                                        ; combout          ;
+; |alu|mux8to1:mux|output~52                                                        ; |alu|mux8to1:mux|output~52                                                        ; combout          ;
+; |alu|mux8to1:mux|bitmask~0                                                        ; |alu|mux8to1:mux|bitmask~0                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~2                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~2                  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]                    ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]                    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g21~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g21~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out3~0 ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out3~0 ; combout          ;
+; |alu|mux8to1:mux|output~54                                                        ; |alu|mux8to1:mux|output~54                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[22]~14                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[22]~14                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[22]~22                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[22]~22                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[18]~16                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[18]~16                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[16]~15                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[16]~15                        ; combout          ;
+; |alu|mux8to1:mux|output~55                                                        ; |alu|mux8to1:mux|output~55                                                        ; combout          ;
+; |alu|mux8to1:mux|output~56                                                        ; |alu|mux8to1:mux|output~56                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~1 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|c_out1~1 ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_5|p_out     ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level0:level0_5|p_out     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|p32~0    ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|p32~0    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~1  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~2  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~2  ; combout          ;
+; |alu|mux8to1:mux|output~57                                                        ; |alu|mux8to1:mux|output~57                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|p32~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|p32~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g32~0    ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74|g32~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~2  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out~2  ; combout          ;
+; |alu|mux8to1:mux|output~58                                                        ; |alu|mux8to1:mux|output~58                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[23]~15                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[23]~15                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[23]~23                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[23]~23                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[19]~17                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[19]~17                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[17]~16                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[17]~16                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[16]~7                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[16]~7                         ; combout          ;
+; |alu|mux8to1:mux|output~59                                                        ; |alu|mux8to1:mux|output~59                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[1]~0                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[1]~0                    ; combout          ;
+; |alu|mux8to1:mux|output~60                                                        ; |alu|mux8to1:mux|output~60                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[24]~24                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[24]~24                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[20]~18                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[20]~18                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[18]~17                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[18]~17                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[17]~8                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[17]~8                         ; combout          ;
+; |alu|mux8to1:mux|output~62                                                        ; |alu|mux8to1:mux|output~62                                                        ; combout          ;
+; |alu|mux8to1:mux|output~63                                                        ; |alu|mux8to1:mux|output~63                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|c_out3~0   ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|c_out3~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[2]~1                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[2]~1                    ; combout          ;
+; |alu|mux8to1:mux|output~64                                                        ; |alu|mux8to1:mux|output~64                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[25]~25                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[25]~25                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[21]~19                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[21]~19                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[19]~18                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[19]~18                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[18]~9                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[18]~9                         ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g10~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g10~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|p10~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|p10~0      ; combout          ;
+; |alu|mux8to1:mux|output~66                                                        ; |alu|mux8to1:mux|output~66                                                        ; combout          ;
+; |alu|mux8to1:mux|output~67                                                        ; |alu|mux8to1:mux|output~67                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[3]~2                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[3]~2                    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[3]                      ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[3]                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[3]                      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[3]                      ; combout          ;
+; |alu|mux8to1:mux|output~69                                                        ; |alu|mux8to1:mux|output~69                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[26]~26                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[26]~26                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[22]~20                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[22]~20                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[20]~19                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[20]~19                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[19]~10                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[19]~10                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g21~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g21~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0   ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0   ; combout          ;
+; |alu|mux8to1:mux|output~70                                                        ; |alu|mux8to1:mux|output~70                                                        ; combout          ;
+; |alu|mux8to1:mux|output~71                                                        ; |alu|mux8to1:mux|output~71                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[4]~3                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[4]~3                    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out4~0   ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out4~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[4]                      ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[4]                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[4]                      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[4]                      ; combout          ;
+; |alu|mux8to1:mux|output~73                                                        ; |alu|mux8to1:mux|output~73                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[27]~27                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[27]~27                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[23]~21                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[23]~21                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[21]~20                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[21]~20                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[20]~11                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[20]~11                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g32~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|g32~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out      ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|p_out~0    ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_30|p_out~0    ; combout          ;
+; |alu|mux8to1:mux|output~74                                                        ; |alu|mux8to1:mux|output~74                                                        ; combout          ;
+; |alu|mux8to1:mux|output~75                                                        ; |alu|mux8to1:mux|output~75                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[5]~4                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[5]~4                    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[5]                      ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[5]                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[5]                      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[5]                      ; combout          ;
+; |alu|mux8to1:mux|output~77                                                        ; |alu|mux8to1:mux|output~77                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[28]~28                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[28]~28                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[24]~22                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[24]~22                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[22]~21                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[22]~21                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[21]~12                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[21]~12                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out1~0   ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out1~0   ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out~0    ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|g_out~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out1~0   ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out1~0   ; combout          ;
+; |alu|mux8to1:mux|output~78                                                        ; |alu|mux8to1:mux|output~78                                                        ; combout          ;
+; |alu|mux8to1:mux|output~79                                                        ; |alu|mux8to1:mux|output~79                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out2~0   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out2~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p10~0      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p10~0      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out2~0   ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out2~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[6]~5                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[6]~5                    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[6]                      ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|sum[6]                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out2~1   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out2~1   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[6]                      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[6]                      ; combout          ;
+; |alu|mux8to1:mux|output~81                                                        ; |alu|mux8to1:mux|output~81                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[29]~29                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[29]~29                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[25]~23                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[25]~23                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[23]~22                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[23]~22                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[22]~13                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[22]~13                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|g10~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|g10~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p10~0      ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p10~0      ; combout          ;
+; |alu|mux8to1:mux|output~82                                                        ; |alu|mux8to1:mux|output~82                                                        ; combout          ;
+; |alu|mux8to1:mux|output~83                                                        ; |alu|mux8to1:mux|output~83                                                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~0   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out3~0   ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|c_out3~0   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~1   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~1   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[7]~6                    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|sum[7]~6                    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~2   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~2   ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[7]~0                               ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[7]~0                               ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[30]~30                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[30]~30                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[26]~24                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[26]~24                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[24]~23                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[24]~23                        ; combout          ;
+; |alu|mux8to1:mux|output~85                                                        ; |alu|mux8to1:mux|output~85                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~0   ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|c_out3~0   ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|g21~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level1:level1_74|g21~0      ; combout          ;
+; |alu|mux8to1:mux|output~86                                                        ; |alu|mux8to1:mux|output~86                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[31]~31                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[31]~31                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[27]~25                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[27]~25                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[25]~24                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[25]~24                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[24]~14                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[24]~14                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p32~0      ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p32~0      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~0    ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~0    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~1    ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~1    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~2    ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~2    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[0]~0                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[0]~0                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[0]                     ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[0]                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~0    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~0    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[0]                     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[0]                     ; combout          ;
+; |alu|mux8to1:mux|output~88                                                        ; |alu|mux8to1:mux|output~88                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p32~0      ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|p32~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|g_out      ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_74|g_out      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~0    ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits70|level2:level2_70|c_out~0    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~0    ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~0    ; combout          ;
+; |alu|mux8to1:mux|output~89                                                        ; |alu|mux8to1:mux|output~89                                                        ; combout          ;
+; |alu|mux8to1:mux|output~90                                                        ; |alu|mux8to1:mux|output~90                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[28]~26                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[28]~26                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[26]~25                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[26]~25                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[1]~1                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[1]~1                   ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[9]~1                               ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[9]~1                               ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out1~0  ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out1~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out1~0  ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out1~0  ; combout          ;
+; |alu|mux8to1:mux|output~93                                                        ; |alu|mux8to1:mux|output~93                                                        ; combout          ;
+; |alu|mux8to1:mux|output~94                                                        ; |alu|mux8to1:mux|output~94                                                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[29]~27                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[29]~27                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[27]~26                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[27]~26                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[26]~15                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[26]~15                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p10~0     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p10~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[2]~2                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[2]~2                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[2]                     ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[2]                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[2]                     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[2]                     ; combout          ;
+; |alu|mux8to1:mux|output~96                                                        ; |alu|mux8to1:mux|output~96                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|g10~0     ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|g10~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p10~0     ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p10~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out2    ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out2    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2    ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2    ; combout          ;
+; |alu|mux8to1:mux|output~97                                                        ; |alu|mux8to1:mux|output~97                                                        ; combout          ;
+; |alu|mux8to1:mux|output~98                                                        ; |alu|mux8to1:mux|output~98                                                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~0  ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|g21~0     ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|g21~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[3]~3                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[3]~3                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out3    ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_30|c_out3    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3    ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[11]~2                              ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[11]~2                              ; combout          ;
+; |alu|mux8to1:mux|output~100                                                       ; |alu|mux8to1:mux|output~100                                                       ; combout          ;
+; |alu|mux8to1:mux|output~102                                                       ; |alu|mux8to1:mux|output~102                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[28]~27                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[28]~27                        ; combout          ;
+; |alu|mux8to1:mux|output~104                                                       ; |alu|mux8to1:mux|output~104                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p32~0     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p32~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~0  ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~1  ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~1  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~2  ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4~2  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[4]~4                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[4]~4                   ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[4]                     ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|sum[4]                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c_out4~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c_out4~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[4]                     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[4]                     ; combout          ;
+; |alu|mux8to1:mux|output~106                                                       ; |alu|mux8to1:mux|output~106                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[29]~28                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[29]~28                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[28]~16                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[28]~16                        ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p32~0     ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|p32~0     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|g_out     ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|g_out     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4    ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c_out4    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c_out4    ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c_out4    ; combout          ;
+; |alu|mux8to1:mux|output~107                                                       ; |alu|mux8to1:mux|output~107                                                       ; combout          ;
+; |alu|mux8to1:mux|output~108                                                       ; |alu|mux8to1:mux|output~108                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[30]~29                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[30]~29                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[29]~17                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[29]~17                        ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[5]~5                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[5]~5                   ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[13]~3                              ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[13]~3                              ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c4~0      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c4~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|c_out1~0  ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|c_out1~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c4~0      ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level2:level2_70|c4~0      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out1~0  ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out1~0  ; combout          ;
+; |alu|mux8to1:mux|output~110                                                       ; |alu|mux8to1:mux|output~110                                                       ; combout          ;
+; |alu|mux8to1:mux|output~111                                                       ; |alu|mux8to1:mux|output~111                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out2~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out2~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|p10~0     ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|p10~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[6]~6                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[6]~6                   ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[14]~4                              ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[14]~4                              ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[31]~30                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[31]~30                        ; combout          ;
+; |alu|mux8to1:mux|output~113                                                       ; |alu|mux8to1:mux|output~113                                                       ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out2~0  ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out2~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|g10~0     ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|g10~0     ; combout          ;
+; |alu|mux8to1:mux|output~114                                                       ; |alu|mux8to1:mux|output~114                                                       ; combout          ;
+; |alu|mux8to1:mux|output~115                                                       ; |alu|mux8to1:mux|output~115                                                       ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~0  ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~0  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|g21~0     ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|g21~0     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[7]~7                   ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|sum[7]~7                   ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|sum[7]                     ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits158|sum[7]                     ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|sum[7]                     ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|sum[7]                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~1  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3~1  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|c_out3    ; |alu|adder:adder1|CLA16bit:adder_top_1|CLA8bit:bits158|level1:level1_74|c_out3    ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3    ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_74|c_out3    ; combout          ;
+; |alu|mux8to1:mux|output~116                                                       ; |alu|mux8to1:mux|output~116                                                       ; combout          ;
+; |alu|mux8to1:mux|output~118                                                       ; |alu|mux8to1:mux|output~118                                                       ; combout          ;
+; |alu|mux8to1:mux|output~119                                                       ; |alu|mux8to1:mux|output~119                                                       ; combout          ;
+; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[15]~5                              ; |alu|adder:adder1|mux2to1_add:mux_sum|data_out[15]~5                              ; combout          ;
+; |alu|equal~0                                                                      ; |alu|equal~0                                                                      ; combout          ;
+; |alu|equal~1                                                                      ; |alu|equal~1                                                                      ; combout          ;
+; |alu|equal~2                                                                      ; |alu|equal~2                                                                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[1]~3                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[1]~3                  ; combout          ;
+; |alu|equal~3                                                                      ; |alu|equal~3                                                                      ; combout          ;
+; |alu|equal~4                                                                      ; |alu|equal~4                                                                      ; combout          ;
+; |alu|equal~5                                                                      ; |alu|equal~5                                                                      ; combout          ;
+; |alu|equal~6                                                                      ; |alu|equal~6                                                                      ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[6]~4                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[6]~4                  ; combout          ;
+; |alu|equal~7                                                                      ; |alu|equal~7                                                                      ; combout          ;
+; |alu|equal~8                                                                      ; |alu|equal~8                                                                      ; combout          ;
+; |alu|equal~9                                                                      ; |alu|equal~9                                                                      ; combout          ;
+; |alu|adder:adder1|data_carryout~0                                                 ; |alu|adder:adder1|data_carryout~0                                                 ; combout          ;
+; |alu|isGreaterThan~0                                                              ; |alu|isGreaterThan~0                                                              ; combout          ;
+; |alu|isGreaterThan~1                                                              ; |alu|isGreaterThan~1                                                              ; combout          ;
+; |alu|isGreaterThan~2                                                              ; |alu|isGreaterThan~2                                                              ; combout          ;
+; |alu|isGreaterThan~3                                                              ; |alu|isGreaterThan~3                                                              ; combout          ;
+; |alu|equal~10                                                                     ; |alu|equal~10                                                                     ; combout          ;
+; |alu|equal~11                                                                     ; |alu|equal~11                                                                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~2  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~2  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~3  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~3  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~4  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~4  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~3 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|level2:level2_70|c_out4~3 ; combout          ;
+; |alu|equal~12                                                                     ; |alu|equal~12                                                                     ; combout          ;
+; |alu|equal~13                                                                     ; |alu|equal~13                                                                     ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~5                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~5                  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~6                  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits158|sum[7]~6                  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~1    ; |alu|adder:adder0|CLA16bit:adder_top_0|CLA8bit:bits70|level2:level2_70|c_out~1    ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c4~1      ; |alu|adder:adder0|CLA16bit:adder_top_1|CLA8bit:bits158|level2:level2_70|c4~1      ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]~0                  ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|sum[3]~0                  ; combout          ;
+; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]~0                   ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits70|sum[7]~0                   ; combout          ;
+; |alu|data_result[0]                                                               ; |alu|data_result[0]                                                               ; padio            ;
+; |alu|data_result[1]                                                               ; |alu|data_result[1]                                                               ; padio            ;
+; |alu|data_result[2]                                                               ; |alu|data_result[2]                                                               ; padio            ;
+; |alu|data_result[3]                                                               ; |alu|data_result[3]                                                               ; padio            ;
+; |alu|data_result[4]                                                               ; |alu|data_result[4]                                                               ; padio            ;
+; |alu|data_result[5]                                                               ; |alu|data_result[5]                                                               ; padio            ;
+; |alu|data_result[6]                                                               ; |alu|data_result[6]                                                               ; padio            ;
+; |alu|data_result[7]                                                               ; |alu|data_result[7]                                                               ; padio            ;
+; |alu|data_result[8]                                                               ; |alu|data_result[8]                                                               ; padio            ;
+; |alu|data_result[9]                                                               ; |alu|data_result[9]                                                               ; padio            ;
+; |alu|data_result[10]                                                              ; |alu|data_result[10]                                                              ; padio            ;
+; |alu|data_result[11]                                                              ; |alu|data_result[11]                                                              ; padio            ;
+; |alu|data_result[12]                                                              ; |alu|data_result[12]                                                              ; padio            ;
+; |alu|data_result[13]                                                              ; |alu|data_result[13]                                                              ; padio            ;
+; |alu|data_result[14]                                                              ; |alu|data_result[14]                                                              ; padio            ;
+; |alu|data_result[15]                                                              ; |alu|data_result[15]                                                              ; padio            ;
+; |alu|data_result[16]                                                              ; |alu|data_result[16]                                                              ; padio            ;
+; |alu|data_result[17]                                                              ; |alu|data_result[17]                                                              ; padio            ;
+; |alu|data_result[18]                                                              ; |alu|data_result[18]                                                              ; padio            ;
+; |alu|data_result[19]                                                              ; |alu|data_result[19]                                                              ; padio            ;
+; |alu|data_result[20]                                                              ; |alu|data_result[20]                                                              ; padio            ;
+; |alu|data_result[21]                                                              ; |alu|data_result[21]                                                              ; padio            ;
+; |alu|data_result[22]                                                              ; |alu|data_result[22]                                                              ; padio            ;
+; |alu|data_result[23]                                                              ; |alu|data_result[23]                                                              ; padio            ;
+; |alu|data_result[24]                                                              ; |alu|data_result[24]                                                              ; padio            ;
+; |alu|data_result[25]                                                              ; |alu|data_result[25]                                                              ; padio            ;
+; |alu|data_result[26]                                                              ; |alu|data_result[26]                                                              ; padio            ;
+; |alu|data_result[27]                                                              ; |alu|data_result[27]                                                              ; padio            ;
+; |alu|data_result[28]                                                              ; |alu|data_result[28]                                                              ; padio            ;
+; |alu|data_result[29]                                                              ; |alu|data_result[29]                                                              ; padio            ;
+; |alu|data_result[30]                                                              ; |alu|data_result[30]                                                              ; padio            ;
+; |alu|data_result[31]                                                              ; |alu|data_result[31]                                                              ; padio            ;
+; |alu|isEqual                                                                      ; |alu|isEqual                                                                      ; padio            ;
+; |alu|isGreaterThan                                                                ; |alu|isGreaterThan                                                                ; padio            ;
+; |alu|data_operandB[0]                                                             ; |alu|data_operandB[0]~corein                                                      ; combout          ;
+; |alu|ctrl_ALUopcode[1]                                                            ; |alu|ctrl_ALUopcode[1]~corein                                                     ; combout          ;
+; |alu|data_operandA[0]                                                             ; |alu|data_operandA[0]~corein                                                      ; combout          ;
+; |alu|ctrl_ALUopcode[0]                                                            ; |alu|ctrl_ALUopcode[0]~corein                                                     ; combout          ;
+; |alu|data_operandB[2]                                                             ; |alu|data_operandB[2]~corein                                                      ; combout          ;
+; |alu|data_operandB[4]                                                             ; |alu|data_operandB[4]~corein                                                      ; combout          ;
+; |alu|data_operandA[27]                                                            ; |alu|data_operandA[27]~corein                                                     ; combout          ;
+; |alu|data_operandA[11]                                                            ; |alu|data_operandA[11]~corein                                                     ; combout          ;
+; |alu|data_operandB[3]                                                             ; |alu|data_operandB[3]~corein                                                      ; combout          ;
+; |alu|data_operandA[19]                                                            ; |alu|data_operandA[19]~corein                                                     ; combout          ;
+; |alu|data_operandA[3]                                                             ; |alu|data_operandA[3]~corein                                                      ; combout          ;
+; |alu|data_operandA[31]                                                            ; |alu|data_operandA[31]~corein                                                     ; combout          ;
+; |alu|data_operandA[15]                                                            ; |alu|data_operandA[15]~corein                                                     ; combout          ;
+; |alu|data_operandA[23]                                                            ; |alu|data_operandA[23]~corein                                                     ; combout          ;
+; |alu|data_operandA[7]                                                             ; |alu|data_operandA[7]~corein                                                      ; combout          ;
+; |alu|data_operandB[1]                                                             ; |alu|data_operandB[1]~corein                                                      ; combout          ;
+; |alu|data_operandA[29]                                                            ; |alu|data_operandA[29]~corein                                                     ; combout          ;
+; |alu|data_operandA[13]                                                            ; |alu|data_operandA[13]~corein                                                     ; combout          ;
+; |alu|data_operandA[21]                                                            ; |alu|data_operandA[21]~corein                                                     ; combout          ;
+; |alu|data_operandA[5]                                                             ; |alu|data_operandA[5]~corein                                                      ; combout          ;
+; |alu|data_operandA[25]                                                            ; |alu|data_operandA[25]~corein                                                     ; combout          ;
+; |alu|data_operandA[9]                                                             ; |alu|data_operandA[9]~corein                                                      ; combout          ;
+; |alu|data_operandA[17]                                                            ; |alu|data_operandA[17]~corein                                                     ; combout          ;
+; |alu|data_operandA[1]                                                             ; |alu|data_operandA[1]~corein                                                      ; combout          ;
+; |alu|data_operandA[26]                                                            ; |alu|data_operandA[26]~corein                                                     ; combout          ;
+; |alu|data_operandA[10]                                                            ; |alu|data_operandA[10]~corein                                                     ; combout          ;
+; |alu|data_operandA[18]                                                            ; |alu|data_operandA[18]~corein                                                     ; combout          ;
+; |alu|data_operandA[2]                                                             ; |alu|data_operandA[2]~corein                                                      ; combout          ;
+; |alu|data_operandA[30]                                                            ; |alu|data_operandA[30]~corein                                                     ; combout          ;
+; |alu|data_operandA[14]                                                            ; |alu|data_operandA[14]~corein                                                     ; combout          ;
+; |alu|data_operandA[22]                                                            ; |alu|data_operandA[22]~corein                                                     ; combout          ;
+; |alu|data_operandA[6]                                                             ; |alu|data_operandA[6]~corein                                                      ; combout          ;
+; |alu|data_operandA[28]                                                            ; |alu|data_operandA[28]~corein                                                     ; combout          ;
+; |alu|data_operandA[12]                                                            ; |alu|data_operandA[12]~corein                                                     ; combout          ;
+; |alu|data_operandA[20]                                                            ; |alu|data_operandA[20]~corein                                                     ; combout          ;
+; |alu|data_operandA[4]                                                             ; |alu|data_operandA[4]~corein                                                      ; combout          ;
+; |alu|data_operandA[24]                                                            ; |alu|data_operandA[24]~corein                                                     ; combout          ;
+; |alu|data_operandA[8]                                                             ; |alu|data_operandA[8]~corein                                                      ; combout          ;
+; |alu|data_operandA[16]                                                            ; |alu|data_operandA[16]~corein                                                     ; combout          ;
+; |alu|data_operandB[5]                                                             ; |alu|data_operandB[5]~corein                                                      ; combout          ;
+; |alu|data_operandB[6]                                                             ; |alu|data_operandB[6]~corein                                                      ; combout          ;
+; |alu|data_operandB[7]                                                             ; |alu|data_operandB[7]~corein                                                      ; combout          ;
+; |alu|data_operandB[8]                                                             ; |alu|data_operandB[8]~corein                                                      ; combout          ;
+; |alu|data_operandB[9]                                                             ; |alu|data_operandB[9]~corein                                                      ; combout          ;
+; |alu|data_operandB[10]                                                            ; |alu|data_operandB[10]~corein                                                     ; combout          ;
+; |alu|data_operandB[11]                                                            ; |alu|data_operandB[11]~corein                                                     ; combout          ;
+; |alu|data_operandB[12]                                                            ; |alu|data_operandB[12]~corein                                                     ; combout          ;
+; |alu|data_operandB[13]                                                            ; |alu|data_operandB[13]~corein                                                     ; combout          ;
+; |alu|data_operandB[14]                                                            ; |alu|data_operandB[14]~corein                                                     ; combout          ;
+; |alu|data_operandB[15]                                                            ; |alu|data_operandB[15]~corein                                                     ; combout          ;
+; |alu|data_operandB[16]                                                            ; |alu|data_operandB[16]~corein                                                     ; combout          ;
+; |alu|data_operandB[17]                                                            ; |alu|data_operandB[17]~corein                                                     ; combout          ;
+; |alu|data_operandB[18]                                                            ; |alu|data_operandB[18]~corein                                                     ; combout          ;
+; |alu|data_operandB[19]                                                            ; |alu|data_operandB[19]~corein                                                     ; combout          ;
+; |alu|data_operandB[20]                                                            ; |alu|data_operandB[20]~corein                                                     ; combout          ;
+; |alu|data_operandB[21]                                                            ; |alu|data_operandB[21]~corein                                                     ; combout          ;
+; |alu|data_operandB[22]                                                            ; |alu|data_operandB[22]~corein                                                     ; combout          ;
+; |alu|data_operandB[23]                                                            ; |alu|data_operandB[23]~corein                                                     ; combout          ;
+; |alu|data_operandB[24]                                                            ; |alu|data_operandB[24]~corein                                                     ; combout          ;
+; |alu|data_operandB[25]                                                            ; |alu|data_operandB[25]~corein                                                     ; combout          ;
+; |alu|data_operandB[26]                                                            ; |alu|data_operandB[26]~corein                                                     ; combout          ;
+; |alu|data_operandB[27]                                                            ; |alu|data_operandB[27]~corein                                                     ; combout          ;
+; |alu|data_operandB[28]                                                            ; |alu|data_operandB[28]~corein                                                     ; combout          ;
+; |alu|data_operandB[29]                                                            ; |alu|data_operandB[29]~corein                                                     ; combout          ;
+; |alu|data_operandB[30]                                                            ; |alu|data_operandB[30]~corein                                                     ; combout          ;
+; |alu|data_operandB[31]                                                            ; |alu|data_operandB[31]~corein                                                     ; combout          ;
++-----------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------------+
+
+
+The following table displays output ports that do not toggle to 1 during simulation.
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Missing 1-Value Coverage                                                                                                                                                               ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+; Node Name                                                                        ; Output Port Name                                                                 ; Output Port Type ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[11]~0                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[11]~0                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[3]~0                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[3]~0                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[10]~4                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[10]~4                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[14]~5                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[14]~5                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[6]~5                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[6]~5                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[12]~6                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[12]~6                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[8]~7                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[8]~7                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[6]~4                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[6]~4                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[11]~11                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[11]~11                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[7]~5                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[7]~5                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[12]~12                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[12]~12                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[8]~6                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[8]~6                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[7]~7                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[7]~7                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[6]~3                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[6]~3                         ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1 ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[8]~8                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[8]~8                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[15]~15                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[15]~15                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[11]~9                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[11]~9                        ; combout          ;
+; |alu|mux8to1:mux|output~24                                                       ; |alu|mux8to1:mux|output~24                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~1  ; combout          ;
+; |alu|mux8to1:mux|output~26                                                       ; |alu|mux8to1:mux|output~26                                                       ; combout          ;
+; |alu|mux8to1:mux|output~30                                                       ; |alu|mux8to1:mux|output~30                                                       ; combout          ;
+; |alu|mux8to1:mux|output~31                                                       ; |alu|mux8to1:mux|output~31                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[11]~10                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[11]~10                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[12]~11                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[12]~11                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[11]~5                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[11]~5                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[15]~13                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[15]~13                       ; combout          ;
+; |alu|mux8to1:mux|output~42                                                       ; |alu|mux8to1:mux|output~42                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[15]~14                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[15]~14                       ; combout          ;
+; |alu|mux8to1:mux|output~53                                                       ; |alu|mux8to1:mux|output~53                                                       ; combout          ;
+; |alu|mux8to1:mux|output~61                                                       ; |alu|mux8to1:mux|output~61                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|mux8to1:mux|output~65                                                       ; |alu|mux8to1:mux|output~65                                                       ; combout          ;
+; |alu|mux8to1:mux|output~68                                                       ; |alu|mux8to1:mux|output~68                                                       ; combout          ;
+; |alu|mux8to1:mux|output~72                                                       ; |alu|mux8to1:mux|output~72                                                       ; combout          ;
+; |alu|mux8to1:mux|output~76                                                       ; |alu|mux8to1:mux|output~76                                                       ; combout          ;
+; |alu|mux8to1:mux|output~80                                                       ; |alu|mux8to1:mux|output~80                                                       ; combout          ;
+; |alu|mux8to1:mux|output~84                                                       ; |alu|mux8to1:mux|output~84                                                       ; combout          ;
+; |alu|mux8to1:mux|output~87                                                       ; |alu|mux8to1:mux|output~87                                                       ; combout          ;
+; |alu|mux8to1:mux|output~91                                                       ; |alu|mux8to1:mux|output~91                                                       ; combout          ;
+; |alu|mux8to1:mux|output~92                                                       ; |alu|mux8to1:mux|output~92                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2~0 ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2~0 ; combout          ;
+; |alu|mux8to1:mux|output~95                                                       ; |alu|mux8to1:mux|output~95                                                       ; combout          ;
+; |alu|mux8to1:mux|output~99                                                       ; |alu|mux8to1:mux|output~99                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~1 ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~1 ; combout          ;
+; |alu|mux8to1:mux|output~101                                                      ; |alu|mux8to1:mux|output~101                                                      ; combout          ;
+; |alu|mux8to1:mux|output~103                                                      ; |alu|mux8to1:mux|output~103                                                      ; combout          ;
+; |alu|mux8to1:mux|output~105                                                      ; |alu|mux8to1:mux|output~105                                                      ; combout          ;
+; |alu|mux8to1:mux|output~109                                                      ; |alu|mux8to1:mux|output~109                                                      ; combout          ;
+; |alu|mux8to1:mux|output~112                                                      ; |alu|mux8to1:mux|output~112                                                      ; combout          ;
+; |alu|mux8to1:mux|output~117                                                      ; |alu|mux8to1:mux|output~117                                                      ; combout          ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+
+
+The following table displays output ports that do not toggle to 0 during simulation.
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Missing 0-Value Coverage                                                                                                                                                               ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+; Node Name                                                                        ; Output Port Name                                                                 ; Output Port Type ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+; |alu|ctrl_rightshift                                                             ; |alu|ctrl_rightshift                                                             ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[11]~0                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[11]~0                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[3]~0                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[3]~0                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[15]~1                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[15]~1                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[7]~1                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[7]~1                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[3]~0                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[3]~0                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[10]~4                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[10]~4                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[14]~5                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[14]~5                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[6]~5                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[6]~5                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[12]~6                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[12]~6                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[8]~7                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_16|data_out[8]~7                        ; combout          ;
+; |alu|mux8to1:mux|output~1                                                        ; |alu|mux8to1:mux|output~1                                                        ; combout          ;
+; |alu|mux8to1:mux|bitmask[0][1]                                                   ; |alu|mux8to1:mux|bitmask[0][1]                                                   ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[6]~4                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[6]~4                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[11]~11                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[11]~11                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[7]~5                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[7]~5                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[12]~12                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[12]~12                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[8]~6                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[8]~6                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[7]~7                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[7]~7                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[6]~3                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[6]~3                         ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1 ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level1:level1_74|c_out2~1 ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[8]~8                         ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[8]~8                         ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[15]~15                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_8|data_out[15]~15                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[11]~9                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[11]~9                        ; combout          ;
+; |alu|mux8to1:mux|output~24                                                       ; |alu|mux8to1:mux|output~24                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~0  ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~1  ; |alu|adder:adder1|CLA16bit:adder_bottom|CLA8bit:bits70|level2:level2_70|c_out~1  ; combout          ;
+; |alu|mux8to1:mux|output~26                                                       ; |alu|mux8to1:mux|output~26                                                       ; combout          ;
+; |alu|mux8to1:mux|output~29                                                       ; |alu|mux8to1:mux|output~29                                                       ; combout          ;
+; |alu|mux8to1:mux|output~30                                                       ; |alu|mux8to1:mux|output~30                                                       ; combout          ;
+; |alu|mux8to1:mux|output~31                                                       ; |alu|mux8to1:mux|output~31                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[11]~10                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[11]~10                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[12]~11                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[12]~11                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[11]~5                        ; |alu|shifter:shifter0|mux2to1_shift:mux2_1|data_out[11]~5                        ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[15]~13                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_4|data_out[15]~13                       ; combout          ;
+; |alu|mux8to1:mux|output~42                                                       ; |alu|mux8to1:mux|output~42                                                       ; combout          ;
+; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[15]~14                       ; |alu|shifter:shifter0|mux2to1_shift:mux2_2|data_out[15]~14                       ; combout          ;
+; |alu|mux8to1:mux|output~53                                                       ; |alu|mux8to1:mux|output~53                                                       ; combout          ;
+; |alu|mux8to1:mux|output~61                                                       ; |alu|mux8to1:mux|output~61                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0  ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits70|level1:level1_30|c_out3~0  ; combout          ;
+; |alu|mux8to1:mux|output~65                                                       ; |alu|mux8to1:mux|output~65                                                       ; combout          ;
+; |alu|mux8to1:mux|output~68                                                       ; |alu|mux8to1:mux|output~68                                                       ; combout          ;
+; |alu|mux8to1:mux|output~72                                                       ; |alu|mux8to1:mux|output~72                                                       ; combout          ;
+; |alu|mux8to1:mux|output~76                                                       ; |alu|mux8to1:mux|output~76                                                       ; combout          ;
+; |alu|mux8to1:mux|output~80                                                       ; |alu|mux8to1:mux|output~80                                                       ; combout          ;
+; |alu|mux8to1:mux|output~84                                                       ; |alu|mux8to1:mux|output~84                                                       ; combout          ;
+; |alu|mux8to1:mux|output~87                                                       ; |alu|mux8to1:mux|output~87                                                       ; combout          ;
+; |alu|mux8to1:mux|output~91                                                       ; |alu|mux8to1:mux|output~91                                                       ; combout          ;
+; |alu|mux8to1:mux|output~92                                                       ; |alu|mux8to1:mux|output~92                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2~0 ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out2~0 ; combout          ;
+; |alu|mux8to1:mux|output~95                                                       ; |alu|mux8to1:mux|output~95                                                       ; combout          ;
+; |alu|mux8to1:mux|output~99                                                       ; |alu|mux8to1:mux|output~99                                                       ; combout          ;
+; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~1 ; |alu|adder:adder1|CLA16bit:adder_top_0|CLA8bit:bits158|level1:level1_30|c_out3~1 ; combout          ;
+; |alu|mux8to1:mux|output~101                                                      ; |alu|mux8to1:mux|output~101                                                      ; combout          ;
+; |alu|mux8to1:mux|output~103                                                      ; |alu|mux8to1:mux|output~103                                                      ; combout          ;
+; |alu|mux8to1:mux|output~105                                                      ; |alu|mux8to1:mux|output~105                                                      ; combout          ;
+; |alu|mux8to1:mux|output~109                                                      ; |alu|mux8to1:mux|output~109                                                      ; combout          ;
+; |alu|mux8to1:mux|output~112                                                      ; |alu|mux8to1:mux|output~112                                                      ; combout          ;
+; |alu|mux8to1:mux|output~117                                                      ; |alu|mux8to1:mux|output~117                                                      ; combout          ;
+; |alu|ctrl_ALUopcode[2]                                                           ; |alu|ctrl_ALUopcode[2]~corein                                                    ; combout          ;
++----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+------------------+
+
+
++---------------------+
+; Simulator INI Usage ;
++--------+------------+
+; Option ; Usage      ;
++--------+------------+
+
+
++--------------------+
+; Simulator Messages ;
++--------------------+
+Info: *******************************************************************
+Info: Running Quartus II Simulator
+    Info: Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
+    Info: Processing started: Wed Feb 15 23:44:02 2012
+Info: Command: quartus_sim --read_settings_files=on --write_settings_files=off alu -c alu
+Info: Using vector source file "D:/Documents/ECE152-MIPS-CPU/alu/test_alu.vwf"
+Info: Option to preserve fewer signal transitions to reduce memory requirements is enabled
+    Info: Simulation has been partitioned into sub-simulations according to the maximum transition count determined by the engine. Transitions from memory will be flushed out to disk at the end of each sub-simulation to reduce memory requirements.
+Info: Simulation partitioned into 1 sub-simulations
+Info: Simulation coverage is      89.32 %
+Info: Number of transitions in simulation is 3530
+Info: Quartus II Simulator was successful. 0 errors, 0 warnings
+    Info: Peak virtual memory: 163 megabytes
+    Info: Processing ended: Wed Feb 15 23:44:07 2012
+    Info: Elapsed time: 00:00:05
+    Info: Total CPU time (on all processors): 00:00:01
+
+
