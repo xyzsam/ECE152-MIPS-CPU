@@ -10,37 +10,40 @@ entity control is
 
                -- alu controls 
                ctrl_sign_ex_mux              : out std_logic;
-               ctrl_alu_opcode				 : out std_logic_vector(2 downto 0);
+               ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
 
                -- adder controls
-               ctrl_subtract				 : out std_logic;
+               ctrl_subtract				: out std_logic;
 
                -- branch controls
                ctrl_br                       : out std_logic;
                ctrl_pc_wren                  : out std_logic;
-			   ctrl_jump					 : out std_logic;
-			   
+			ctrl_jump			          : out std_logic;
+               ctrl_jr                       : out std_logic;
+               ctrl_jal                      : out std_logic;
+
                -- shifter controls
                ctrl_rightshift               : out std_logic;
      
                -- dmem controls
                ctrl_dmem_wren                : out std_logic ;
-               ctrl_output                   : out std_logic); -- selects between dmem output or ALU output 
+               ctrl_alu_dmem                 : out std_logic; -- selects between dmem output or ALU output 
 
                -- imem controls
 
                -- other controls
+               ctrl_output                   : out std_logic);
 end control;
 
 
 architecture structure of control is
 
-signal opcode : std_logic_vector(5 downto 0);
+signal opcode : std_logic_vector(4 downto 0);
 signal ctrl_reg_wren_temp, ctrl_dmem_wren_temp, ctrl_pc_wren_temp, ctrl_jump_temp : std_logic;
 
 begin
 
-     opcode <= instr(5 downto 0); 
+     opcode <= instr(4 downto 0); 
 
      ctrl_reg_wren_temp <= '0' when opcode = "01011" else 
                            '0' when opcode = "01100" else
@@ -75,7 +78,16 @@ begin
                 '1' when opcode = "01101" else
                 '0';
 
-	 ctrl_jump_temp <= '1' when opcode = "01011" else
+     ctrl_jal <= '1' when opcode = "01101" else
+                 '0';
+     
+     ctrl_jr <= '1' when opcode = "01011" else
+                '0';
+
+     ctrl_alu_dmem <= '1' when opcode = "00111" else
+                      '0';
+
+	ctrl_jump_temp <= '1' when opcode = "01011" else
 					   '1' when opcode = "01100" else
 					   '1' when opcode = "01101" else
 					   '0';
@@ -99,6 +111,6 @@ begin
      ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
      ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
      ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
-	 ctrl_jump <= ctrl_jump_temp after 10ns;
-	 
+	ctrl_jump <= ctrl_jump_temp after 10ns;
+
 end structure;

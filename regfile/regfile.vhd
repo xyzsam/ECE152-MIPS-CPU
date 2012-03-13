@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity regfile is
-    port (    clock, ctrl_writeEnable, ctrl_reset : in std_logic;
+    port (  clock, ctrl_writeEnable, ctrl_reset : in std_logic;
             ctrl_writeReg, ctrl_readRegA, ctrl_readRegB : in std_logic_vector(4 downto 0);
             data_writeReg    : in std_logic_vector(31 downto 0);
             data_readRegA, data_readRegB : out std_logic_vector(31 downto 0) );
