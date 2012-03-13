@@ -18,7 +18,8 @@ entity control is
                -- branch controls
                ctrl_br                       : out std_logic;
                ctrl_pc_wren                  : out std_logic;
-
+			   ctrl_jump					 : out std_logic;
+			   
                -- shifter controls
                ctrl_rightshift               : out std_logic;
      
@@ -35,7 +36,7 @@ end control;
 architecture structure of control is
 
 signal opcode : std_logic_vector(5 downto 0);
-signal ctrl_reg_wren_temp, ctrl_dmem_wren_temp, ctrl_pc_wren_temp : std_logic;
+signal ctrl_reg_wren_temp, ctrl_dmem_wren_temp, ctrl_pc_wren_temp, ctrl_jump_temp : std_logic;
 
 begin
 
@@ -74,6 +75,11 @@ begin
                 '1' when opcode = "01101" else
                 '0';
 
+	 ctrl_jump_temp <= '1' when opcode = "01011" else
+					   '1' when opcode = "01100" else
+					   '1' when opcode = "01101" else
+					   '0';
+					   
      ctrl_pc_wren_temp <= '1' when opcode = "01001" else
                           '1' when opcode = "01010" else
                           '1' when opcode = "01011" else
@@ -93,5 +99,6 @@ begin
      ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
      ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
      ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
-
+	 ctrl_jump <= ctrl_jump_temp after 10ns;
+	 
 end structure;
