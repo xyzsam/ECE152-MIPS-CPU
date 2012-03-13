@@ -648,101 +648,6 @@ a36c8ec425c8a2589af98b2d4daabc3
 
 # end
 # entity
-adder
-# storage
-db|alu.(1).cnf
-db|alu.(1).cnf
-# logic_option {
-AUTO_RAM_RECOGNITION
-ON
-}
-# case_insensitive
-# source_file
-|documents|ece152-mips-cpu|adder|adder.vhd
-10df3f6585ae7f523f5958fa6dfeca3
-5
-# internal_option {
-HDL_INITIAL_FANOUT_LIMIT
-OFF
-AUTO_RESOURCE_SHARING
-OFF
-AUTO_RAM_RECOGNITION
-ON
-AUTO_ROM_RECOGNITION
-ON
-}
-# user_parameter {
- constraint(data_addenda)
-31 downto 0
-PARAMETER_STRING
-USR
- constraint(data_addendb)
-31 downto 0
-PARAMETER_STRING
-USR
- constraint(data_sum)
-31 downto 0
-PARAMETER_STRING
-USR
-}
-# hierarchies {
-adder:adder0
-adder:adder1
-}
-# lmf
-c:|altera|91sp2|quartus|lmf|maxplus2.lmf
-a36c8ec425c8a2589af98b2d4daabc3
-# macro_sequence
-
-# end
-# entity
-shifter
-# storage
-db|alu.(7).cnf
-db|alu.(7).cnf
-# logic_option {
-AUTO_RAM_RECOGNITION
-ON
-}
-# case_insensitive
-# source_file
-|documents|ece152-mips-cpu|shifter|shifter.vhd
-a1902dcde9127ba67eec218594cbf5b6
-5
-# internal_option {
-HDL_INITIAL_FANOUT_LIMIT
-OFF
-AUTO_RESOURCE_SHARING
-OFF
-AUTO_RAM_RECOGNITION
-ON
-AUTO_ROM_RECOGNITION
-ON
-}
-# user_parameter {
- constraint(data_a)
-31 downto 0
-PARAMETER_STRING
-USR
- constraint(ctrl_shamt)
-4 downto 0
-PARAMETER_STRING
-USR
- constraint(data_s)
-31 downto 0
-PARAMETER_STRING
-USR
-}
-# hierarchies {
-shifter:shifter0
-}
-# lmf
-c:|altera|91sp2|quartus|lmf|maxplus2.lmf
-a36c8ec425c8a2589af98b2d4daabc3
-# macro_sequence
-
-# end
-# entity
 mux2to1_add
 # storage
 db|alu.(8).cnf
@@ -853,7 +758,7 @@ ON
 # case_insensitive
 # source_file
 alu.vhd
-89ae8edc7b87a14792889e2e7acbf4d
+8150b74a4b71a5c69444ec269b4c429
 5
 # internal_option {
 HDL_INITIAL_FANOUT_LIMIT
@@ -867,6 +772,101 @@ ON
 }
 # hierarchies {
 |
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+adder
+# storage
+db|alu.(1).cnf
+db|alu.(1).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|adder|adder.vhd
+10df3f6585ae7f523f5958fa6dfeca3
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_addenda)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_addendb)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_sum)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+adder:adder0
+adder:adder1
+}
+# lmf
+c:|altera|91sp2|quartus|lmf|maxplus2.lmf
+a36c8ec425c8a2589af98b2d4daabc3
+# macro_sequence
+
+# end
+# entity
+shifter
+# storage
+db|alu.(7).cnf
+db|alu.(7).cnf
+# logic_option {
+AUTO_RAM_RECOGNITION
+ON
+}
+# case_insensitive
+# source_file
+|documents|ece152-mips-cpu|shifter|shifter.vhd
+a1902dcde9127ba67eec218594cbf5b6
+5
+# internal_option {
+HDL_INITIAL_FANOUT_LIMIT
+OFF
+AUTO_RESOURCE_SHARING
+OFF
+AUTO_RAM_RECOGNITION
+ON
+AUTO_ROM_RECOGNITION
+ON
+}
+# user_parameter {
+ constraint(data_a)
+31 downto 0
+PARAMETER_STRING
+USR
+ constraint(ctrl_shamt)
+4 downto 0
+PARAMETER_STRING
+USR
+ constraint(data_s)
+31 downto 0
+PARAMETER_STRING
+USR
+}
+# hierarchies {
+shifter:shifter0
 }
 # lmf
 c:|altera|91sp2|quartus|lmf|maxplus2.lmf

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for alu
-Wed Feb 15 23:41:54 2012
+Mon Mar 12 01:38:35 2012
 Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
 
 
@@ -46,7 +46,7 @@ applicable agreement for further details.
 +------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                 ;
 +-------------------------------+----------------------------------------------+
-; Analysis & Synthesis Status   ; Successful - Wed Feb 15 23:41:54 2012        ;
+; Analysis & Synthesis Status   ; Successful - Mon Mar 12 01:38:35 2012        ;
 ; Quartus II Version            ; 9.1 Build 350 03/24/2010 SP 2 SJ Web Edition ;
 ; Revision Name                 ; alu                                          ;
 ; Top-level Entity Name         ; alu                                          ;
@@ -226,7 +226,7 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +--------------------------------+-------------------+--------------+-------------------+--------------+---------+-----------+-----------+------+--------------+--------------------------------------------------------------------------+--------------+
 ; |alu                           ; 461 (19)          ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 101  ; 0            ; |alu                                                                     ; work         ;
 ;    |adder:adder0|              ; 75 (0)            ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0                                                        ;              ;
-;       |CLA16bit:adder_bottom|  ; 33 (0)            ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0|CLA16bit:adder_bottom                                  ;              ;
+;       |CLA16bit:adder_bottom|  ; 33 (0)            ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0|CLA16bit:adder_bottom                                  ; work         ;
 ;          |CLA8bit:bits158|     ; 17 (1)            ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158                  ; work         ;
 ;             |level1:level1_30| ; 4 (4)             ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_30 ; work         ;
 ;             |level1:level1_74| ; 6 (6)             ; 0 (0)        ; 0                 ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |alu|adder:adder0|CLA16bit:adder_bottom|CLA8bit:bits158|level1:level1_74 ; work         ;
@@ -375,7 +375,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II Analysis & Synthesis
     Info: Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
-    Info: Processing started: Wed Feb 15 23:41:36 2012
+    Info: Processing started: Mon Mar 12 01:38:18 2012
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off alu -c alu
 Info: Found 2 design units, including 1 entities, in source file /documents/ece152-mips-cpu/adder/mux2to1_add.vhd
     Info: Found design unit 1: mux2to1_add-structure
@@ -451,8 +451,8 @@ Info: Implemented 562 device resources after synthesis - the final resource coun
     Info: Implemented 461 logic cells
 Info: Quartus II Analysis & Synthesis was successful. 0 errors, 1 warning
     Info: Peak virtual memory: 243 megabytes
-    Info: Processing ended: Wed Feb 15 23:41:55 2012
-    Info: Elapsed time: 00:00:19
-    Info: Total CPU time (on all processors): 00:00:19
+    Info: Processing ended: Mon Mar 12 01:38:36 2012
+    Info: Elapsed time: 00:00:18
+    Info: Total CPU time (on all processors): 00:00:15
 
 

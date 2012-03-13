@@ -40,7 +40,7 @@ component shift1
 			data_S	: out std_logic_vector(31 downto 0));
 end component;
 
-component mux2to1
+component mux2to1_shift
 	port (	in0, in1	: in std_logic_vector(31 downto 0);
 			ctrl_select	: in std_logic;
 			data_out	: out std_logic_vector(31 downto 0));
@@ -65,10 +65,10 @@ begin
 	c_shift2 : shift2 port map(shift2_in, ctrl_rightshift, shift2_out);
 	c_shift1 : shift1 port map(shift1_in, ctrl_rightshift, shift1_out);
 	
-	mux2_16 : mux2to1 port map(data_A, shift16_out, ctrl_shamt(4), shift8_in);
-	mux2_8 :  mux2to1 port map(shift8_in, shift8_out, ctrl_shamt(3), shift4_in);
-	mux2_4 :  mux2to1 port map(shift4_in, shift4_out, ctrl_shamt(2), shift2_in);
-	mux2_2 :  mux2to1 port map(shift2_in, shift2_out, ctrl_shamt(1), shift1_in);
-	mux2_1 :  mux2to1 port map(shift1_in, shift1_out, ctrl_shamt(0), data_S);
+	mux2_16 : mux2to1_shift port map(data_A, shift16_out, ctrl_shamt(4), shift8_in);
+	mux2_8 :  mux2to1_shift port map(shift8_in, shift8_out, ctrl_shamt(3), shift4_in);
+	mux2_4 :  mux2to1_shift port map(shift4_in, shift4_out, ctrl_shamt(2), shift2_in);
+	mux2_2 :  mux2to1_shift port map(shift2_in, shift2_out, ctrl_shamt(1), shift1_in);
+	mux2_1 :  mux2to1_shift port map(shift1_in, shift1_out, ctrl_shamt(0), data_S);
 	
 end structure;

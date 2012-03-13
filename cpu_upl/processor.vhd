@@ -82,7 +82,43 @@ component sgn_ext
 			output	: out std_logic_vector(31 downto 0));
 end component;
 
+component regfile
+    port (    clock, ctrl_writeEnable, ctrl_reset : in std_logic;
+            ctrl_writeReg, ctrl_readRegA, ctrl_readRegB : in std_logic_vector(4 downto 0);
+            data_writeReg    : in std_logic_vector(31 downto 0);
+            data_readRegA, data_readRegB : out std_logic_vector(31 downto 0) );
+end component;
+
+signal    cur_pc_in, cur_pc_out,
+          pc_plus_1, 
+          cur_instr, cur_instr_jump,
+          jump_addr,
+          sgn_ext_out, sgn_ext_shift,
+          branch_addr, br_or_j_addr,
+          regfile_d1, regfile_d2, regfile_write,
+          alu_output,
+          dmem_output : std_logic_vector(31 downto 0);
+
+signal    cur_instr_rs, cur_instr_rt, 
+          cur_instr_rd, regfile_dest : std_logic_vector(4 downto 0);
+
+signal    cur_instr_imm  : std_logic_vector(16 downto 0);
+
+signal    cur_instr_jump_27   : std_logic_vector(26 downto 0);
+
+signal    ctrl_reg_wren, ctrl_dest_mux, 
+          ctrl_sign_ex_mux, ctrl_subtract,
+          ctrl_br, ctrl_pc_wren, 
+          ctrl_rightshift, ctrl_dmem_wren,
+          ctrl_output    : out std_logic; 
+
+signal    ctrl_alu_opcode : out std_logic_vector(2 downto 0);
+
 begin
 
+
+     pc : reg32 port map(clock, ctrl_pc_wren, reset, cur_pc_in, cur_pc_out);
+     instr_mem: imem port map(cur_pc_in, '1', clock, cur_instr); -- might fail to compile
+     registerfile : 
 
 end structure;

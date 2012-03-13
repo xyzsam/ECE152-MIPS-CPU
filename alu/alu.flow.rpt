@@ -1,5 +1,5 @@
 Flow report for alu
-Wed Feb 15 23:43:29 2012
+Mon Mar 12 01:39:47 2012
 Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
 
 
@@ -38,7 +38,7 @@ applicable agreement for further details.
 +------------------------------------------------------------------------------+
 ; Flow Summary                                                                 ;
 +-------------------------------+----------------------------------------------+
-; Flow Status                   ; Successful - Wed Feb 15 23:43:28 2012        ;
+; Flow Status                   ; Successful - Mon Mar 12 01:39:47 2012        ;
 ; Quartus II Version            ; 9.1 Build 350 03/24/2010 SP 2 SJ Web Edition ;
 ; Revision Name                 ; alu                                          ;
 ; Top-level Entity Name         ; alu                                          ;
@@ -64,7 +64,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 02/15/2012 23:41:38 ;
+; Start date & time ; 03/12/2012 01:38:19 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; alu                 ;
 +-------------------+---------------------+
@@ -75,7 +75,7 @@ applicable agreement for further details.
 +------------------------------------+------------------------------+---------------+-------------+----------------+
 ; Assignment Name                    ; Value                        ; Default Value ; Entity Name ; Section Id     ;
 +------------------------------------+------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID              ; 143064965821.132936729807048 ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID              ; 143064965821.133153069903640 ; --            ; --          ; --             ;
 ; PARTITION_COLOR                    ; 16764057                     ; --            ; --          ; Top            ;
 ; PARTITION_NETLIST_TYPE             ; SOURCE                       ; --            ; --          ; Top            ;
 ; USE_GENERATED_PHYSICAL_CONSTRAINTS ; Off                          ; --            ; --          ; eda_blast_fpga ;
@@ -87,11 +87,11 @@ applicable agreement for further details.
 +-------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name             ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +-------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis    ; 00:00:17     ; 1.0                     ; 243 MB              ; 00:00:18                           ;
-; Fitter                  ; 00:00:14     ; 1.0                     ; 257 MB              ; 00:00:09                           ;
-; Assembler               ; 00:00:06     ; 1.0                     ; 242 MB              ; 00:00:03                           ;
-; Classic Timing Analyzer ; 00:00:03     ; 1.0                     ; 176 MB              ; 00:00:01                           ;
-; Total                   ; 00:00:40     ; --                      ; --                  ; 00:00:31                           ;
+; Analysis & Synthesis    ; 00:00:17     ; 1.0                     ; 243 MB              ; 00:00:14                           ;
+; Fitter                  ; 00:00:15     ; 1.0                     ; 257 MB              ; 00:00:10                           ;
+; Assembler               ; 00:00:08     ; 1.0                     ; 242 MB              ; 00:00:03                           ;
+; Classic Timing Analyzer ; 00:00:02     ; 1.0                     ; 176 MB              ; 00:00:01                           ;
+; Total                   ; 00:00:42     ; --                      ; --                  ; 00:00:28                           ;
 +-------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

@@ -17,7 +17,7 @@ component CLA16bit
           c_out : out std_logic);
 end component;
 
-component mux2to1
+component mux2to1_add
 	port (	in0, in1	: in std_logic_vector(15 downto 0);
 			ctrl_select	: in std_logic;
 			data_out	: out std_logic_vector(15 downto 0));
@@ -37,7 +37,7 @@ begin
 	adder_top_0  : CLA16bit port map(data_addendA(31 downto 16), data_addendB_new(31 downto 16), '0', sum_top0, c_top0);
 	adder_top_1  : CLA16bit port map(data_addendA(31 downto 16), data_addendB_new(31 downto 16), '1', sum_top1, c_top1);
 
-	mux_sum		 : mux2to1  port map(sum_top0, sum_top1, c_bottom, sum_top_sel);
+	mux_sum		 : mux2to1_add  port map(sum_top0, sum_top1, c_bottom, sum_top_sel);
 	data_carryout <= (c_bottom and c_top1) or ((not c_bottom) and c_top0);
 	
 	data_sum(15 downto 0) <= sum_bottom;
