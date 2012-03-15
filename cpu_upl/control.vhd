@@ -6,7 +6,7 @@ entity control is
 
                -- regfile controls
                ctrl_reg_wren                 : out std_logic;
-               ctrl_dest_mux                 : out std_logic;
+               ctrl_rt_mux                 : out std_logic;
                ctrl_reg_input_mux			: out std_logic;
 			   
                -- alu controls 
@@ -39,18 +39,19 @@ begin
 
      opcode <= instr(31 downto 27); 
 
-     ctrl_reg_wren_temp <= '0' when opcode = "01011" else 
+     ctrl_reg_wren_temp <= '0' when opcode = "01000" else
+						   '0' when opcode = "01001" else
+						   '0' when opcode = "01010" else
+						   '0' when opcode = "01011" else 
                            '0' when opcode = "01100" else
                            '0' when opcode = "01101" else
                            '0' when opcode = "01111" else
                            '1';
     
-     ctrl_dest_mux <= '1' when opcode = "00000" else 
-                      '1' when opcode = "00001" else
-                      '1' when opcode = "00010" else
-                      '1' when opcode = "00011" else
-                      '1' when opcode = "00100" else
-                      '1' when opcode = "00101" else
+     ctrl_rt_mux <=   '1' when opcode = "00111" else 
+                      '1' when opcode = "01000" else
+                      '1' when opcode = "01001" else
+                      '1' when opcode = "01010" else
                       '0'; 
 
      ctrl_sign_ex_mux <= '1' when opcode = "00110" else 
@@ -109,7 +110,7 @@ begin
      ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
      ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
      ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
-	ctrl_jump <= ctrl_jump_temp after 10ns;
+	 ctrl_jump <= ctrl_jump_temp after 10ns;
 
      ctrl_keyboard_ack <= not (keyboard_in(0) or
                       keyboard_in(1) or
