@@ -88,7 +88,7 @@ BEGIN
 	GENERIC MAP (
 		clock_enable_input_a => "NORMAL",
 		clock_enable_output_a => "BYPASS",
-		init_file => "test_ldi_add.imem.mif",
+		init_file => "current_program.imem.mif",
 		intended_device_family => "Cyclone II",
 		lpm_hint => "ENABLE_RUNTIME_MOD=NO",
 		lpm_type => "altsyncram",
