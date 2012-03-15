@@ -12,8 +12,8 @@ entity processor is
             dmem_out            : out std_logic_vector(31 downto 0);
             regfile_d1_out		: out std_logic_vector(31 downto 0);
             regfile_d2_out		: out std_logic_vector(31 downto 0);
-            --alu_input2_out		: out std_logic_vector(31 downto 0);
-            regfile_write_out, regfile_write_temp_out	    : out std_logic_vector(31 downto 0);
+            regfile_write_out    : out std_logic_vector(31 downto 0);
+            rs_out, rt_out, rd_out,regfile_dest_out : out std_logic_vector(4 downto 0);
             ctrl_reg_wren_out, ctrl_dest_mux_out, ctrl_reg_input_mux_out,
 		    ctrl_sgn_ex_mux_out, 
 			ctrl_br_out, ctrl_pc_wren_out, ctrl_jump_out,
@@ -144,9 +144,6 @@ signal    ctrl_reg_wren, ctrl_dest_mux, ctrl_reg_input_mux,
 signal    carryout_useless, useless, useless2, useless3 : std_logic;
 signal    ctrl_alu_opcode : std_logic_vector(2 downto 0);
 
-
-
-
 begin
 
      cur_instr_imm <= cur_instr(16 downto 0);
@@ -163,21 +160,21 @@ begin
      -- large critical path components
      pc : reg32 port map(clock, '1', reset, cur_pc_in, cur_pc_out);
      instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); 
-     registerfile : regfile port map(clock, ctrl_reg_wren and (not clock), reset, regfile_dest, 
+     registerfile : regfile port map(not clock, ctrl_reg_wren, reset, regfile_dest, 
                                      cur_instr_rt, cur_instr_rs, regfile_write,
                                      regfile_d1, regfile_d2);
      main_alu: alu port map(regfile_d1, alu_input2, ctrl_alu_opcode, alu_output, useless, useless2);
      data_mem: dmem port map(alu_output(11 downto 0), not clock, regfile_d2, ctrl_dmem_wren, dmem_output);
                                     
      -- muxes
-     reg_dest_mux : mux2to1_5b port map(cur_instr_rs, cur_instr_rd, ctrl_dest_mux, temp_regfile_dest);
+     --reg_dest_mux : mux2to1_5b port map(cur_instr_rs, cur_instr_rd, ctrl_dest_mux, temp_regfile_dest); this mux is probably unnecessary
      reg_input_mux : mux2to1_32b port map(regfile_write_temp, keyboard_in, ctrl_reg_input_mux, regfile_write);
      pc_reset_mux : mux2to1_32b port map(cur_pc_in_temp, zero, reset, cur_pc_in);
      sgn_ext_mux: mux2to1_32b port map(regfile_d2, sgn_ext_out, ctrl_sgn_ex_mux, alu_input2);
      output_mux: mux2to1_32b port map(alu_output, dmem_output, ctrl_alu_dmem, regfile_write_temp);
      br_mux: mux2to1_32b port map(pc_plus_1, branch_addr, alu_zero and ctrl_br, br_or_j_addr);
      br_jump_addr_mux: mux2to1_32b port map(br_or_j_addr, jump_addr, ctrl_jump, cur_pc_in_temp);
-     jal_mux: mux2to1_5b port map(temp_regfile_dest, "11111", ctrl_jal, regfile_dest);
+     jal_mux: mux2to1_5b port map(cur_instr_rd, "11111", ctrl_jal, regfile_dest);
 	 jr_mux: mux2to1_32b port map(cur_instr_jump, regfile_d1, ctrl_jr, jump_addr);
 	 
      -- branch components
@@ -235,8 +232,7 @@ begin
     dmem_out <= dmem_output;
     regfile_d1_out <= regfile_d1;
     regfile_d2_out <= regfile_d2;
-   -- alu_input2_out <= alu_input2;
-    ctrl_reg_wren_out <= ctrl_reg_wren and (not clock);
+    ctrl_reg_wren_out <= ctrl_reg_wren;
     ctrl_dest_mux_out <= ctrl_dest_mux;
     ctrl_reg_input_mux_out <= ctrl_reg_input_mux;
     ctrl_sgn_ex_mux_out <= ctrl_sgn_ex_mux;
@@ -248,6 +244,8 @@ begin
     ctrl_dmem_wren_out <= ctrl_dmem_wren;
     ctrl_alu_dmem_out <= ctrl_alu_dmem;
     regfile_write_out <= regfile_write;
-    regfile_write_temp_out <= regfile_write_temp;
-    
+    rs_out <= cur_instr_rs;
+    rt_out <= cur_instr_rt;
+    rd_out <= cur_instr_rd;
+    regfile_dest_out <= regfile_dest;
 end structure;
