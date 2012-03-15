@@ -161,7 +161,7 @@ begin
      pc : reg32 port map(clock, '1', reset, cur_pc_in, cur_pc_out);
      instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); 
      registerfile : regfile port map(not clock, ctrl_reg_wren, reset, regfile_dest, 
-                                     cur_instr_rt, cur_instr_rs, regfile_write,
+                                     cur_instr_rs, cur_instr_rt, regfile_write,
                                      regfile_d1, regfile_d2);
      main_alu: alu port map(regfile_d1, alu_input2, ctrl_alu_opcode, alu_output, useless, useless2);
      data_mem: dmem port map(alu_output(11 downto 0), not clock, regfile_d2, ctrl_dmem_wren, dmem_output);
