@@ -48,6 +48,8 @@ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
 set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
+set_global_assignment -name VHDL_FILE imem.vhd
+set_global_assignment -name VHDL_FILE dmem.vhd
 set_global_assignment -name VHDL_FILE mux2to1_5b.vhd
 set_global_assignment -name VHDL_FILE mux2to1_32b.vhd
 set_global_assignment -name VHDL_FILE ../shifter/mux2to1.vhd
@@ -62,8 +64,6 @@ set_global_assignment -name VHDL_FILE ../regfile/decoder32to1.vhd
 set_global_assignment -name VHDL_FILE ../regfile/mux32to1.vhd
 set_global_assignment -name VHDL_FILE ../regfile/reg32.vhd
 set_global_assignment -name VHDL_FILE ../regfile/regfile.vhd
-set_global_assignment -name VHDL_FILE ../memory/dmem.vhd
-set_global_assignment -name VHDL_FILE ../memory/imem.vhd
 set_global_assignment -name VHDL_FILE ../alu/alu.vhd
 set_global_assignment -name VHDL_FILE ../alu/decoder6to1.vhd
 set_global_assignment -name VHDL_FILE ../alu/mux8to1.vhd
@@ -78,4 +78,6 @@ set_global_assignment -name VHDL_FILE control.vhd
 set_global_assignment -name VECTOR_WAVEFORM_FILE testGiveMeN_unpipelined.vwf
 set_global_assignment -name VHDL_FILE processor.vhd
 set_global_assignment -name VHDL_FILE sgn_ext.vhd
+set_global_assignment -name VECTOR_WAVEFORM_FILE sam_program_test.vwf
+set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE sam_program_test.vwf
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

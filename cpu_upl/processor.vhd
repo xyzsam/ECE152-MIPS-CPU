@@ -5,7 +5,21 @@ entity processor is
 	port (	clock, reset		: in std_logic;
 			keyboard_in			: in std_logic_vector(31 downto 0);
 			keyboard_ack, lcd_write	:out std_logic;
-			lcd_data			: out std_logic_vector(31 downto 0));
+			lcd_data			: out std_logic_vector(31 downto 0);
+			pc_out                : out std_logic_vector(31 downto 0);
+            cur_instr_out        : out std_logic_vector(31 downto 0);
+            alu_out                : out std_logic_vector(31 downto 0);
+            dmem_out            : out std_logic_vector(31 downto 0);
+            regfile_d1_out		: out std_logic_vector(31 downto 0);
+            regfile_d2_out		: out std_logic_vector(31 downto 0);
+            --alu_input2_out		: out std_logic_vector(31 downto 0);
+            regfile_write_out, regfile_write_temp_out	    : out std_logic_vector(31 downto 0);
+            ctrl_reg_wren_out, ctrl_dest_mux_out, ctrl_reg_input_mux_out,
+		    ctrl_sgn_ex_mux_out, 
+			ctrl_br_out, ctrl_pc_wren_out, ctrl_jump_out,
+			ctrl_jr_out, ctrl_jal_out,
+			ctrl_dmem_wren_out,
+			ctrl_alu_dmem_out : out std_logic );
 end processor;
 
 architecture structure of processor is
@@ -70,9 +84,10 @@ component mux2to1_5b
 end component;
 
 component control
-     port (    instr     : in std_logic_vector(31 downto 0);
+     port (    instr, keyboard_in, lcd_data : in std_logic_vector(31 downto 0);
                ctrl_reg_wren                 : out std_logic;
                ctrl_dest_mux                 : out std_logic;
+               ctrl_reg_input_mux			 : out std_logic;
                ctrl_sign_ex_mux              : out std_logic;
                ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
                ctrl_br                       : out std_logic;
@@ -80,9 +95,10 @@ component control
 			ctrl_jump			          : out std_logic;
                ctrl_jr                       : out std_logic;
                ctrl_jal                      : out std_logic;
-               ctrl_dmem_wren                : out std_logic ;
+               ctrl_dmem_wren                : out std_logic;
                ctrl_alu_dmem                 : out std_logic; -- selects between dmem output or ALU output 
-               ctrl_output                   : out std_logic); -- lcd output
+               ctrl_keyboard_ack             : out std_logic;
+               ctrl_lcd_write                : out std_logic);
 
 end component;
 
@@ -104,9 +120,11 @@ signal    cur_pc_in, cur_pc_in_temp, cur_pc_out,
           jump_addr,
           sgn_ext_out, sgn_ext_shift,
           branch_addr, br_or_j_addr,
-          regfile_d1, regfile_d2, regfile_write,
+          regfile_d1, regfile_d2, regfile_write_temp, regfile_write,
           alu_output, alu_input2, 
-          dmem_output : std_logic_vector(31 downto 0);
+          dmem_output,
+          lcd_data_temp,
+          one, zero : std_logic_vector(31 downto 0);
 
 signal    cur_instr_rs, cur_instr_rt, 
           cur_instr_rd, regfile_dest, temp_regfile_dest : std_logic_vector(4 downto 0);
@@ -115,24 +133,22 @@ signal    cur_instr_imm  : std_logic_vector(16 downto 0);
 
 signal    cur_instr_jump_27   : std_logic_vector(26 downto 0);
 
-signal    ctrl_reg_wren, ctrl_dest_mux, 
+signal    ctrl_reg_wren, ctrl_dest_mux, ctrl_reg_input_mux,
           ctrl_sgn_ex_mux, 
           ctrl_br, ctrl_pc_wren, ctrl_jump,
           ctrl_jr, ctrl_jal,
           ctrl_dmem_wren,
-          ctrl_alu_dmem, ctrl_output   : std_logic; 
-
-signal    ctrl_alu_opcode : std_logic_vector(2 downto 0);
+          ctrl_alu_dmem, 
+          alu_zero : std_logic; 
 
 signal    carryout_useless, useless, useless2, useless3 : std_logic;
+signal    ctrl_alu_opcode : std_logic_vector(2 downto 0);
 
-signal    one, zero: std_logic_vector(31 downto 0);
 
-signal 	  alu_zero : std_logic;
+
 
 begin
 
-    
      cur_instr_imm <= cur_instr(16 downto 0);
      cur_instr_jump_27 <= cur_instr(26 downto 0);
      cur_instr_rd <= cur_instr(26 downto 22);
@@ -143,29 +159,38 @@ begin
      
      one <= "00000000000000000000000000000001";         
      zero <= "00000000000000000000000000000000";
-     pc : reg32 port map(clock, ctrl_pc_wren, reset, cur_pc_in, cur_pc_out);
-     instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); -- might fail to compile
-     registerfile : regfile port map(clock, ctrl_reg_wren, reset, regfile_dest, 
-                                     cur_instr_rs, cur_instr_rt, regfile_write,
+     
+     -- large critical path components
+     pc : reg32 port map(clock, '1', reset, cur_pc_in, cur_pc_out);
+     instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); 
+     registerfile : regfile port map(clock, ctrl_reg_wren and (not clock), reset, regfile_dest, 
+                                     cur_instr_rt, cur_instr_rs, regfile_write,
                                      regfile_d1, regfile_d2);
-     reg_dest_mux : mux2to1_5b port map(cur_instr_rt, cur_instr_rd, ctrl_dest_mux, temp_regfile_dest);
-     pc_reset_mux : mux2to1_32b port map(cur_pc_in_temp, zero, reset, cur_pc_in);
-     sgn_ext_unit : sgn_ext port map(cur_instr_imm, sgn_ext_out);
-     control_unit : control port map(cur_instr, ctrl_reg_wren, ctrl_dest_mux, 
-                                   ctrl_sgn_ex_mux, ctrl_alu_opcode, 
-                                   ctrl_br, ctrl_pc_wren, ctrl_jump, ctrl_jr, ctrl_jal,
-                                   ctrl_dmem_wren, ctrl_alu_dmem, ctrl_output);
-     adder_pc_1   : adder port map(one, cur_pc_out, '0', pc_plus_1, carryout_useless);
-     sgn_ext_mux: mux2to1_32b port map(regfile_d2, sgn_ext_out, ctrl_sgn_ex_mux, alu_input2);
      main_alu: alu port map(regfile_d1, alu_input2, ctrl_alu_opcode, alu_output, useless, useless2);
      data_mem: dmem port map(alu_output(11 downto 0), not clock, regfile_d2, ctrl_dmem_wren, dmem_output);
-     output_mux: mux2to1_32b port map(alu_output, dmem_output, ctrl_alu_dmem, regfile_write);
+                                    
+     -- muxes
+     reg_dest_mux : mux2to1_5b port map(cur_instr_rs, cur_instr_rd, ctrl_dest_mux, temp_regfile_dest);
+     reg_input_mux : mux2to1_32b port map(regfile_write_temp, keyboard_in, ctrl_reg_input_mux, regfile_write);
+     pc_reset_mux : mux2to1_32b port map(cur_pc_in_temp, zero, reset, cur_pc_in);
+     sgn_ext_mux: mux2to1_32b port map(regfile_d2, sgn_ext_out, ctrl_sgn_ex_mux, alu_input2);
+     output_mux: mux2to1_32b port map(alu_output, dmem_output, ctrl_alu_dmem, regfile_write_temp);
      br_mux: mux2to1_32b port map(pc_plus_1, branch_addr, alu_zero and ctrl_br, br_or_j_addr);
-     branch_adder: adder port map(pc_plus_1, sgn_ext_out, '0', branch_addr, useless3);
      br_jump_addr_mux: mux2to1_32b port map(br_or_j_addr, jump_addr, ctrl_jump, cur_pc_in_temp);
      jal_mux: mux2to1_5b port map(temp_regfile_dest, "11111", ctrl_jal, regfile_dest);
 	 jr_mux: mux2to1_32b port map(cur_instr_jump, regfile_d1, ctrl_jr, jump_addr);
-
+	 
+     -- branch components
+     branch_adder: adder port map(pc_plus_1, sgn_ext_out, '0', branch_addr, useless3);
+     
+     -- other components
+     sgn_ext_unit : sgn_ext port map(cur_instr_imm, sgn_ext_out);
+     control_unit : control port map(cur_instr, keyboard_in, lcd_data_temp, 
+                                   ctrl_reg_wren, ctrl_dest_mux, ctrl_reg_input_mux,
+                                   ctrl_sgn_ex_mux, ctrl_alu_opcode, 
+                                   ctrl_br, ctrl_pc_wren, ctrl_jump, ctrl_jr, ctrl_jal,
+                                   ctrl_dmem_wren, ctrl_alu_dmem,  keyboard_ack, lcd_write);
+     adder_pc_1   : adder port map(one, cur_pc_out, '0', pc_plus_1, carryout_useless);
 
      -- alu zero
      alu_zero <= not (alu_output(0) or
@@ -201,4 +226,28 @@ begin
                       alu_output(30) or
                       alu_output(31));
                  
+      lcd_data_temp <= regfile_d1;
+      lcd_data <= regfile_d1;
+
+	pc_out <= cur_pc_out;
+    cur_instr_out <= cur_instr;
+    alu_out <= alu_output;
+    dmem_out <= dmem_output;
+    regfile_d1_out <= regfile_d1;
+    regfile_d2_out <= regfile_d2;
+   -- alu_input2_out <= alu_input2;
+    ctrl_reg_wren_out <= ctrl_reg_wren and (not clock);
+    ctrl_dest_mux_out <= ctrl_dest_mux;
+    ctrl_reg_input_mux_out <= ctrl_reg_input_mux;
+    ctrl_sgn_ex_mux_out <= ctrl_sgn_ex_mux;
+    ctrl_br_out <= ctrl_br;
+    ctrl_pc_wren_out <= ctrl_pc_wren;
+    ctrl_jump_out <= ctrl_jump;
+    ctrl_jr_out <= ctrl_jr;
+    ctrl_jal_out <= ctrl_jal;
+    ctrl_dmem_wren_out <= ctrl_dmem_wren;
+    ctrl_alu_dmem_out <= ctrl_alu_dmem;
+    regfile_write_out <= regfile_write;
+    regfile_write_temp_out <= regfile_write_temp;
+    
 end structure;

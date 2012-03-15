@@ -91,7 +91,7 @@ BEGIN
 	GENERIC MAP (
 		clock_enable_input_a => "BYPASS",
 		clock_enable_output_a => "BYPASS",
-		init_file => "testGiveMeN.dmem.mif",
+		init_file => "test_ldi_add.dmem.mif",
 		intended_device_family => "Stratix II",
 		lpm_hint => "ENABLE_RUNTIME_MOD=NO",
 		lpm_type => "altsyncram",
