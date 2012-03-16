@@ -16,10 +16,12 @@ entity processor is
             rs_out, rt_out, rd_out,regfile_dest_out : out std_logic_vector(4 downto 0);
             ctrl_reg_wren_out, ctrl_rt_mux_out, ctrl_reg_input_mux_out,
 		    ctrl_sgn_ex_mux_out, 
-			ctrl_br_out, ctrl_pc_wren_out, ctrl_jump_out,
+			ctrl_beq_out, ctrl_bgt_out, ctrl_pc_wren_out, ctrl_jump_out,
 			ctrl_jr_out, ctrl_jal_out,
 			ctrl_dmem_wren_out,
-			ctrl_alu_dmem_out : out std_logic );
+			ctrl_alu_dmem_out : out std_logic;
+			alu_input2_output : out std_logic_vector(31 downto 0);
+			alu_greater_than_output, alu_is_equal_output : out std_logic );
 end processor;
 
 architecture structure of processor is
@@ -85,20 +87,21 @@ end component;
 
 component control
      port (    instr, keyboard_in, lcd_data : in std_logic_vector(31 downto 0);
-               ctrl_reg_wren                 : out std_logic;
-               ctrl_rt_mux                 : out std_logic;
-               ctrl_reg_input_mux			 : out std_logic;
-               ctrl_sign_ex_mux              : out std_logic;
-               ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
-               ctrl_br                       : out std_logic;
-               ctrl_pc_wren                  : out std_logic;
-			ctrl_jump			          : out std_logic;
-               ctrl_jr                       : out std_logic;
-               ctrl_jal                      : out std_logic;
-               ctrl_dmem_wren                : out std_logic;
-               ctrl_alu_dmem                 : out std_logic; -- selects between dmem output or ALU output 
-               ctrl_keyboard_ack             : out std_logic;
-               ctrl_lcd_write                : out std_logic);
+               ctrl_reg_wren                : out std_logic;
+               ctrl_rt_mux                  : out std_logic;
+               ctrl_reg_input_mux			: out std_logic;
+               ctrl_sign_ex_mux             : out std_logic;
+               ctrl_alu_opcode		        : out std_logic_vector(2 downto 0);
+               ctrl_beq                     : out std_logic;
+               ctrl_bgt						: out std_logic;
+               ctrl_pc_wren                 : out std_logic;
+			   ctrl_jump			        : out std_logic;
+               ctrl_jr                      : out std_logic;
+               ctrl_jal                     : out std_logic;
+               ctrl_dmem_wren               : out std_logic;
+               ctrl_alu_dmem                : out std_logic; -- selects between dmem output or ALU output 
+               ctrl_keyboard_ack            : out std_logic;
+               ctrl_lcd_write               : out std_logic);
 
 end component;
 
@@ -119,15 +122,15 @@ signal    cur_pc_in, cur_pc_in_temp, cur_pc_out,
           cur_instr, cur_instr_jump,
           jump_addr,
           sgn_ext_out, sgn_ext_shift,
-          branch_addr, br_or_j_addr,
-          regfile_d1, regfile_d2, regfile_write_temp, regfile_write,
+          branch_addr, branch_addr_eq, br_or_j_addr,
+          regfile_d1, regfile_d2, regfile_write_temp, regfile_write_temp2, regfile_write,
           alu_output, alu_input2, 
           dmem_output,
           lcd_data_temp,
           one, zero : std_logic_vector(31 downto 0);
 
 signal    cur_instr_rs, cur_instr_rt, 
-          cur_instr_rd, regfile_dest, temp_regfile_dest, regfile_rt : std_logic_vector(4 downto 0);
+          cur_instr_rd, regfile_dest, temp_regfile_dest, regfile_rs, regfile_rt : std_logic_vector(4 downto 0);
 
 signal    cur_instr_imm  : std_logic_vector(16 downto 0);
 
@@ -135,10 +138,11 @@ signal    cur_instr_jump_27   : std_logic_vector(26 downto 0);
 
 signal    ctrl_reg_wren, ctrl_rt_mux, ctrl_reg_input_mux,
           ctrl_sgn_ex_mux, 
-          ctrl_br, ctrl_pc_wren, ctrl_jump,
+          ctrl_beq, ctrl_bgt, ctrl_pc_wren, ctrl_jump,
           ctrl_jr, ctrl_jal,
           ctrl_dmem_wren,
           ctrl_alu_dmem, 
+          ctrl_lcd_write,
           alu_zero, alu_is_equal, alu_is_greater : std_logic; 
 
 signal    carryout_useless, useless, useless2, useless3 : std_logic;
@@ -161,18 +165,21 @@ begin
      pc : reg32 port map(clock, '1', reset, cur_pc_in, cur_pc_out);
      instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); 
      registerfile : regfile port map(not clock, ctrl_reg_wren, reset, regfile_dest, 
-                                     cur_instr_rs, regfile_rt, regfile_write,
+                                     regfile_rs, regfile_rt, regfile_write,
                                      regfile_d1, regfile_d2);
      main_alu: alu port map(regfile_d1, alu_input2, ctrl_alu_opcode, alu_output, alu_is_equal, alu_is_greater);
      data_mem: dmem port map(alu_output(11 downto 0), not clock, regfile_d2, ctrl_dmem_wren, dmem_output);
                                     
      -- muxes
+     reg_rs_mux : mux2to1_5b port map(cur_instr_rs, cur_instr_rd, ctrl_jr or ctrl_lcd_write, regfile_rs);
      reg_rt_mux : mux2to1_5b port map(cur_instr_rt, cur_instr_rd, ctrl_rt_mux, regfile_rt); 
-     reg_input_mux : mux2to1_32b port map(regfile_write_temp, keyboard_in, ctrl_reg_input_mux, regfile_write);
+     reg_jal_mux : mux2to1_32b port map(regfile_write_temp, pc_plus_1, ctrl_jal, regfile_write_temp2);
+     reg_input_mux : mux2to1_32b port map(regfile_write_temp2, keyboard_in, ctrl_reg_input_mux, regfile_write);
      pc_reset_mux : mux2to1_32b port map(cur_pc_in_temp, zero, reset, cur_pc_in);
      sgn_ext_mux: mux2to1_32b port map(regfile_d2, sgn_ext_out, ctrl_sgn_ex_mux, alu_input2);
      output_mux: mux2to1_32b port map(alu_output, dmem_output, ctrl_alu_dmem, regfile_write_temp);
-     br_mux: mux2to1_32b port map(pc_plus_1, branch_addr, (alu_is_greater or alu_is_equal) and ctrl_br, br_or_j_addr);
+     beq_mux: mux2to1_32b port map(pc_plus_1, branch_addr, (alu_is_equal and ctrl_beq), branch_addr_eq);
+     bgt_mux: mux2to1_32b port map(branch_addr_eq, branch_addr, (alu_is_greater and ctrl_bgt), br_or_j_addr);
      br_jump_addr_mux: mux2to1_32b port map(br_or_j_addr, jump_addr, ctrl_jump, cur_pc_in_temp);
      jal_mux: mux2to1_5b port map(cur_instr_rd, "11111", ctrl_jal, regfile_dest);
 	 jr_mux: mux2to1_32b port map(cur_instr_jump, regfile_d1, ctrl_jr, jump_addr);
@@ -185,8 +192,8 @@ begin
      control_unit : control port map(cur_instr, keyboard_in, lcd_data_temp, 
                                    ctrl_reg_wren, ctrl_rt_mux, ctrl_reg_input_mux,
                                    ctrl_sgn_ex_mux, ctrl_alu_opcode, 
-                                   ctrl_br, ctrl_pc_wren, ctrl_jump, ctrl_jr, ctrl_jal,
-                                   ctrl_dmem_wren, ctrl_alu_dmem,  keyboard_ack, lcd_write);
+                                   ctrl_beq, ctrl_bgt, ctrl_pc_wren, ctrl_jump, ctrl_jr, ctrl_jal,
+                                   ctrl_dmem_wren, ctrl_alu_dmem,  keyboard_ack, ctrl_lcd_write);
      adder_pc_1   : adder port map(one, cur_pc_out, '0', pc_plus_1, carryout_useless);
 
      -- alu zero
@@ -236,7 +243,8 @@ begin
     ctrl_rt_mux_out <= ctrl_rt_mux;
     ctrl_reg_input_mux_out <= ctrl_reg_input_mux;
     ctrl_sgn_ex_mux_out <= ctrl_sgn_ex_mux;
-    ctrl_br_out <= ctrl_br;
+    ctrl_beq_out <= ctrl_beq;
+    ctrl_bgt_out <= ctrl_bgt;
     ctrl_pc_wren_out <= ctrl_pc_wren;
     ctrl_jump_out <= ctrl_jump;
     ctrl_jr_out <= ctrl_jr;
@@ -248,4 +256,11 @@ begin
     rt_out <= cur_instr_rt;
     rd_out <= cur_instr_rd;
     regfile_dest_out <= regfile_dest;
+    
+    alu_input2_output <= alu_input2;
+    alu_greater_than_output <= alu_is_greater;
+    alu_is_equal_output <= alu_is_equal;
+    
+    lcd_write <= ctrl_lcd_write;
+    
 end structure;
