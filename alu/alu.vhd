@@ -83,7 +83,7 @@ begin
 					adder_output1(31));
 		
 		isEqual <= equal;
-		isGreaterThan <= (not equal) and ((adder_output1(31) xnor '1') or (adder_carry1 xnor '1'));			
+		isGreaterThan <= (not equal) and (adder_output1(31) xnor '1');			
 		
 		and_output <= data_operandA and data_operandB;
 		or_output <= data_operandA or data_operandB;
