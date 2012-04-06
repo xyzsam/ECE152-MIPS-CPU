@@ -90,13 +90,13 @@ component control
      port (    instr, keyboard_in, lcd_data : in std_logic_vector(31 downto 0);
                ctrl_reg_wren                : out std_logic;
                ctrl_rt_mux                  : out std_logic;
-               ctrl_reg_input_mux			: out std_logic;
+               ctrl_reg_input_mux		    : out std_logic;
                ctrl_sign_ex_mux             : out std_logic;
-               ctrl_alu_opcode		        : out std_logic_vector(2 downto 0);
+               ctrl_alu_opcode		    : out std_logic_vector(2 downto 0);
                ctrl_beq                     : out std_logic;
-               ctrl_bgt						: out std_logic;
+               ctrl_bgt				    : out std_logic;
                ctrl_pc_wren                 : out std_logic;
-			   ctrl_jump			        : out std_logic;
+     		ctrl_jump			         : out std_logic;
                ctrl_jr                      : out std_logic;
                ctrl_jal                     : out std_logic;
                ctrl_dmem_wren               : out std_logic;
@@ -116,6 +116,53 @@ component regfile
             ctrl_writeReg, ctrl_readRegA, ctrl_readRegB : in std_logic_vector(4 downto 0);
             data_writeReg    : in std_logic_vector(31 downto 0);
             data_readRegA, data_readRegB : out std_logic_vector(31 downto 0) );
+end component;
+
+component EX_MEM_latch
+     port (	clock, reset : in std_logic;
+			wb, m : in std_logic;
+			isEqual, isGreaterThan : in std_logic;
+			alu_output : in std_logic_vector(31 downto 0);
+			pc_plus_one : in std_logic_vector(31 downto 0);
+			branch_addr : in std_logic_vector(31 downto 0);
+			wb_out, m_out : out std_logic;
+			isEqual_out, isGreaterThan_out : out std_logic;
+			alu_output_out : out std_logic_vector(31 downto 0);
+			pc_plus_one_out : out std_logic_vector(31 downto 0);
+			branch_addr_out : out std_logic_vector(31 downto 0));
+end component;
+
+component MEM_WB_latch
+
+     port (	clock, reset : in std_logic;
+			wb : in std_logic;
+			dmem_output : in std_logic_vector(31 downto 0);
+			alu_output : in std_logic_vector(31 downto 0);
+			wb_out : out std_logic;
+			dmem_output_out : out std_logic_vector(31 downto 0);
+			alu_output_out : out std_logic_vector(31 downto 0));
+end component;
+
+component IF_ID_latch
+	port (	clock, reset : in std_logic;
+			pc_plus_1 : in std_logic_vector(31 downto 0);
+			curr_instr : in std_logic_vector(31 downto 0);
+			pc_out : out std_logic_vector(31 downto 0);
+			curr_instr_out : out std_logic_vector(31 downto 0));
+end component;
+
+component ID_EX_latch
+	port (	clock, reset : in std_logic;
+			wb, m, ex : in std_logic;
+			pc_plus_1 : in std_logic_vector(31 downto 0);
+			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
+			instr_rt, instr_rs, instr_rd : in std_logic_vector(31 downto 0);
+			sgn_ext_unit : in std_logic_vector(31 downto 0);
+			wb_out, m_out, ex_out : out std_logic;
+			pc_out : out std_logic_vector(31 downto 0);
+			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
+			instr_rt_out, instr_rs_out, instr_rd_out : out std_logic_vector(4 downto 0);
+			sgn_ext_out : out std_logic_vector(31 downto 0));
 end component;
 
 signal    cur_pc_in, cur_pc_in_temp, cur_pc_out,

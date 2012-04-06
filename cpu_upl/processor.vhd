@@ -164,7 +164,7 @@ begin
      -- large critical path components
      pc : reg32 port map(clock, '1', reset, cur_pc_in, cur_pc_out);
      instr_mem: imem port map(cur_pc_in(11 downto 0), '1', clock, cur_instr); 
-     registerfile : regfile port map(not clock, ctrl_reg_wren, reset, regfile_dest, 
+     registerfile : regfile port map(clock, ctrl_reg_wren, reset, regfile_dest, 
                                      regfile_rs, regfile_rt, regfile_write,
                                      regfile_d1, regfile_d2);
      main_alu: alu port map(regfile_d1, alu_input2, ctrl_alu_opcode, alu_output, alu_is_equal, alu_is_greater);

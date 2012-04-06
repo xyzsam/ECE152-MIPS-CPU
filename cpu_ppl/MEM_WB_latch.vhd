@@ -8,8 +8,7 @@ entity MEM_WB_latch is
 			alu_output : in std_logic_vector(31 downto 0);
 			wb_out : out std_logic;
 			dmem_output_out : out std_logic_vector(31 downto 0);
-			alu_output_out : out std_logic_vector(31 downto 0);
-			);
+			alu_output_out : out std_logic_vector(31 downto 0));
 end MEM_WB_latch;
 
 architecture structure of MEM_WB_latch is
