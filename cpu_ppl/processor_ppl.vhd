@@ -10,6 +10,14 @@ end processor_ppl;
 
 architecture structure of processor_ppl is
 
+component IF_ID_latch
+	port (	clock, reset : in std_logic;
+			pc_plus_1 : in std_logic_vector(31 downto 0);
+			curr_instr : in std_logic_vector(31 downto 0);
+			pc_out : out std_logic_vector(31 downto 0);
+			curr_instr_out : out std_logic_vector(31 downto 0));
+end component;
+
 component ID_EX_latch
 	port (	clock, reset : in std_logic;
 			wb, m, ex : in std_logic;
@@ -94,9 +102,16 @@ component forward_unit
 end component;
 
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
-signal FT_next_pc, FT_cur_pc_in, FT_cur_pc_out, FT_cur_instr, FT_pc_plus_1 : std_logic_vector(31 downto 0);
+signal FT_next_pc, FT_cur_pc_in, FT_cur_pc_out, FT_cur_instr, FT_pc_plus_1, FT_sgn_ext_out : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
 signal pc_wren, carryout_useless : std_logic;
+signal FT_wb_memw_in, FT_m_memw_in, FT_ex_memw_in : std_logic; -- mem write enable
+signal FT_wb_regw_in, FT_m_regw_in, FT_ex_regw_in : std_logic; -- regfile write enable
+
+---------------------- DECODE STAGE SIGNALS ----------------------------------
+signal DC_pc_plus_1, DC_cur_instr, DC_regfile_d1, DC_regfile_d2 : std_logic_vector(31 downto 0);
+signal DC_wb_memw_in, DC_m_memw_in, DC_ex_memw_in : std_logic;
+signal FT_DC_rs, FT_DC_rt, FT_DC_rd : std_logic_vector(4 downto 0);
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
@@ -134,13 +149,27 @@ begin
 	
 	
 	------------------- IF/ID LATCH  -------------------------
-	
+     
+    IFID_latch : IF_ID_latch port map(clock, reset,
+                                      FT_cur_pc_out, FT_cur_instr,
+                                      DC_pc_plus_1, DC_cur_instr);
 	
 	------------------- DECODE STAGE -------------------------
 
 	
 	------------------- ID/EX LATCH ---------------------------
 	
+	IDEX_latch : ID_EX_latch port map(clock, reset, 
+                                       DC_wb_memw_in, DC_m_memw_in, DC_ex_memw_in,
+                                       DC_pc_plus_1,
+                                       DC_regfile_d1, DC_regfile_d2
+                                       FT_DC_rs, FT_DC_rt, FT_DC_rd,
+                                       FT_sgn_ext_out,
+                                       EX_wb_memw_in, EX_m_memw_in, EX_ex_memw_in,
+                                       EX_pc_plus_1, 
+                                       EX_regfile_d1, EX_regfile_d2,
+                                       ID_EX_rs, ID_EX_rt, ID_EX_rd,
+                                       EX_sgn_ext_out);
 
 	------------------- EXECUTE STAGE -----------------------
 	

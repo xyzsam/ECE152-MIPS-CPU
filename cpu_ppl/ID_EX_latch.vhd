@@ -6,15 +6,14 @@ entity ID_EX_latch is
 			wb, m, ex : in std_logic;
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
-			instr_rt, instr_rs, instr_rd : in std_logic_vector(31 downto 0);
+			instr_rs, instr_rt, instr_rd : in std_logic_vector(31 downto 0);
 			sgn_ext_unit : in std_logic_vector(31 downto 0);
 			wb_out, m_out, ex_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
-			instr_rt_out, instr_rs_out, instr_rd_out : out std_logic_vector(4 downto 0);
+			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out : out std_logic_vector(31 downto 0));
 end ID_EX_latch;
-
 architecture structure of ID_EX_latch is
 
 component reg32
