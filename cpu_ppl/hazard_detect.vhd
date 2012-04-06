@@ -14,7 +14,7 @@ signal isHazard : out std_logic;
 
 begin
 
-	isHazard <= '1' when ((ID_EX_memRead = '1') and ((ID_EX_rs = IF_ID_rs) or (ID_EX_rt = IF_ID_rt))) else
+	isHazard <= '1' when ((ID_EX_memRead = '1') and ((ID_EX_rt = IF_ID_rs) or (ID_EX_rt = IF_ID_rs))) else
 			     '0';
 			     
 	IF_ID_wren <= not isHazard;
