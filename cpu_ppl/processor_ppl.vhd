@@ -23,7 +23,7 @@ component ID_EX_latch
 			wb, m, ex : in std_logic;
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
-			instr_rt, instr_rs, instr_rd : in std_logic_vector(31 downto 0);
+			instr_rt, instr_rs, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_unit : in std_logic_vector(31 downto 0);
 			wb_out, m_out, ex_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
@@ -102,16 +102,16 @@ component forward_unit
 end component;
 
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
-signal FT_next_pc, FT_cur_pc_in, FT_cur_pc_out, FT_cur_instr, FT_pc_plus_1, FT_sgn_ext_out : std_logic_vector(31 downto 0);
+signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1, IF_sgn_ext_out : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
 signal pc_wren, carryout_useless : std_logic;
-signal FT_wb_memw_in, FT_m_memw_in, FT_ex_memw_in : std_logic; -- mem write enable
-signal FT_wb_regw_in, FT_m_regw_in, FT_ex_regw_in : std_logic; -- regfile write enable
+signal IF_wb_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
+signal IF_wb_regw_in, IF_m_regw_in, IF_ex_regw_in : std_logic; -- regfile write enable
 
 ---------------------- DECODE STAGE SIGNALS ----------------------------------
-signal DC_pc_plus_1, DC_cur_instr, DC_regfile_d1, DC_regfile_d2 : std_logic_vector(31 downto 0);
-signal DC_wb_memw_in, DC_m_memw_in, DC_ex_memw_in : std_logic;
-signal FT_DC_rs, FT_DC_rt, FT_DC_rd : std_logic_vector(4 downto 0);
+signal ID_pc_plus_1, ID_cur_instr, ID_regfile_d1, ID_regfile_d2 : std_logic_vector(31 downto 0);
+signal ID_wb_memw_in, ID_m_memw_in, ID_ex_memw_in : std_logic;
+signal ID_rs, ID_rt, ID_rd : std_logic_vector(4 downto 0);
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
@@ -142,17 +142,17 @@ begin
 
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
-	pc_reset_mux : mux2to1_32b port map(FT_next_pc, zero, reset, FT_cur_pc_in);
-	pc : reg32 port map(clock, pc_wren, reset, FT_cur_pc_in, FT_cur_pc_out);
-    instr_mem: imem port map(FT_cur_pc_in(11 downto 0), '1', clock, FT_cur_instr); 
-	adder_pc_1  : adder port map(one, FT_cur_pc_out, '0', FT_pc_plus_1, carryout_useless);
+	pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
+	pc : reg32 port map(clock, pc_wren, reset, IF_cur_pc_in, IF_cur_pc_out);
+    instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr); 
+	adder_pc_1  : adder port map(one, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
 	
 	
 	------------------- IF/ID LATCH  -------------------------
      
     IFID_latch : IF_ID_latch port map(clock, reset,
-                                      FT_cur_pc_out, FT_cur_instr,
-                                      DC_pc_plus_1, DC_cur_instr);
+                                      IF_cur_pc_out, IF_cur_instr,
+                                      ID_pc_plus_1, ID_cur_instr);
 	
 	------------------- DECODE STAGE -------------------------
 
@@ -160,11 +160,11 @@ begin
 	------------------- ID/EX LATCH ---------------------------
 	
 	IDEX_latch : ID_EX_latch port map(clock, reset, 
-                                       DC_wb_memw_in, DC_m_memw_in, DC_ex_memw_in,
-                                       DC_pc_plus_1,
-                                       DC_regfile_d1, DC_regfile_d2
-                                       FT_DC_rs, FT_DC_rt, FT_DC_rd,
-                                       FT_sgn_ext_out,
+                                       ID_wb_memw_in, ID_m_memw_in, ID_ex_memw_in,
+                                       ID_pc_plus_1,
+                                       ID_regfile_d1, ID_regfile_d2,
+                                       ID_rs, ID_rt, ID_rd,
+                                       IF_sgn_ext_out,
                                        EX_wb_memw_in, EX_m_memw_in, EX_ex_memw_in,
                                        EX_pc_plus_1, 
                                        EX_regfile_d1, EX_regfile_d2,
@@ -188,15 +188,15 @@ begin
 	m_ctrl_mem_mux : mux2to1_1b port map(EX_m_memw_in,  '0', ctrl_flush_ex, EX_m_memw_out);
 
 	
-	-------------------- EX/MEM LATCH -----------------------------
+	---------------------- EX/MEM LATCH -----------------------------
 	
 	
 	
-	--------------------- MEMORY STAGE ------------------------------
+	----------------------- MEMORY STAGE ------------------------------
 	
 	
 	
-	---------------------- MEM/WB LATCH ------------------------------
+	----------------------- MEM/WB LATCH ------------------------------
 	
 	
 	
