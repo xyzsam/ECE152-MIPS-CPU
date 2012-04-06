@@ -20,8 +20,7 @@ entity decode_stage is
 		 
 		 ctrl_reg_wren_out, ctrl_reg_input_mux_out, ctrl_sign_ex_mux_out,
 		 ctrl_beq_out, ctrl_bgt_out, ctrl_pc_wren_out, ctrl_jump_out, ctrl_jr_out, ctrl_jal_out,
-		 ctrl_dmem_wren_out, ctrl_alu_dmem_out, ctrl_keyboard_ack_out, ctrl_lcd_write_out : out std_logic;
-		 ctrl_alu_opcode_out : out std_logic_vector(2 downto 0));
+		 ctrl_dmem_wren_out, ctrl_alu_dmem_out, ctrl_keyboard_ack_out, ctrl_lcd_write_out : out std_logic);
 end decode_stage;
 
 architecture structure of decode_stage is
@@ -103,22 +102,25 @@ begin
 	reg_rt_mux: mux2to1_5b port map(curr_instr_rt, curr_instr_rd, ctrl_rt_mux, regfile_rt);
 	reg_jal_mux: mux2to1_5b port map(curr_instr_rd, "11111", ctrl_jal, regfile_rd);
 	
-	-- ctrl muxes
-	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', stall or flush, ctrl_reg_wren_out);
-	
-	ctrl_reg_input_mux_mux: mux2to1_1b port map(ctrl_reg_input_mux, '0', stall or flush, ctrl_reg_input_mux_out);
-	ctrl_sign_ex_mux_mux: mux2to1_1b port map(ctrl_sign_ex_mux, '0', stall or flush, ctrl_sign_ex_mux_out);
+	-- mem signals
+	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', stall or flush, ctrl_dmem_wren_out);
 	ctrl_beq_mux: mux2to1_1b port map(ctrl_beq, '0', stall or flush, ctrl_beq_out);
 	ctrl_bgt_mux: mux2to1_1b port map(ctrl_bgt, '0', stall or flush, ctrl_bgt_out);
+	-- wb signals
+	ctrl_jal_mux: mux2to1_1b port map(ctrl_jal, '0', stall or flush, ctrl_jal_out);
+	ctrl_reg_input_mux_mux: mux2to1_1b port map(ctrl_reg_input_mux, '0', stall or flush, ctrl_reg_input_mux_out);
+	ctrl_alu_dmem_mux: mux2to1_1b port map(ctrl_alu_dmem, '0', stall or flush, ctrl_alu_dmem_out);
+	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', stall or flush, ctrl_reg_wren_out);
+	
+	-- ex signals
+	ctrl_sign_ex_mux_mux: mux2to1_1b port map(ctrl_sign_ex_mux, '0', stall or flush, ctrl_sign_ex_mux_out);
 	ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', stall or flush, ctrl_pc_wren_out);
 	ctrl_jump_mux: mux2to1_1b port map(ctrl_jump, '0', stall or flush, ctrl_jump_out);
 	ctrl_jr_mux: mux2to1_1b port map(ctrl_jr, '0', stall or flush, ctrl_jr_out);
-	ctrl_jal_mux: mux2to1_1b port map(ctrl_jal, '0', stall or flush, ctrl_jal_out);
-	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', stall or flush, ctrl_dmem_wren_out);
-	ctrl_alu_dmem_mux: mux2to1_1b port map(ctrl_alu_dmem, '0', stall or flush, ctrl_alu_dmem_out);
+	
+	-- processor output signals	
 	ctrl_keyboard_ack_mux: mux2to1_1b port map(ctrl_keyboard_ack, '0', stall or flush, ctrl_keyboard_ack_out);
 	ctrl_lcd_write_mux: mux2to1_1b port map(ctrl_lcd_write, '0', stall or flush, ctrl_lcd_write_out);
-	--ctrl_alu_opcode_out
 	
 	registerfile: regfile port map(clock, regfile_wren, reset, regfile_rd, regfile_rs, regfile_rt,
 								   reg_write_data, regfile_d1, regfile_d2);
