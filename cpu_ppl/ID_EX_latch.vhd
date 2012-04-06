@@ -6,7 +6,7 @@ entity ID_EX_latch is
 			wb, m, ex : in std_logic;
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
-			instr_rs, instr_rt, instr_rd : in std_logic_vector(31 downto 0);
+			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_unit : in std_logic_vector(31 downto 0);
 			wb_out, m_out, ex_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
@@ -50,7 +50,7 @@ begin
 	sgn_ext_reg : reg32 port map(clock, '1', reset, sgn_ext_unit, sgn_ext_out);
 	
 	
-	instr_rt_out <= instr_regs_out(14 downto 0);
+	instr_rt_out <= instr_regs_out(14 downto 10);
 	instr_rs_out <= instr_regs_out(9 downto 5);
 	instr_rd_out <= instr_regs_out(4 downto 0);
 
