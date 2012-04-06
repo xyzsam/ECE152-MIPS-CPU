@@ -5,6 +5,7 @@ entity IF_ID_latch is
 	port (	clock, reset : in std_logic;
 			pc_plus_1 : in std_logic_vector(31 downto 0);
 			curr_instr : in std_logic_vector(31 downto 0);
+			IF_ID_wren : in std_logic;
 			pc_out : out std_logic_vector(31 downto 0);
 			curr_instr_out : out std_logic_vector(31 downto 0));
 end IF_ID_latch;
@@ -19,7 +20,7 @@ end component;
 
 begin
 
-	pc_reg : reg32 port map(clock, '1', reset, pc_plus_1, pc_out);
-	curr_instr_reg : reg32 port map(clock, '1', reset, curr_instr, curr_instr_out);
+	pc_reg : reg32 port map(clock, IF_ID_wren, reset, pc_plus_1, pc_out);
+	curr_instr_reg : reg32 port map(clock, IF_ID_wren, reset, curr_instr, curr_instr_out);
 			 
 end structure;
