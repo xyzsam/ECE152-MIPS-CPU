@@ -9,7 +9,7 @@ entity ID_EX_latch is
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in : in std_logic_vector(31 downto 0);
 			wb_reg_kb_mux_in, ctrl_sgn_ext_mux_in : in std_logic;
-			kb_ack_in : in std_logic;
+			kb_ack_in, lcd_write_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jal_in, ctrl_jr_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
                id_ctrl_alu_opcode_out : std_logic_vector(2 downto 0);
@@ -19,7 +19,7 @@ entity ID_EX_latch is
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out: out std_logic_vector(31 downto 0);
                wb_reg_kb_mux_out, ctrl_sgn_ext_mux_out : out std_logic;
-               kb_ack_out : out std_logic;
+               kb_ack_out, lcd_write_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic;
                ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
@@ -60,6 +60,7 @@ begin
 --	ex_regw_dffe : dffe port map(ex_regw_in, clock, not reset, '1', '1', ex_regw_out);
 
 	kb_ack_dffe : dffe port map(kb_ack_in, clock, not reset, '1', '1', kb_ack_out);
+     lcd_write_dffe : dffe port map(lcd_write_in, clock, not reset, '1', '1', lcd_write_out);
 	kb_mux_dffe : dffe port map(wb_reg_kb_mux_in, clock, not reset, '1', '1', wb_reg_kb_mux_out);
 	alu_dmem_dffe : dffe port map(wb_ctrl_alu_dmem_in, clock, not reset, '1', '1', wb_ctrl_alu_dmem_out);
      ctrl_sgn_ext_dffe: dffe port map(ctrl_sgn_ext_mux_in, clock, not reset, '1', '1', ctrL_sgn_ext_mux_out);

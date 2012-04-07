@@ -33,7 +33,7 @@ component ID_EX_latch
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in : in std_logic_vector(31 downto 0);
 			wb_reg_kb_mux_in, ctrl_sgn_ext_mux_in : in std_logic;
-			kb_ack_in : in std_logic;
+			kb_ack_in, lcd_write_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jal_in, ctrl_jr_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
                id_ctrl_alu_opcode_out : std_logic_vector(2 downto 0);
@@ -43,7 +43,7 @@ component ID_EX_latch
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out: out std_logic_vector(31 downto 0);
                wb_reg_kb_mux_out, ctrl_sgn_ext_mux_out : out std_logic;
-               kb_ack_out : out std_logic;
+               kb_ack_out, lcd_write_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic;
                ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
@@ -233,7 +233,7 @@ signal ctrl_stall, ctrl_flush, ctrl_rt_mux, ctrl_pc_wren : std_logic;
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
-signal EX_branch_addr, EX_jr_jal_output, EX_kb_data_in, EX_lcd_data_in : std_logic_vector(31 downto 0);
+signal EX_branch_addr, EX_jr_jal_output, EX_kb_data_in : std_logic_vector(31 downto 0);
 signal EX_mem_memw_in, EX_wb_regw_in : std_logic; -- write enable
 signal EX_mem_memw_out, EX_wb_regw_out : std_logic; -- write enable for next stage
 signal EX_ctrl_sgn_ext : std_logic;
@@ -348,7 +348,7 @@ begin
                                        ID_cur_instr_rs, ID_cur_instr_rt, ID_cur_instr_rd,
                                        ID_sgn_ext_out, ID_kb_data_in, 
                                        ID_reg_kb_mux_in, ID_ctrl_sgn_ext,
-                                       ID_kb_ack_out,
+                                       ID_kb_ack_out, ID_lcd_out,
                                        ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_out, ID_ctrl_jal_out, ID_ctrl_jr_out,
                                        ID_ctrl_alu_dmem_in,
                                        ID_ctrl_alu_opcode,
@@ -358,7 +358,7 @@ begin
                                        ID_EX_rs, ID_EX_rt, ID_EX_rd,
                                        EX_sgn_ext_out, EX_kb_data_in,
                                        EX_reg_kb_mux, EX_ctrl_sgn_ext,
-                                       EX_kb_ack_in,
+                                       EX_kb_ack_in, EX_lcd_in,
                                        EX_ctrl_beq_in, EX_ctrl_bgt_in, EX_ctrl_jump, EX_ctrl_jal, EX_ctrl_jr,
                                        EX_ctrl_alu_dmem_in,
                                        EX_ctrl_alu_opcode);
@@ -382,7 +382,7 @@ begin
 	
 	EX_kb_ack_mux : mux2to1_1b port map(EX_kb_ack_in, '0', ctrl_flush, EX_kb_ack_out);
 	
-     lcd_data <= EX_lcd_data_in;
+     lcd_data <= EX_regfile_d1;
      lcd_write <= EX_lcd_in;
 
 	---------------------- EX/MEM LATCH -----------------------------
