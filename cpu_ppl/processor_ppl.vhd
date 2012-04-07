@@ -406,7 +406,7 @@ begin
 	---------------------- WRITEBACK STAGE ---------------------------
 	
 	alu_dmem_mux: mux2to1_32b port map(WB_alu_output, WB_dmem_output, WB_ctrl_alu_dmem, WB_alu_dmem_output);
-	jal_mux: mux2to1_32b port map(WB_alu_dmem_output, WB_pc_plus_1, WB_ctrl_jal, WB_jal_output);
+	jal_mux: mux2to1_32b port map(WB_alu_dmem_output, EX_pc_plus_1, EX_ctrl_jal, WB_jal_output);
 	keyboard_mux: mux2to1_32b port map(WB_jal_output, WB_kb_data, WB_reg_kb_mux, WB_regfile_data);
      
      keyboard_ack <= WB_ctrl_kb_ack;
