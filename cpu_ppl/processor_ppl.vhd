@@ -347,8 +347,6 @@ begin
 								  WB_dmem_output, zero, forward_B, EX_alu_inputB);										  
 	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush_ex, EX_wb_regw_out);
 	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush_ex, EX_mem_memw_out);
---	m_ctrl_reg_mux : mux2to1_1b port map(EX_m_regw_in,  '0', ctrl_flush_ex, EX_m_regw_out);
---	m_ctrl_mem_mux : mux2to1_1b port map(EX_m_memw_in,  '0', ctrl_flush_ex, EX_m_memw_out);
 	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);
 	
 
@@ -395,15 +393,6 @@ begin
                                          WB_reg_kb_mux);
 
 
-
-	-- WB signals
-	--ctrl_alu_dmem_out <= ctrl_alu_dmem;
-	--ctrl_jal_out <= ctrl_jal;
-	--ctrl_reg_input_mux_out <= ctrl_reg_input_mux;
-
-	--ctrl_keyboard_ack_out <= ctrl_keyboard_ack;
-	--ctrl_lcd_write_out <= ctrl_lcd_write;
-	
 	
 	---------------------- WRITEBACK STAGE ---------------------------
 	
