@@ -7,16 +7,20 @@ entity EX_MEM_latch is
 			isEqual, isGreaterThan : in std_logic;
 			alu_output, regfile_d2_in : in std_logic_vector(31 downto 0);
 			pc_plus_1_in, branch_addr : in std_logic_vector(31 downto 0);
-               kb_data_in : in std_logic_vector(31 downto 0);
-               ctrl_alu_dmem_in : in std_logic;
-               ctrl_beq_in, ctrl_bgt_in : in std_logic; 
+			reg_kb_mux_in : in std_logic;
+			ctrl_kb_ack_in : in std_logic;
+            kb_data_in : in std_logic_vector(31 downto 0);
+            ctrl_alu_dmem_in : in std_logic;
+            ctrl_beq_in, ctrl_bgt_in : in std_logic; 
 			wb_regw_out, mem_memw_out : out std_logic;
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			pc_plus_1_out, branch_addr_out : out std_logic_vector(31 downto 0);
-               kb_data_out : out std_logic_vector(31 downto 0);
-               ctrl_alu_dmem_out : out std_logic;
-               ctrl_beq_out, ctrl_bgt_out : out std_logic); 
+            reg_kb_mux_out : out std_logic;
+            ctrl_kb_ack_out : out std_logic;
+            kb_data_out : out std_logic_vector(31 downto 0);
+            ctrl_alu_dmem_out : out std_logic;
+            ctrl_beq_out, ctrl_bgt_out : out std_logic); 
 end EX_MEM_latch;
 
 architecture structure of EX_MEM_latch is
@@ -43,9 +47,12 @@ begin
 	
 	ctrl_beq_dffe : dffe port map(ctrl_beq_in, clock, not reset, '1', '1', ctrl_beq_out);
 	ctrl_bgt_dffe : dffe port map(ctrl_bgt_in, clock, not reset, '1', '1', ctrl_bgt_out);
+	ctrl_kb_ack_dffe : dffe port map(ctrl_kb_ack_in, clock, not reset, '1', '1', ctrl_kb_ack_out);
 	
 	isEqual_dffe : dffe port map(isEqual, clock, not reset, '1', '1', isEqual_out);
 	isGreaterThan_dffe : dffe port map(isGreaterThan, clock, not reset, '1', '1', isGreaterThan_out);
+	
+	reg_kb_mux_dffe : dffe port map(reg_kb_mux_in, clock, not reset, '1', '1', reg_kb_mux_out);
 	
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output, alu_output_out);
 	regfile_d2_reg : reg32 port map(clock, '1', reset, regfile_d2_in, regfile_d2_out);

@@ -9,6 +9,7 @@ entity ID_EX_latch is
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in : in std_logic_vector(31 downto 0);
 			wb_reg_kb_mux_in : in std_logic;
+			kb_ack_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jal_in, ctrl_jr_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
                id_ctrl_alu_opcode_out : std_logic_vector(2 downto 0);
@@ -16,11 +17,12 @@ entity ID_EX_latch is
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
-			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
-               wb_reg_kb_mux_out : out std_logic;
-               ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
-               wb_ctrl_alu_dmem_out : out std_logic;
-               ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
+			sgn_ext_out, wb_kb_data_out : out std_logic_vector(31 downto 0);
+            wb_reg_kb_mux_out : out std_logic;
+            kb_ack_out : out std_logic;
+            ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
+            wb_ctrl_alu_dmem_out : out std_logic;
+            ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
 end ID_EX_latch;
 
 architecture structure of ID_EX_latch is
@@ -54,11 +56,11 @@ begin
 --	ex_memw_dffe : dffe port map(ex_memw_in, clock, not reset, '1', '1', ex_memw_out);
 	
 	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
-	ex_lcd_dffe : dffe port map(ex_lcd_in, clock, not reset, '1', '1', ex_lcd_out);
+	
 --	m_regw_dffe : dffe port map(m_regw_in, clock, not reset, '1', '1', m_regw_out);
 --	ex_regw_dffe : dffe port map(ex_regw_in, clock, not reset, '1', '1', ex_regw_out);
 
-	
+	kb_ack_dffe : dffe port map(kb_ack_in, clock, not reset, '1', '1', kb_ack_out);
 	kb_mux_dffe : dffe port map(wb_reg_kb_mux_in, clock, not reset, '1', '1', wb_reg_kb_mux_out);
 	alu_dmem_dffe : dffe port map(wb_ctrl_alu_dmem_in, clock, not reset, '1', '1', wb_ctrl_alu_dmem_out);
 
@@ -75,7 +77,6 @@ begin
      alu_opcode_2 : dffe port map(id_ctrl_alu_opcode_out(2), clock, not reset, '1', '1', ex_ctrl_alu_opcode_in(2));
 
 	wb_kb_data_reg : reg32 port map(clock, '1', reset, wb_kb_data_in, wb_kb_data_out);
-	wb_lcd_data_reg : reg32 port map(clock, '1', reset, wb_lcd_data_in, wb_lcd_data_out);
 	pc_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
 	regfile_d1_reg : reg32 port map(clock, '1', reset, regfile_d1, regfile_d1_out);
 	regfile_d2_reg : reg32 port map(clock, '1', reset, regfile_d2, regfile_d2_out);
