@@ -31,18 +31,20 @@ component ID_EX_latch
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
-			sgn_ext_in, wb_kb_data_in, wb_lcd_data_in : in std_logic_vector(31 downto 0);
-			wb_reg_kb_mux_in, ex_lcd_in : in std_logic;
-               ctrl_beq_in, ctrl_bgt_in : in std_logic; 
+			sgn_ext_in, wb_kb_data_in : in std_logic_vector(31 downto 0);
+			wb_reg_kb_mux_in : in std_logic;
+               ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jal_in, ctrl_jr_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
+               id_ctrl_alu_opcode_out : std_logic_vector(2 downto 0);
 			mem_memw_out, wb_regw_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
-               wb_reg_kb_mux_out, ex_lcd_out : out std_logic;
-               ctrl_beq_out, ctrl_bgt_out : out std_logic; 
-               wb_ctrl_alu_dmem_out : out std_logic);
+               wb_reg_kb_mux_out : out std_logic;
+               ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
+               wb_ctrl_alu_dmem_out : out std_logic;
+               ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
 end component;
 
 component EX_MEM_latch
@@ -207,7 +209,7 @@ signal IF_pc_wren, carryout_useless : std_logic;
 ---------------------- DECODE STAGE SIGNALS ----------------------------------
 signal ID_pc_plus_1, ID_cur_instr, ID_regfile_d1, ID_regfile_d2,
 	   ID_sgn_ext_out: std_logic_vector(31 downto 0);
-signal ID_kb_data_in, ID_lcd_data_in : std_logic_vector(31 downto 0);
+signal ID_kb_data_in : std_logic_vector(31 downto 0);
 signal ID_mem_memw_in, ID_wb_regw_in : std_logic; -- write enable
 signal ID_rs, ID_rt, ID_rd, ID_cur_instr_rd, ID_cur_instr_rs, ID_cur_instr_rt: std_logic_vector(4 downto 0);
 signal ID_reg_kb_mux_in, ID_lcd_out, ID_sgn_ext_mux : std_logic;
@@ -216,6 +218,7 @@ signal ID_ctrl_kb_ack : std_logic;
 signal ID_ctrl_alu_opcode : std_logic_vector(2 downto 0);
 signal ID_cur_instr_imm : std_logic_vector(16 downto 0); 
 signal ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_in, ID_ctrl_jr_in, ID_ctrl_jal_in  : std_logic; 
+signal ID_ctrl_beq_out, ID_ctrl_bgt_out, ID_ctrl_jump_out, ID_ctrl_jr_out, ID_ctrl_jal_out  : std_logic; 
 signal ctrl_dmem_wren, ctrl_reg_wren : std_logic; -- temp signals into muxes
 signal ctrl_stall, ctrl_flush, ctrl_rt_mux, ctrl_pc_wren : std_logic;
 
@@ -292,7 +295,12 @@ begin
 	
 	-- ex signals
     ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_stall or ctrl_flush, IF_pc_wren);
-	
+
+     -- jump signals
+     ctrl_jump_mux : mux2to1_1b port map(ID_ctrl_jump_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jump_out);
+     ctrl_jr_mux : mux2to1_1b port map(ID_ctrl_jr_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jr_out);
+     ctrl_jal_mux : mux2to1_1b port map(ID_ctrl_jal_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jal_out);
+
 	-- processor output signals	
 	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_stall or ctrl_flush, EX_kb_ack_in);
 	
@@ -328,18 +336,20 @@ begin
                                        ID_pc_plus_1,
                                        ID_regfile_d1, ID_regfile_d2,
                                        ID_cur_instr_rs, ID_cur_instr_rt, ID_cur_instr_rd,
-                                       ID_sgn_ext_out, ID_kb_data_in, ID_lcd_data_in, 
-                                       ID_reg_kb_mux_in, ID_lcd_out,
-                                       ID_ctrl_beq_in, ID_ctrl_bgt_in,
+                                       ID_sgn_ext_out, ID_kb_data_in, 
+                                       ID_reg_kb_mux_in,
+                                       ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_out, ID_ctrl_jal_out, ID_ctrl_jr_out,
                                        WB_ctrl_alu_dmem,
+                                       ID_ctrl_alu_opcode,
                                        EX_mem_memw_in, EX_wb_regw_in, 
                                        EX_pc_plus_1, 
                                        EX_regfile_d1, EX_regfile_d2,
                                        ID_EX_rs, ID_EX_rt, ID_EX_rd,
                                        EX_sgn_ext_out, EX_kb_data_in, EX_lcd_data_in,
-                                       EX_reg_kb_mux, EX_lcd_in,
-                                       EX_ctrl_beq_in, EX_ctrl_bgt_in,
-                                       EX_ctrl_alu_dmem_in);
+                                       EX_reg_kb_mux,
+                                       EX_ctrl_beq_in, EX_ctrl_bgt_in, EX_ctrl_jump, EX_ctrl_jal, EX_ctrl_jr,
+                                       EX_ctrl_alu_dmem_in,
+                                       EX_ctrl_alu_opcode);
 
 	------------------- EXECUTE STAGE -----------------------
 	
