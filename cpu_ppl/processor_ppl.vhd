@@ -66,12 +66,12 @@ component MEM_WB_latch
 			wb_regw_in : in std_logic;
 			dmem_output_in, alu_output_in, pc_plus_1_in : in std_logic_vector(31 downto 0);
 			kb_data_in : in std_logic_vector(31 downto 0);
-               ctrl_alu_dmem_in, ctrl_jal_in, ctrl_kb_ack_in : in std_logic;
+               ctrl_alu_dmem_in, ctrl_kb_ack_in : in std_logic;
                reg_input_mux_in : std_logic;
 			wb_regw_out : out std_logic;
 			dmem_output_out, alu_output_out, pc_plus_1_out : out std_logic_vector(31 downto 0);
 			kb_data_out : out std_logic_vector(31 downto 0);
-               ctrl_alu_dmem_out, ctrl_jal_out, ctrl_kb_ack_out : out std_logic;
+               ctrl_alu_dmem_out, ctrl_kb_ack_out : out std_logic;
                reg_input_mux_out : out std_logic);
 end component;
 
@@ -249,7 +249,6 @@ signal WB_dmem_output, WB_reg_write_data, WB_kb_data, WB_alu_output, WB_pc_plus_
 signal ctrl_jump_in, ctrl_jump_out : std_logic;
 signal WB_reg_kb_mux, WB_ctrl_alu_dmem, WB_ctrl_kb_ack : std_logic;
 signal WB_wb_regw_out : std_logic;
-signal WB_ctrl_jal : std_logic; 
 
 ------------------------ INTERSTAGE SIGNALS --------------------------------
 signal jump_addr : std_logic_vector(31 downto 0);
@@ -395,12 +394,12 @@ begin
                                          MEM_wb_regw_in, 
                                          MEM_dmem_output, MEM_alu_output, MEM_pc_plus_1,
                                          MEM_kb_data_in,
-                                         MEM_ctrl_alu_dmem_in, MEM_ctrl_jal_in, MEM_ctrl_kb_ack,
+                                         MEM_ctrl_alu_dmem_in, MEM_ctrl_kb_ack,
                                          MEM_reg_kb_mux,
                                          WB_wb_regw_out,
                                          WB_dmem_output, WB_alu_output, WB_pc_plus_1,
                                          WB_kb_data,
-                                         WB_ctrl_alu_dmem, WB_ctrl_jal, WB_ctrl_kb_ack,
+                                         WB_ctrl_alu_dmem, WB_ctrl_kb_ack,
                                          WB_reg_kb_mux);
 
 
