@@ -8,7 +8,7 @@ entity ID_EX_latch is
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in, wb_lcd_data_in : in std_logic_vector(31 downto 0);
-			wb_reg_kb_mux_in : in std_logic;
+			wb_reg_kb_mux_in, ex_lcd_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
 			mem_memw_out, wb_regw_out : out std_logic;
@@ -16,7 +16,7 @@ entity ID_EX_latch is
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
-               wb_reg_kb_mux_out, ex_lc_out : out std_logic;
+               wb_reg_kb_mux_out, ex_lcd_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic);
 end ID_EX_latch;

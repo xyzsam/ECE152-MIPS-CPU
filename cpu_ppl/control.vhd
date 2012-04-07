@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity control is
-     port (    instr, keyboard_in, lcd_data : in std_logic_vector(31 downto 0);
+     port (    instr : in std_logic_vector(31 downto 0);
 
                -- regfile controls
                ctrl_reg_wren                 : out std_logic;
