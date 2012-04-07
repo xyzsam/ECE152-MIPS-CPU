@@ -199,6 +199,7 @@ end component;
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
 signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1 : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
+signal pc_stall : std_logic_vector(31 downto 0);
 signal IF_pc_wren, carryout_useless : std_logic;
 --signal IF_mem_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
 --signal IF_wb_regw_in, IF_m_regw_in, IF_ex_regw_in : std_logic; -- regfile write enable
@@ -259,10 +260,11 @@ begin
 
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
+	pc_stall_mux : mux2to1_32b port map(zero, one, not stall, pc_stall);
 	pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
      pc : reg32 port map(clock, IF_pc_wren, reset, IF_cur_pc_in, IF_cur_pc_out);
     instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr); 
-	adder_pc_1  : adder port map(one, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
+	adder_pc_1  : adder port map(pc_stall, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
     jump_or_cont_mux : mux2to1_32b port map(jump_addr, IF_pc_plus_1, (EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal), IF_next_pc);	
 	
 	------------------- IF/ID LATCH  -------------------------
