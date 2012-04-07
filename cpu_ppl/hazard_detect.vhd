@@ -10,7 +10,7 @@ end hazard_detect;
 
 architecture behavior of hazard_detect is
 
-signal isHazard : out std_logic;
+signal isHazard : std_logic;
 
 begin
 

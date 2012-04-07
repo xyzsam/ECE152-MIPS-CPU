@@ -16,7 +16,7 @@ entity control is
                -- branch controls
                ctrl_beq                       : out std_logic;
                ctrl_bgt						 : out std_logic;
-               ctrl_pc_wren                  : out std_logic;
+               ctrl_pc_wren                  : out std_logic; -- kept but unused
                ctrl_jump			          : out std_logic;
                ctrl_jr                       : out std_logic;
                ctrl_jal                      : out std_logic;
