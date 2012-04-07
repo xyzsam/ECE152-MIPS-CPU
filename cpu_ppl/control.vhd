@@ -10,7 +10,6 @@ entity control is
                ctrl_reg_input_mux			: out std_logic;
 			   
                -- alu controls 
-               ctrl_sign_ex_mux              : out std_logic;
                ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
 
                -- branch controls
@@ -54,10 +53,10 @@ begin
                       '1' when opcode = "01010" else
                       '0'; 
 
-     ctrl_sign_ex_mux <= '1' when opcode = "00110" else 
-                         '1' when opcode = "00111" else 
-                         '1' when opcode = "01000" else 
-                         '0';
+--     ctrl_sign_ex_mux <= '1' when opcode = "00110" else 
+--                         '1' when opcode = "00111" else 
+--                         '1' when opcode = "01000" else 
+ --                        '0';
 
      ctrl_alu_opcode <= "000" when opcode = "00000" else
                         "001" when opcode = "00001" else

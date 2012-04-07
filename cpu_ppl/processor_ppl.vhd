@@ -26,20 +26,20 @@ component IF_ID_latch
 end component;
 
 component ID_EX_latch
-	port (	clock, reset : in std_logic;
+	port  ( clock, reset : in std_logic;
 			wb_memw_in, wb_regw_in : in std_logic;
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
-			sgn_ext_in : in std_logic_vector(31 downto 0);
-			wb_reg_kb_mux_in, ex_lcd_in : in std_logic;
+			sgn_ext_in, wb_kb_data_in, wb_lcd_data_in : in std_logic_vector(31 downto 0);
+			wb_reg_kb_mux_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jr_in, ctrl_jal_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
 			wb_memw_out, wb_regw_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
-			sgn_ext_out : out std_logic_vector(31 downto 0);
+			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
                wb_reg_kb_mux_out, ex_lc_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jr_out, ctrl_jal_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic);
@@ -68,7 +68,6 @@ component control
                ctrl_reg_input_mux			: out std_logic;
 			   
                -- alu controls 
-               ctrl_sign_ex_mux              : out std_logic;
                ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
 
                -- branch controls
@@ -165,16 +164,16 @@ end component;
 signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1 : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
 signal IF_pc_wren, carryout_useless : std_logic;
---signal IF_wb_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
+--signal IF_mem_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
 --signal IF_wb_regw_in, IF_m_regw_in, IF_ex_regw_in : std_logic; -- regfile write enable
 
 ---------------------- DECODE STAGE SIGNALS ----------------------------------
 signal ID_pc_plus_1, ID_cur_instr, ID_regfile_d1, ID_regfile_d2,
 	   ID_sgn_ext_out: std_logic_vector(31 downto 0);
 signal ID_kb_data_in, ID_lcd_data_in : std_logic_vector(31 downto 0);
-signal ID_wb_memw_in, ID_wb_regw_in : std_logic; -- write enable
+signal ID_mem_memw_in, ID_wb_regw_in : std_logic; -- write enable
 signal ID_rs, ID_rt, ID_rd, ID_cur_instr_rd, ID_cur_instr_rs, ID_cur_instr_rt: std_logic_vector(4 downto 0);
-signal ID_reg_kb_mux_in, ID_lcd_out : std_logic;
+signal ID_reg_kb_mux_in, ID_lcd_out, ID_sgn_ext_mux : std_logic;
 signal ID_ctrl_alu_opcode : std_logic_vector(2 downto 0);
 signal ID_cur_instr_imm : std_logic_vector(16 downto 0); 
 signal ctrl_jr_in, ctrl_jal_in, ctrl_jr_out, ctrl_jal_out: std_logic;
@@ -184,8 +183,8 @@ signal ctrl_stall, ctrl_flush, ctrl_keyboard_ack, ctrl_rt_mux, ctrl_pc_wren : st
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
 signal EX_branch_addr, EX_kb_data_in, EX_lcd_data_in : std_logic_vector(31 downto 0);
-signal EX_wb_memw_in, EX_wb_regw_in : std_logic; -- write enable
-signal EX_wb_memw_out, EX_wb_regw_out : std_logic; -- write enable for next stage
+signal EX_mem_memw_in, EX_wb_regw_in : std_logic; -- write enable
+signal EX_mem_memw_out, EX_wb_regw_out : std_logic; -- write enable for next stage
 signal EX_ctrl_sgn_ext, ctrl_flush_ex  : std_logic;
 signal isEqual, isGreaterThan : std_logic;
 signal forward_A, forward_B : std_logic_vector(1 downto 0);
@@ -198,13 +197,14 @@ signal EX_lcd_out, EX_kb_ack_in, EX_kb_ack_out : std_logic;
 signal mem_alu_output, dmem_output_out, MEM_kb_data_in, MEM_lcd_data_in, MEM_kb_data_out, MEM_lcd_data_out : std_logic_vector(31 downto 0);
 signal EX_MEM_rd, MEM_WB_rd : std_logic_vector(4 downto 0);
 signal ctrl_beq_in, ctrl_bgt_in, ctrl_beq_out, ctrl_bgt_out : std_logic; 
+signal MEM_wb_regw_in : std_logic;
 
 ------------------------ WRITEBACK STAGE SIGNALS -------------------------------
 signal WB_dmem_output, WB_reg_write_data, WB_kb_data_out, WB_lcd_data_out : std_logic_vector(31 downto 0);
 signal ctrl_jump_in, ctrl_jump_out : std_logic;
 signal WB_reg_kb_mux_in, WB_reg_kb_mux_out : std_logic;
 signal WB_ctrl_alu_dmem_in, WB_ctrl_alu_dmem_out : std_logic;
-signal WB_wb_regw_out, WB_wb_memw_out : std_logic;
+signal WB_wb_regw_out, WB_mem_memw_out : std_logic;
 
 begin
 
@@ -236,7 +236,7 @@ begin
 	reg_jal_in_mux: mux2to1_5b port map(ID_cur_instr_rd, "11111", ctrl_jal_in, ID_rd);
 	
 	-- mem signals
-	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', ctrl_stall or ctrl_flush, ID_wb_memw_in);
+	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', ctrl_stall or ctrl_flush, ID_mem_memw_in);
 	--ctrl_beq_mux: mux2to1_1b port map(ctrl_beq, '0', ctrl_stall or ctrl_flush, ctrl_beq_out);
 	--ctrl_bgt_mux: mux2to1_1b port map(ctrl_bgt, '0', ctrl_stall or ctrl_flush, ctrl_bgt_out);
 
@@ -261,13 +261,12 @@ begin
 								   
 	sgn_ext_unit: sgn_ext port map(ID_cur_instr_imm, EX_sgn_ext_out);
 	
-	hazards: hazard_detect port map(EX_wb_memw_out, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt);
+	hazards: hazard_detect port map(EX_mem_memw_out, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt);
 	
 	control_unit : control port map(ID_cur_instr, ID_kb_data_in, ID_lcd_data_in,
                                    ctrl_reg_wren, -- this is an input to a mux
                                    ctrl_rt_mux,
                                    ID_reg_kb_mux_in,
-                                   ID_sgn_ext_out,
                                    ID_ctrl_alu_opcode,
                                    ctrl_beq_in,
                                    ctrl_bgt_in,
@@ -284,7 +283,7 @@ begin
 	------------------- ID/EX LATCH ---------------------------
 	
 	IDEX_latch : ID_EX_latch port map(clock, reset, 
-                                       ID_wb_memw_in, ID_wb_regw_in,
+                                       ID_mem_memw_in, ID_wb_regw_in,
                                        ID_pc_plus_1,
                                        ID_regfile_d1, ID_regfile_d2,
                                        ID_cur_instr_rs, ID_cur_instr_rt, ID_cur_instr_rd,
@@ -292,7 +291,7 @@ begin
                                        WB_reg_kb_mux_in,
                                        ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jr_in, ctrl_jal_in,
                                        WB_ctrl_alu_dmem_in,
-                                       EX_wb_memw_in, EX_wb_regw_in, 
+                                       EX_mem_memw_in, EX_wb_regw_in, 
                                        EX_pc_plus_1, 
                                        EX_regfile_d1, EX_regfile_d2,
                                        ID_EX_rs, ID_EX_rt, ID_EX_rd,
@@ -306,16 +305,16 @@ begin
 	branch_adder : adder port map(EX_pc_plus_1, EX_sgn_ext_out, '0', EX_branch_addr);
 	alu_unit : alu port map(EX_alu_inputA, EX_alu_inputB, EX_ctrl_alu_opcode, EX_alu_output, isEqual, isGreaterThan);
 	forward: forward_unit port map(ID_EX_rs, ID_EX_rt, ID_EX_rd, EX_MEM_rd, MEM_WB_rd,
-						      EX_m_regw_in, EX_wb_regw_in, forward_A, forward_B);
+						      MEM_wb_regw_in, WB_wb_regw_out, forward_A, forward_B);
 	--muxes
 	alu_inputA_mux : mux4to1_32b port map(EX_regfile_d1,  MEM_alu_output, 
 								  WB_dmem_output, zero, forward_A, EX_alu_inputA);
 	alu_inputB_mux : mux4to1_32b port map(EX_sgn_ext_mux_out,  MEM_alu_output, 
 								  WB_dmem_output, zero, forward_B, EX_alu_inputB);										  
 	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush_ex, EX_wb_regw_out);
-	wb_ctrl_mem_mux : mux2to1_1b port map(EX_wb_memw_in,  '0', ctrl_flush_ex, EX_wb_memw_out);
-	m_ctrl_reg_mux : mux2to1_1b port map(EX_m_regw_in,  '0', ctrl_flush_ex, EX_m_regw_out);
-	m_ctrl_mem_mux : mux2to1_1b port map(EX_m_memw_in,  '0', ctrl_flush_ex, EX_m_memw_out);
+	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush_ex, EX_mem_memw_out);
+--	m_ctrl_reg_mux : mux2to1_1b port map(EX_m_regw_in,  '0', ctrl_flush_ex, EX_m_regw_out);
+--	m_ctrl_mem_mux : mux2to1_1b port map(EX_m_memw_in,  '0', ctrl_flush_ex, EX_m_memw_out);
 	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);
 	
 	---------------------- EX/MEM LATCH -----------------------------
