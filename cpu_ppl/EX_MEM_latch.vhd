@@ -39,10 +39,14 @@ begin
 	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
 	mem_memw_dffe : dffe port map(mem_memw_in, clock, not reset, '1', '1', mem_memw_out);
 	
+	ctrl_beq_dffe : dffe port map(ctrl_beq_in, clock, not reset, '1', '1', ctrl_beq_out);
+	ctrl_bgt_dffe : dffe port map(ctrl_bgt_in, clock, not reset, '1', '1', ctrl_bgt_out);
+	
 	isEqual_dffe : dffe port map(isEqual, clock, not reset, '1', '1', isEqual_out);
 	isGreaterThan_dffe : dffe port map(isGreaterThan, clock, not reset, '1', '1', isGreaterThan_out);
 	
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output, alu_output_out);
+	regfile_d2_reg : reg32 port map(clock, '1', reset, regfile_d2_in, regfile_d2_out);
 	pc_plus_one_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
 	branch_addr_reg : reg32 port map(clock, '1', reset, branch_addr, branch_addr_out);
 	
