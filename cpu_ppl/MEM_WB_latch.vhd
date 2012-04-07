@@ -34,8 +34,13 @@ end component;
 
 begin
 
-	wb_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
-
+	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
+	ctrl_alu_dmem_dffe : dffe port map(ctrl_alu_dmem_in, clock, not reset, '1', '1', ctrl_alu_dmem_out);
+	ctrl_jal_dffe : dffe port map(ctrl_jal_in, clock, not reset, '1', '1', ctrl_jal_out);
+	kb_ack_dffe : dffe port map(ctrl_kb_ack_in, clock, not reset, '1', '1', ctrl_kb_ack_out);
+	reg_input_dffe : dffe port map(reg_input_mux_in, clock, not reset, '1', '1', reg_input_mux_out);
+	pc_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
+	kb_data_reg : reg32 port map(clock, '1', reset, kb_data_in, kb_data_out);
 	dmem_output_reg : reg32 port map(clock, '1', reset, dmem_output_in, dmem_output_out);
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output_in, alu_output_out);
 	
