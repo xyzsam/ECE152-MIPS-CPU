@@ -32,7 +32,7 @@ component ID_EX_latch
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in : in std_logic_vector(31 downto 0);
-			wb_reg_kb_mux_in : in std_logic;
+			wb_reg_kb_mux_in, ctrl_sgn_ext_mux_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jal_in, ctrl_jr_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
                id_ctrl_alu_opcode_out : std_logic_vector(2 downto 0);
@@ -41,7 +41,7 @@ component ID_EX_latch
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
-               wb_reg_kb_mux_out : out std_logic;
+               wb_reg_kb_mux_out, ctrl_sgn_ext_mux_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jal_out, ctrl_jr_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic;
                ex_ctrl_alu_opcode_in : out std_logic_vector(2 downto 0));
@@ -90,7 +90,8 @@ component control
 			   
                -- alu controls 
                ctrl_alu_opcode		     : out std_logic_vector(2 downto 0);
-
+			   ctrl_sign_ex_mux              : out std_logic;
+			   
                -- branch controls
                ctrl_beq                       : out std_logic;
                ctrl_bgt						 : out std_logic;
@@ -212,7 +213,7 @@ signal IF_pc_wren, carryout_useless : std_logic;
 signal ID_pc_plus_1, ID_cur_instr, ID_regfile_d1, ID_regfile_d2,
 	   ID_sgn_ext_out: std_logic_vector(31 downto 0);
 signal ID_kb_data_in : std_logic_vector(31 downto 0);
-signal ID_mem_memw_in, ID_wb_regw_in, ID_ctrl_mem_read : std_logic; -- write enable
+signal ID_mem_memw_in, ID_wb_regw_in, ID_ctrl_mem_read, ID_ctrl_sgn_ext : std_logic; -- write enable
 signal ID_rs, ID_rt, ID_rd, ID_cur_instr_rd, ID_cur_instr_rs, ID_cur_instr_rt: std_logic_vector(4 downto 0);
 signal ID_reg_kb_mux_in, ID_lcd_out, ID_sgn_ext_mux : std_logic;
 signal ID_ctrl_alu_dmem_in : std_logic;
@@ -317,6 +318,7 @@ begin
                                    ctrl_rt_mux,
                                    ID_reg_kb_mux_in,
                                    ID_ctrl_alu_opcode,
+                                   ID_ctrl_sgn_ext,
                                    ID_ctrl_beq_in,
                                    ID_ctrl_bgt_in,
                                    ctrl_pc_wren,
@@ -339,7 +341,7 @@ begin
                                        ID_regfile_d1, ID_regfile_d2,
                                        ID_cur_instr_rs, ID_cur_instr_rt, ID_cur_instr_rd,
                                        ID_sgn_ext_out, ID_kb_data_in, 
-                                       ID_reg_kb_mux_in,
+                                       ID_reg_kb_mux_in, ID_ctrl_sgn_ext,
                                        ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_out, ID_ctrl_jal_out, ID_ctrl_jr_out,
                                        WB_ctrl_alu_dmem,
                                        ID_ctrl_alu_opcode,
@@ -348,7 +350,7 @@ begin
                                        EX_regfile_d1, EX_regfile_d2,
                                        ID_EX_rs, ID_EX_rt, ID_EX_rd,
                                        EX_sgn_ext_out, EX_kb_data_in, EX_lcd_data_in,
-                                       EX_reg_kb_mux,
+                                       EX_reg_kb_mux, EX_ctrl_sgn_ext,
                                        EX_ctrl_beq_in, EX_ctrl_bgt_in, EX_ctrl_jump, EX_ctrl_jal, EX_ctrl_jr,
                                        EX_ctrl_alu_dmem_in,
                                        EX_ctrl_alu_opcode);
