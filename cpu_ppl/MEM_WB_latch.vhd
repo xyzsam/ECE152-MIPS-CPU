@@ -3,12 +3,16 @@ use ieee.std_logic_1164.all;
 
 entity MEM_WB_latch is
 	port (	clock, reset : in std_logic;
-			wb : in std_logic;
-			dmem_output : in std_logic_vector(31 downto 0);
-			alu_output : in std_logic_vector(31 downto 0);
-			wb_out : out std_logic;
-			dmem_output_out : out std_logic_vector(31 downto 0);
-			alu_output_out : out std_logic_vector(31 downto 0));
+			wb_regw_in : in std_logic;
+			dmem_output_in, alu_output_in, pc_plus_1_in : in std_logic_vector(31 downto 0);
+			kb_data_in : in std_logic_vector(31 downto 0);
+               ctrl_alu_dmem_in, ctrl_jal_in, ctrl_kb_ack_in : in std_logic;
+               reg_input_mux_in : std_logic;
+			wb_regw_out : out std_logic;
+			dmem_output_out, alu_output_out, pc_plus_1_out : out std_logic_vector(31 downto 0);
+			kb_data_out : out std_logic_vector(31 downto 0);
+               ctrl_alu_dmem_out, ctrl_jal_out, ctrl_kb_ack_out : out std_logic;
+               reg_input_mux_out : out std_logic);
 end MEM_WB_latch;
 
 architecture structure of MEM_WB_latch is
@@ -30,11 +34,10 @@ end component;
 
 begin
 
-	wb_dffe : dffe port map(wb, clock, not reset, '1', '1', wb_out);
+	wb_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
 
-	dmem_output_reg : reg32 port map(clock, '1', reset, dmem_output, dmem_output_out);
-	alu_output_reg : reg32 port map(clock, '1', reset, alu_output, alu_output_out);
+	dmem_output_reg : reg32 port map(clock, '1', reset, dmem_output_in, dmem_output_out);
+	alu_output_reg : reg32 port map(clock, '1', reset, alu_output_in, alu_output_out);
 	
-	-- meta info :
 	
 end structure;
