@@ -244,12 +244,11 @@ signal MEM_ctrl_alu_dmem_in, MEM_ctrl_kb_ack, MEM_reg_kb_mux : std_logic;
 signal MEM_ctrl_jump_in, MEM_ctrl_jr_in, MEM_ctrl_jal_in : std_logic; 
 
 ------------------------ WRITEBACK STAGE SIGNALS -------------------------------
-signal WB_dmem_output, WB_reg_write_data, WB_kb_data, WB_alu_output, WB_pc_plus_1 : std_logic_vector(31 downto 0);
+signal WB_dmem_output, WB_reg_write_data, WB_kb_data, WB_alu_output, WB_pc_plus_1 , WB_alu_dmem_output, WB_jal_output, WB_regfile_data : std_logic_vector(31 downto 0);
 signal ctrl_jump_in, ctrl_jump_out : std_logic;
 signal WB_reg_kb_mux, WB_ctrl_alu_dmem, WB_ctrl_kb_ack : std_logic;
 signal WB_wb_regw_out : std_logic;
 signal WB_ctrl_jal : std_logic; 
-
 begin
 
 	------------------- FETCH STAGE  ------------------------
@@ -281,24 +280,15 @@ begin
 	
 	-- mem signals
 	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', ctrl_stall or ctrl_flush, ID_mem_memw_in);
-	--ctrl_beq_mux: mux2to1_1b port map(ctrl_beq, '0', ctrl_stall or ctrl_flush, ctrl_beq_out);
-	--ctrl_bgt_mux: mux2to1_1b port map(ctrl_bgt, '0', ctrl_stall or ctrl_flush, ctrl_bgt_out);
 
 	-- wb signals
---	ctrl_jal_in_mux: mux2to1_1b port map(ctrl_jal_in, '0', ctrl_stall or ctrl_flush, ctrl_jal_in_out);
---	ctrl_reg_input_mux_mux: mux2to1_1b port map(ctrl_reg_input_mux, '0', ctrl_stall or ctrl_flush, ctrl_reg_input_mux_out);
---	ctrl_alu_dmem_mux: mux2to1_1b port map(ctrl_alu_dmem, '0', ctrl_stall or ctrl_flush, ctrl_alu_dmem_out);
 	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', ctrl_stall or ctrl_flush, ID_wb_regw_in);
 	
 	-- ex signals
---	ctrl_sign_ex_mux_mux: mux2to1_1b port map(ctrl_sign_ex_mux, '0', ctrl_stall or ctrl_flush, ctrl_sign_ex_mux_out);
     ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_stall or ctrl_flush, IF_pc_wren);
---	ctrl_jump_in_mux: mux2to1_1b port map(ctrl_jump_in, '0', ctrl_stall or ctrl_flush, ctrl_jump_in_out);
---	ctrl_jr_in_mux: mux2to1_1b port map(ctrl_jr_in, '0', ctrl_stall or ctrl_flush, ctrl_jr_in_out);
 	
 	-- processor output signals	
 	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_stall or ctrl_flush, EX_kb_ack_in);
---	EX_lcd_in_mux: mux2to1_1b port map(ID_lcd_out, '0', ctrl_stall or ctrl_flush, EX_lcd_out);
 	
 	registerfile: regfile port map(clock, WB_wb_regw_out, reset, ID_rd, ID_rs, ID_rt,
 								   WB_reg_write_data, ID_regfile_d1, ID_regfile_d2);
@@ -417,8 +407,11 @@ begin
 	
 	---------------------- WRITEBACK STAGE ---------------------------
 	
-	
-	
-	
+	alu_dmem_mux: mux2to1_32b port map(WB_alu_output, WB_dmem_output, WB_ctrl_alu_dmem, WB_alu_dmem_output);
+	jal_mux: mux2to1_32b port map(WB_alu_dmem_output, WB_pc_plus_1, WB_ctrl_jal, WB_jal_output);
+	keyboard_mux: mux2to1_32b port map(WB_jal_output, WB_kb_data, WB_reg_kb_mux, WB_regfile_data);
+
 	----------------------- INTERSTAGE SIGNALS ------------------------
+
+     
 end structure;
