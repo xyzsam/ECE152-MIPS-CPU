@@ -53,12 +53,14 @@ component EX_MEM_latch
 			isEqual, isGreaterThan : in std_logic;
 			alu_output, regfile_d2_in : in std_logic_vector(31 downto 0);
 			pc_plus_1_in, branch_addr : in std_logic_vector(31 downto 0);
+               kb_data_in : in std_logic_vector(31 downto 0);
                ctrl_alu_dmem_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in : in std_logic; 
 			wb_regw_out, mem_memw_out : out std_logic;
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			pc_plus_1_out, branch_addr_out : out std_logic_vector(31 downto 0);
+               kb_data_out : out std_logic_vector(31 downto 0);
                ctrl_alu_dmem_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out : out std_logic); 
 end component;
@@ -377,12 +379,14 @@ begin
                                          EX_isEqual, EX_isGreaterThan,
                                          EX_alu_output, EX_regfile_d2,
                                          EX_pc_plus_1, EX_branch_addr, 
+                                         EX_kb_data_in,
                                          EX_ctrl_alu_dmem_out,
                                          EX_ctrl_beq_in, EX_ctrl_bgt_in,
                                          MEM_mem_memw, MEM_wb_regw_in, 
                                          MEM_isEqual, MEM_isGreaterThan,
                                          MEM_alu_output, MEM_regfile_d2_in,
                                          MEM_pc_plus_1, MEM_branch_addr,
+                                         MEM_kb_data_in,
                                          MEM_ctrl_alu_dmem_in,
                                          MEM_ctrl_beq_in, MEM_ctrl_bgt_in);
 

@@ -7,12 +7,14 @@ entity EX_MEM_latch is
 			isEqual, isGreaterThan : in std_logic;
 			alu_output, regfile_d2_in : in std_logic_vector(31 downto 0);
 			pc_plus_1_in, branch_addr : in std_logic_vector(31 downto 0);
+               kb_data_in : in std_logic_vector(31 downto 0);
                ctrl_alu_dmem_in : in std_logic;
                ctrl_beq_in, ctrl_bgt_in : in std_logic; 
 			wb_regw_out, mem_memw_out : out std_logic;
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			pc_plus_1_out, branch_addr_out : out std_logic_vector(31 downto 0);
+               kb_data_out : out std_logic_vector(31 downto 0);
                ctrl_alu_dmem_out : out std_logic;
                ctrl_beq_out, ctrl_bgt_out : out std_logic); 
 end EX_MEM_latch;
@@ -45,6 +47,7 @@ begin
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output, alu_output_out);
 	pc_plus_one_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
 	branch_addr_reg : reg32 port map(clock, '1', reset, branch_addr, branch_addr_out);
+	kb_data_reg : reg32 port map(clock, '1', reset, kb_data_in, kb_data_out);
 	
      alu_dmem_reg : dffe port map(ctrl_alu_dmem_in, clock, not reset, '1', '1', ctrl_alu_dmem_out);	
 end structure;
