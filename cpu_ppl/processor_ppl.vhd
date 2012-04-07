@@ -260,7 +260,7 @@ begin
 
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
-	pc_stall_mux : mux2to1_32b port map(zero, one, not stall, pc_stall);
+	pc_stall_mux : mux2to1_32b port map(zero, one, not ctrl_stall, pc_stall);
 	pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
      pc : reg32 port map(clock, IF_pc_wren, reset, IF_cur_pc_in, IF_cur_pc_out);
     instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr); 
