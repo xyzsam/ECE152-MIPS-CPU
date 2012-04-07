@@ -3,21 +3,21 @@ use ieee.std_logic_1164.all;
 
 entity ID_EX_latch is
 	port (	clock, reset : in std_logic;
-			wb_memw_in, wb_regw_in : in std_logic;
+			mem_memw_in, wb_regw_in : in std_logic;
 			pc_plus_1_in : in std_logic_vector(31 downto 0);
 			regfile_d1, regfile_d2 : in std_logic_vector(31 downto 0);
 			instr_rs, instr_rt, instr_rd : in std_logic_vector(4 downto 0);
 			sgn_ext_in, wb_kb_data_in, wb_lcd_data_in : in std_logic_vector(31 downto 0);
 			wb_reg_kb_mux_in : in std_logic;
-               ctrl_beq_in, ctrl_bgt_in, ctrl_jump_in, ctrl_jr_in, ctrl_jal_in : in std_logic; 
+               ctrl_beq_in, ctrl_bgt_in : in std_logic; 
                wb_ctrl_alu_dmem_in : in std_logic;
-			wb_memw_out, wb_regw_out : out std_logic;
+			mem_memw_out, wb_regw_out : out std_logic;
 			pc_plus_1_out : out std_logic_vector(31 downto 0);
 			regfile_d1_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			instr_rs_out, instr_rt_out, instr_rd_out : out std_logic_vector(4 downto 0);
 			sgn_ext_out, wb_kb_data_out, wb_lcd_data_out : out std_logic_vector(31 downto 0);
                wb_reg_kb_mux_out, ex_lc_out : out std_logic;
-               ctrl_beq_out, ctrl_bgt_out, ctrl_jump_out, ctrl_jr_out, ctrl_jal_out : out std_logic; 
+               ctrl_beq_out, ctrl_bgt_out : out std_logic; 
                wb_ctrl_alu_dmem_out : out std_logic);
 end ID_EX_latch;
 
@@ -46,7 +46,7 @@ begin
 	instr_regs(9 downto 5) <= instr_rs;
 	instr_regs(4 downto 0) <= instr_rd;
 
-	wb_memw_dffe : dffe port map(wb_memw_in, clock, not reset, '1', '1', wb_memw_out);
+	wb_memw_dffe : dffe port map(mem_memw_in, clock, not reset, '1', '1', mem_memw_out);
 --	m_memw_dffe : dffe port map(m_memw_in, clock, not reset, '1', '1', m_memw_out);
 --	ex_memw_dffe : dffe port map(ex_memw_in, clock, not reset, '1', '1', ex_memw_out);
 	
@@ -59,9 +59,9 @@ begin
 
      ctrl_beq_dffe : dffe port map(ctrl_beq_in, clock, not reset, '1', '1', ctrl_beq_out);
      ctrl_bgt_dffe : dffe port map(ctrl_bgt_in, clock, not reset, '1', '1', ctrl_bgt_out);
-     ctrl_jump_dffe : dffe port map(ctrl_jump_in, clock, not reset, '1', '1', ctrl_jump_out);
-     ctrl_jal_dffe : dffe port map(ctrl_jal_in, clock, not reset, '1', '1', ctrl_jal_out);
-     ctrl_jr_dffe : dffe port map(ctrl_jr_in, clock, not reset, '1', '1', ctrl_jr_out);
+     --ctrl_jump_dffe : dffe port map(ctrl_jump_in, clock, not reset, '1', '1', ctrl_jump_out);
+     --ctrl_jal_dffe : dffe port map(ctrl_jal_in, clock, not reset, '1', '1', ctrl_jal_out);
+     --ctrl_jr_dffe : dffe port map(ctrl_jr_in, clock, not reset, '1', '1', ctrl_jr_out);
 
 
 	pc_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
