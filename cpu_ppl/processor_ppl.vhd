@@ -230,7 +230,7 @@ signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_p
 signal EX_branch_addr, EX_jr_jal_output, EX_kb_data_in, EX_lcd_data_in : std_logic_vector(31 downto 0);
 signal EX_mem_memw_in, EX_wb_regw_in : std_logic; -- write enable
 signal EX_mem_memw_out, EX_wb_regw_out : std_logic; -- write enable for next stage
-signal EX_ctrl_sgn_ext, ctrl_flush_ex  : std_logic;
+signal EX_ctrl_sgn_ext : std_logic;
 signal EX_isEqual, EX_isGreaterThan : std_logic;
 signal forward_A, forward_B : std_logic_vector(1 downto 0);
 signal ID_EX_rs, ID_EX_rt, ID_EX_rd : std_logic_vector(4 downto 0);
@@ -367,8 +367,8 @@ begin
 								  WB_dmem_output, zero, forward_A, EX_alu_inputA);
 	alu_inputB_mux : mux4to1_32b port map(EX_sgn_ext_mux_out,  MEM_alu_output, 
 								  WB_dmem_output, zero, forward_B, EX_alu_inputB);										  
-	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush_ex, EX_wb_regw_out);
-	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush_ex, EX_mem_memw_out);
+	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush, EX_wb_regw_out);
+	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush, EX_mem_memw_out);
 	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);
      jr_jal_mux : mux2to1_32b port map(EX_sgn_ext_mux_out, EX_regfile_d1, EX_ctrl_jr, EX_jr_jal_output);
 
