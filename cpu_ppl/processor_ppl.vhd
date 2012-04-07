@@ -102,7 +102,7 @@ component control
                -- dmem controls
                ctrl_dmem_wren                : out std_logic ;
                ctrl_alu_dmem                 : out std_logic; -- selects between dmem output or ALU output 
-
+			   ctrl_dmem_read			     : out std_logic;
                -- other controls
                ctrl_keyboard_ack             : out std_logic;
                ctrl_lcd_write                : out std_logic);
@@ -212,7 +212,7 @@ signal IF_pc_wren, carryout_useless : std_logic;
 signal ID_pc_plus_1, ID_cur_instr, ID_regfile_d1, ID_regfile_d2,
 	   ID_sgn_ext_out: std_logic_vector(31 downto 0);
 signal ID_kb_data_in : std_logic_vector(31 downto 0);
-signal ID_mem_memw_in, ID_wb_regw_in : std_logic; -- write enable
+signal ID_mem_memw_in, ID_wb_regw_in, ID_ctrl_mem_read : std_logic; -- write enable
 signal ID_rs, ID_rt, ID_rd, ID_cur_instr_rd, ID_cur_instr_rs, ID_cur_instr_rt: std_logic_vector(4 downto 0);
 signal ID_reg_kb_mux_in, ID_lcd_out, ID_sgn_ext_mux : std_logic;
 signal ID_ctrl_alu_dmem_in : std_logic;
@@ -310,7 +310,7 @@ begin
 								   
 	sgn_ext_unit: sgn_ext port map(ID_cur_instr_imm, ID_sgn_ext_out);
 	
-	hazards: hazard_detect port map(EX_mem_memw_out, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt);
+	hazards: hazard_detect port map(ID_ctrl_mem_read, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt, ctrl_stall);
 	
 	control_unit : control port map(ID_cur_instr, 
                                    ctrl_reg_wren, -- this is an input to a mux
@@ -325,6 +325,7 @@ begin
                                    ID_ctrl_jal_in,
                                    ctrl_dmem_wren, -- this is an input to a mux
                                    WB_ctrl_alu_dmem,
+                                   ID_ctrl_mem_read,
                                    ID_ctrl_kb_ack,
                                    ID_lcd_out);
 

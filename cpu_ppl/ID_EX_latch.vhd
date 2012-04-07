@@ -54,7 +54,7 @@ begin
 --	ex_memw_dffe : dffe port map(ex_memw_in, clock, not reset, '1', '1', ex_memw_out);
 	
 	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
-	ex_lcd_dffe : dffe port map(ex_lcd_in, clock, not reset, '1', '1', ex_lcd_out);
+
 --	m_regw_dffe : dffe port map(m_regw_in, clock, not reset, '1', '1', m_regw_out);
 --	ex_regw_dffe : dffe port map(ex_regw_in, clock, not reset, '1', '1', ex_regw_out);
 
@@ -75,7 +75,6 @@ begin
      alu_opcode_2 : dffe port map(id_ctrl_alu_opcode_out(2), clock, not reset, '1', '1', ex_ctrl_alu_opcode_in(2));
 
 	wb_kb_data_reg : reg32 port map(clock, '1', reset, wb_kb_data_in, wb_kb_data_out);
-	wb_lcd_data_reg : reg32 port map(clock, '1', reset, wb_lcd_data_in, wb_lcd_data_out);
 	pc_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);
 	regfile_d1_reg : reg32 port map(clock, '1', reset, regfile_d1, regfile_d1_out);
 	regfile_d2_reg : reg32 port map(clock, '1', reset, regfile_d2, regfile_d2_out);

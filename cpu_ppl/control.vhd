@@ -23,7 +23,7 @@ entity control is
                -- dmem controls
                ctrl_dmem_wren                : out std_logic ;
                ctrl_alu_dmem                 : out std_logic; -- selects between dmem output or ALU output 
-
+			   ctrl_dmem_read			     : out std_logic;
                -- other controls
                ctrl_keyboard_ack             : out std_logic;
                ctrl_lcd_write                : out std_logic);
@@ -106,6 +106,8 @@ begin
      ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
      ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
      ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
+	 ctrl_dmem_read <= '1' when opcode = "00111" else
+					   '0';
 	 ctrl_jump <= ctrl_jump_temp after 10ns;
 
      ctrl_keyboard_ack <= '1' when opcode = "01110" else
