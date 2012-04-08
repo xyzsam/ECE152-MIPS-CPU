@@ -5,7 +5,15 @@ entity processor_ppl is
 	port (	clock, reset		: in std_logic;
 			keyboard_in			: in std_logic_vector(31 downto 0);
 			keyboard_ack, lcd_write	:out std_logic;
-			lcd_data			: out std_logic_vector(31 downto 0));
+			lcd_data			: out std_logic_vector(31 downto 0);
+     
+               IF_cur_pc_db, IF_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db : out std_logic_vector(31 downto 0);
+               ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
+               ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
+               ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
+               ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db : out std_logic; -- write enable
+               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db, ctrl_pc_wren_db : out std_logic
+          );
 end processor_ppl;
 
 architecture structure of processor_ppl is
@@ -269,6 +277,7 @@ signal WB_wb_regw_out : std_logic;
 ------------------------ INTERSTAGE SIGNALS --------------------------------
 signal jump_addr : std_logic_vector(31 downto 0);
 
+
 begin
 
 	------------------- FETCH STAGE  ------------------------
@@ -285,7 +294,7 @@ begin
 	------------------- IF/ID LATCH  -------------------------
      
     IFID_latch : IF_ID_latch port map(clock, reset,
-                                      IF_cur_pc_out, IF_cur_instr,
+                                      IF_pc_plus_1, IF_cur_instr,
                                       ID_pc_plus_1, ID_cur_instr);
 	
 	------------------- DECODE STAGE -------------------------
@@ -312,6 +321,11 @@ begin
      ctrl_jump_mux : mux2to1_1b port map(ID_ctrl_jump_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jump_out);
      ctrl_jr_mux : mux2to1_1b port map(ID_ctrl_jr_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jr_out);
      ctrl_jal_mux : mux2to1_1b port map(ID_ctrl_jal_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jal_out);
+
+
+    -- branch signals
+    ctrl_beq_mux : mux2to1_1b port map(ID_ctrl_beq_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_beq_out);
+    ctrl_bgt_mux : mux2to1_1b port map(ID_ctrl_bgt_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_bgt_out); 
 
 	-- processor output signals	
 	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_stall or ctrl_flush, ID_kb_ack_out);
@@ -353,7 +367,7 @@ begin
                                        ID_sgn_ext_out, ID_kb_data_in, 
                                        ID_reg_kb_mux_in, ID_ctrl_sgn_ext,
                                        ID_kb_ack_out, ID_lcd_out,
-                                       ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_out, ID_ctrl_jal_out, ID_ctrl_jr_out,
+                                       ID_ctrl_beq_out, ID_ctrl_bgt_out, ID_ctrl_jump_out, ID_ctrl_jal_out, ID_ctrl_jr_out,
                                        ID_ctrl_alu_dmem_in,
                                        ID_ctrl_alu_opcode,
                                        EX_mem_memw_in, EX_wb_regw_in, 
@@ -456,4 +470,28 @@ begin
      ----------------------- INTERSTAGE COMPONENTS ------------------------
      jump_mux : mux2to1_32b port map(MEM_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
      
+    ------------------------- DEBUGGING SIGNAL ASSIGNMENTS ------------------------
+     IF_cur_pc_db <= IF_cur_pc_out;
+     IF_cur_instr_db <= IF_cur_instr;
+     ID_pc_plus_1_db <= ID_pc_plus_1;
+     ID_regfile_d1_db <= ID_regfile_d1;
+     ID_regfile_d2_db <= ID_regfile_d2;
+     ID_rs_db <= ID_rs;
+     ID_rt_db <= ID_rt;
+     ID_rd_db <= ID_rd;
+     ID_ctrl_alu_opcode_db <= ID_ctrl_alu_opcode;
+     ID_ctrl_beq_db <= ID_ctrl_beq_out;
+     ID_ctrl_bgt_db <= ID_ctrl_bgt_out;
+     ID_ctrl_jump_db <= ID_ctrl_jump_out;
+     ID_ctrl_jal_db <= ID_ctrl_jal_out;
+     ID_ctrl_jr_db <= ID_ctrl_jr_out;
+     ID_mem_memw_db <= ID_mem_memw_in;
+     ID_wb_regw_db <= ID_wb_regw_in;
+     ID_ctrl_mem_read_db <= ID_ctrl_mem_read;
+     ID_ctrl_sgn_ext_db <= ID_ctrl_sgn_ext;
+     ctrl_stall_db <= ctrl_stall;
+     ctrl_flush_db <= ctrl_flush;
+     ctrl_rt_mux_db <= ctrl_rt_mux;
+     ctrl_pc_wren_db <= ctrl_pc_wren;
+
 end structure;
