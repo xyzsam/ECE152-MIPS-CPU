@@ -298,14 +298,6 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
     jump_or_cont_mux : mux2to1_32b port map(IF_pc_plus_1, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);
      IF_ctrl_jump_or_cont <= EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (EX_ctrl_beq_in and EX_isEqual) or (EX_ctrl_bgt_in and EX_isGreaterThan);
 
---     pc_reset_mux : mux2to1_32b port map(IF_pc_plus_1, zero, reset, IF_cur_pc_in);
---    pc : reg32 port map(clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
---     instr_mem: imem port map(IF_next_pc_imem(11 downto 0), '1', clock, IF_cur_instr); 
---    adder_pc_1  : adder port map(pc_addend_input, IF_next_pc, '0', IF_pc_plus_1, carryout_useless);
---    pc_jump_or_cont_mux : mux2to1_32b port map(IF_cur_pc_out, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);	
---    imem_jump_or_cont_mux : mux2to1_32b port map(IF_cur_pc_in, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc_imem);	
---     IF_ctrl_jump_or_cont <=  EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (EX_ctrl_beq_in and EX_isEqual) or (EX_ctrl_bgt_in and EX_isGreaterThan);
-	
 	------------------- IF/ID LATCH  -------------------------
      
     IFID_latch : IF_ID_latch port map(not clock, reset,
