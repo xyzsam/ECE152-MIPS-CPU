@@ -9,7 +9,7 @@ entity processor_ppl is
      
 	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
 	WB_alu_dmem_output_db, EX_alu_output_db, 
-     WB_regfile_data_db, EX_next_pc_br_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
+     WB_regfile_data_db, jump_addr_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
@@ -247,7 +247,7 @@ signal ID_cur_instr_imm : std_logic_vector(16 downto 0);
 signal ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_in, ID_ctrl_jr_in, ID_ctrl_jal_in  : std_logic; 
 signal ID_ctrl_beq_out, ID_ctrl_bgt_out, ID_ctrl_jump_out, ID_ctrl_jr_out, ID_ctrl_jal_out  : std_logic; 
 signal ctrl_dmem_wren, ctrl_reg_wren:  std_logic; -- temp signals into muxes
-signal ctrl_stall, ctrl_flush, ctrl_rt_mux : std_logic;
+signal ctrl_stall, ctrl_flush, ctrl_rt_mux, ctrl_bubble : std_logic;
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
@@ -311,31 +311,32 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	ID_cur_instr_rs <= ID_cur_instr(21 downto 17);
 	ID_cur_instr_rt <= ID_cur_instr(16 downto 12);
 
+        ctrl_bubble <= ctrl_stall or ctrl_flush or EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal;
 	reg_rs_mux: mux2to1_5b port map(ID_cur_instr_rs, ID_cur_instr_rd, ID_ctrl_jr_in or ID_lcd_out, ID_rs);
 	reg_rt_mux: mux2to1_5b port map(ID_cur_instr_rt, ID_cur_instr_rd, ctrl_rt_mux, ID_rt);
 	reg_jal_in_mux: mux2to1_5b port map(ID_cur_instr_rd, "11111", ID_ctrl_jal_in, ID_rd);
 	
 	-- mem signals
-	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', ctrl_stall or ctrl_flush, ID_mem_memw_in);
+	ctrl_dmem_wren_mux: mux2to1_1b port map(ctrl_dmem_wren, '0', ctrl_bubble, ID_mem_memw_in);
 
 	-- wb signals
-	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', ctrl_stall or ctrl_flush, ID_wb_regw_in);
+	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', ctrl_bubble, ID_wb_regw_in);
 	
 	-- ex signals
---    ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_stall or ctrl_flush, IF_pc_wren);
+--    ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_bubble, IF_pc_wren);
 
      -- jump signals
-     ctrl_jump_mux : mux2to1_1b port map(ID_ctrl_jump_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jump_out);
-     ctrl_jr_mux : mux2to1_1b port map(ID_ctrl_jr_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jr_out);
-     ctrl_jal_mux : mux2to1_1b port map(ID_ctrl_jal_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jal_out);
+     ctrl_jump_mux : mux2to1_1b port map(ID_ctrl_jump_in, '0', ctrl_bubble, ID_ctrl_jump_out);
+     ctrl_jr_mux : mux2to1_1b port map(ID_ctrl_jr_in, '0', ctrl_bubble, ID_ctrl_jr_out);
+     ctrl_jal_mux : mux2to1_1b port map(ID_ctrl_jal_in, '0', ctrl_bubble, ID_ctrl_jal_out);
 
 
     -- branch signals
-    ctrl_beq_mux : mux2to1_1b port map(ID_ctrl_beq_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_beq_out);
-    ctrl_bgt_mux : mux2to1_1b port map(ID_ctrl_bgt_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_bgt_out); 
+    ctrl_beq_mux : mux2to1_1b port map(ID_ctrl_beq_in, '0', ctrl_bubble, ID_ctrl_beq_out);
+    ctrl_bgt_mux : mux2to1_1b port map(ID_ctrl_bgt_in, '0', ctrl_bubble, ID_ctrl_bgt_out); 
 
 	-- processor output signals	
-	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_stall or ctrl_flush, ID_kb_ack_out);
+	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_bubble, ID_kb_ack_out);
 	
 	registerfile: regfile port map(clock, WB_wb_regw_out, reset, MEM_WB_rd, ID_rs, ID_rt,
 								   WB_regfile_data, ID_regfile_d1, ID_regfile_d2);
@@ -365,7 +366,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 									
 	------------------- ID/EX LATCH ---------------------------
 	
-	IDEX_latch : ID_EX_latch port map(clock, reset, 
+	IDEX_latch : ID_EX_latch port map(not clock, reset, 
                                        ID_mem_memw_in, ID_wb_regw_in,
                                        ID_pc_plus_1,
                                        ID_regfile_d1, ID_regfile_d2,
@@ -404,7 +405,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush, EX_wb_regw_out);
 	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush, EX_mem_memw_out);
 	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);
-     jr_jal_mux : mux2to1_32b port map(EX_sgn_ext_mux_out, EX_regfile_d1, EX_ctrl_jr, EX_jr_jal_output);
+     jr_jal_mux : mux2to1_32b port map(EX_sgn_ext_out, EX_regfile_d1, EX_ctrl_jr, EX_jr_jal_output);
 	
 	EX_kb_ack_mux : mux2to1_1b port map(EX_kb_ack_in, '0', ctrl_flush, EX_kb_ack_out);
 	EX_alu_dmem_mux : mux2to1_1b port map(EX_ctrl_alu_dmem_in, '0', ctrl_flush, EX_ctrl_alu_dmem_out);
@@ -412,7 +413,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      lcd_write <= EX_lcd_in;
 
 	---------------------- EX/MEM LATCH -----------------------------
-     EXMEM_latch : EX_MEM_latch port map(clock, reset,
+     EXMEM_latch : EX_MEM_latch port map(not clock, reset,
                                          EX_mem_memw_out, EX_wb_regw_out,
                                          EX_isEqual, EX_isGreaterThan,
                                          EX_alu_output, EX_regfile_d2,
@@ -449,7 +450,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	
 	----------------------- MEM/WB LATCH ------------------------------
 
-     MEMWB_latch : MEM_WB_latch port map(clock, reset,
+     MEMWB_latch : MEM_WB_latch port map(not clock, reset,
                                          MEM_wb_regw_in, 
                                          MEM_dmem_output, MEM_alu_output,
                                          EX_MEM_rd,
@@ -501,7 +502,6 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
      forwardA_db <= forward_A;
      forwardB_db <= forward_B;
-     EX_next_pc_br_db <= EX_next_pc_br;
      WB_alu_dmem_output_db <= WB_alu_dmem_output;
      WB_regfile_data_db <= WB_regfile_data;
      WB_reg_kb_mux_db <= WB_reg_kb_mux;
@@ -510,5 +510,6 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      ctrl_flush_db <= ctrl_flush;
      ctrl_rt_mux_db <= ctrl_rt_mux;
      IF_next_pc_db <= IF_next_pc;
+     jump_addr_db <= jump_addr;
 
 end structure;
