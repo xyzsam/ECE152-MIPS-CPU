@@ -7,12 +7,13 @@ entity processor_ppl is
 			keyboard_ack, lcd_write	:out std_logic;
 			lcd_data			: out std_logic_vector(31 downto 0);
      
-               IF_cur_pc_db, IF_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db : out std_logic_vector(31 downto 0);
+     IF_cur_pc_db, IF_cur_instr_db, IF_pc_plus_1_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
                ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db : out std_logic; -- write enable
-               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db : out std_logic                
+               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db : out std_logic
+               
           );
 end processor_ppl;
 
@@ -29,6 +30,7 @@ component IF_ID_latch
 	port (	clock, reset : in std_logic;
 			pc_plus_1 : in std_logic_vector(31 downto 0);
 			curr_instr : in std_logic_vector(31 downto 0);
+			IF_ID_wren : in std_logic;
 			pc_out : out std_logic_vector(31 downto 0);
 			curr_instr_out : out std_logic_vector(31 downto 0));
 end component;
@@ -294,7 +296,7 @@ begin
 	------------------- IF/ID LATCH  -------------------------
      
     IFID_latch : IF_ID_latch port map(clock, reset,
-                                      IF_pc_plus_1, IF_cur_instr,
+                                       IF_pc_plus_1, IF_cur_instr, IF_ID_latch_wren,
                                       ID_pc_plus_1, ID_cur_instr);
 	
 	------------------- DECODE STAGE -------------------------
@@ -472,6 +474,7 @@ begin
     ------------------------- DEBUGGING SIGNAL ASSIGNMENTS ------------------------
      IF_cur_pc_db <= IF_cur_pc_out;
      IF_cur_instr_db <= IF_cur_instr;
+     IF_pc_plus_1_db <= IF_pc_plus_1;
      ID_pc_plus_1_db <= ID_pc_plus_1;
      ID_regfile_d1_db <= ID_regfile_d1;
      ID_regfile_d2_db <= ID_regfile_d2;
@@ -491,5 +494,5 @@ begin
      ctrl_stall_db <= ctrl_stall;
      ctrl_flush_db <= ctrl_flush;
      ctrl_rt_mux_db <= ctrl_rt_mux;
-
+      
 end structure;
