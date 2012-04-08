@@ -14,7 +14,7 @@ entity processor_ppl is
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
                ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
-               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db, WB_reg_kb_mux_db : out std_logic;
+               ctrl_stall_db, ctrl_flush_db, ctrl_bubble_db, ctrl_rt_mux_db, WB_reg_kb_mux_db : out std_logic;
                WB_wb_regw_out_db : out std_logic; 
                forwardA_db, forwardB_db : out std_logic_vector(1 downto 0)
                
@@ -74,7 +74,7 @@ component EX_MEM_latch
 			ctrl_kb_ack_in : in std_logic;
             kb_data_in : in std_logic_vector(31 downto 0);
             ctrl_alu_dmem_in : in std_logic;
-            ctrl_beq_in, ctrl_bgt_in : in std_logic; 
+            ctrl_beq_in, ctrl_bgt_in, ctrl_jal_in : in std_logic; 
 			wb_regw_out, mem_memw_out : out std_logic;
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
@@ -84,23 +84,23 @@ component EX_MEM_latch
             ctrl_kb_ack_out : out std_logic;
             kb_data_out : out std_logic_vector(31 downto 0);
             ctrl_alu_dmem_out : out std_logic;
-            ctrl_beq_out, ctrl_bgt_out : out std_logic);
+            ctrl_beq_out, ctrl_bgt_out, ctrl_jal_out : out std_logic); 
 end component;
 
 component MEM_WB_latch 
 	port (	clock, reset : in std_logic;
 			wb_regw_in : in std_logic;
-			dmem_output_in, alu_output_in : in std_logic_vector(31 downto 0);
+			dmem_output_in, alu_output_in, pc_plus_1_in : in std_logic_vector(31 downto 0);
 			ex_mem_rd : in std_logic_vector(4 downto 0);
 			kb_data_in : in std_logic_vector(31 downto 0);
                ctrl_alu_dmem_in, ctrl_kb_ack_in : in std_logic;
-               reg_input_mux_in : std_logic;
+               reg_input_mux_in, ctrl_jal_in : std_logic;
 			wb_regw_out : out std_logic;
-			dmem_output_out, alu_output_out : out std_logic_vector(31 downto 0);
+			dmem_output_out, alu_output_out, pc_plus_1_out : out std_logic_vector(31 downto 0);
 			mem_wb_rd : out std_logic_vector(4 downto 0);
 			kb_data_out : out std_logic_vector(31 downto 0);
-               ctrl_alu_dmem_out, ctrl_kb_ack_out : out std_logic;
-               reg_input_mux_out : out std_logic);
+               ctrl_alu_dmem_out, ctrl_kb_ack_out: out std_logic;
+               reg_input_mux_out, ctrl_jal_out  : out std_logic);
 end component;
 
 
@@ -272,13 +272,13 @@ signal MEM_ctrl_beq_in, MEM_ctrl_bgt_in, MEM_ctrl_beq_out, MEM_ctrl_bgt_out : st
 signal MEM_wb_regw_in, MEM_mem_memw : std_logic;
 signal MEM_isEqual, MEM_isGreaterThan : std_logic;
 signal MEM_ctrl_alu_dmem_in, MEM_ctrl_kb_ack, MEM_reg_kb_mux : std_logic;
-signal MEM_ctrl_jump_in, MEM_ctrl_jr_in, MEM_ctrl_jal_in : std_logic; 
+signal MEM_ctrl_jump_in, MEM_ctrl_jr_in, MEM_ctrl_jal : std_logic; 
 
 ------------------------ WRITEBACK STAGE SIGNALS -------------------------------
-signal WB_dmem_output, WB_kb_data, WB_alu_output, WB_alu_dmem_output, WB_jal_output, WB_regfile_data : std_logic_vector(31 downto 0);
+signal WB_dmem_output, WB_kb_data, WB_alu_output, WB_alu_dmem_output, WB_jal_output, WB_regfile_data, WB_pc_plus_1 : std_logic_vector(31 downto 0);
 signal ctrl_jump_in, ctrl_jump_out : std_logic;
 signal WB_reg_kb_mux, WB_ctrl_alu_dmem, WB_ctrl_kb_ack : std_logic;
-signal WB_wb_regw_out : std_logic;
+signal WB_wb_regw_out, WB_ctrl_jal : std_logic;
 
 ------------------------ INTERSTAGE SIGNALS --------------------------------
 signal jump_addr : std_logic_vector(31 downto 0);
@@ -423,7 +423,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
                                          EX_kb_ack_out,
                                          EX_kb_data_in,
                                          EX_ctrl_alu_dmem_out,
-                                         EX_ctrl_beq_in, EX_ctrl_bgt_in,
+                                         EX_ctrl_beq_in, EX_ctrl_bgt_in, EX_ctrl_jal,
                                          MEM_mem_memw, MEM_wb_regw_in, 
                                          MEM_isEqual, MEM_isGreaterThan,
                                          MEM_alu_output, MEM_regfile_d2_in,
@@ -433,7 +433,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
                                          MEM_ctrl_kb_ack,
                                          MEM_kb_data_in,
                                          MEM_ctrl_alu_dmem_in,
-                                         MEM_ctrl_beq_in, MEM_ctrl_bgt_in);
+                                         MEM_ctrl_beq_in, MEM_ctrl_bgt_in, MEM_ctrl_jal);
 
 	
 	
@@ -452,24 +452,24 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 
      MEMWB_latch : MEM_WB_latch port map(not clock, reset,
                                          MEM_wb_regw_in, 
-                                         MEM_dmem_output, MEM_alu_output,
+                                         MEM_dmem_output, MEM_alu_output, MEM_pc_plus_1,
                                          EX_MEM_rd,
                                          MEM_kb_data_in,
                                          MEM_ctrl_alu_dmem_in, MEM_ctrl_kb_ack,
-                                         MEM_reg_kb_mux,
+                                         MEM_reg_kb_mux, MEM_ctrl_jal,
                                          WB_wb_regw_out,
-                                         WB_dmem_output, WB_alu_output,
+                                         WB_dmem_output, WB_alu_output, WB_pc_plus_1,
                                          MEM_WB_rd,
                                          WB_kb_data,
                                          WB_ctrl_alu_dmem, WB_ctrl_kb_ack,
-                                         WB_reg_kb_mux);
+                                         WB_reg_kb_mux, WB_ctrl_jal);
 
 
 	
 	---------------------- WRITEBACK STAGE ---------------------------
 	
 	alu_dmem_mux: mux2to1_32b port map(WB_alu_output, WB_dmem_output, WB_ctrl_alu_dmem, WB_alu_dmem_output);
-	jal_mux: mux2to1_32b port map(WB_alu_dmem_output, EX_pc_plus_1, EX_ctrl_jal, WB_jal_output);
+	jal_mux: mux2to1_32b port map(WB_alu_dmem_output, WB_pc_plus_1, WB_ctrl_jal, WB_jal_output);
 	keyboard_mux: mux2to1_32b port map(WB_jal_output, WB_kb_data, WB_reg_kb_mux, WB_regfile_data);
      
      keyboard_ack <= WB_ctrl_kb_ack;
@@ -511,5 +511,6 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      ctrl_rt_mux_db <= ctrl_rt_mux;
      IF_next_pc_db <= IF_next_pc;
      jump_addr_db <= jump_addr;
+     ctrl_bubble_db <= ctrl_bubble;
 
 end structure;

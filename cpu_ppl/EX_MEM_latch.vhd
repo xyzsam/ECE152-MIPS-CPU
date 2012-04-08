@@ -12,7 +12,7 @@ entity EX_MEM_latch is
 			ctrl_kb_ack_in : in std_logic;
             kb_data_in : in std_logic_vector(31 downto 0);
             ctrl_alu_dmem_in : in std_logic;
-            ctrl_beq_in, ctrl_bgt_in : in std_logic; 
+            ctrl_beq_in, ctrl_bgt_in, ctrl_jal_in : in std_logic; 
 			wb_regw_out, mem_memw_out : out std_logic;
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
@@ -22,7 +22,7 @@ entity EX_MEM_latch is
             ctrl_kb_ack_out : out std_logic;
             kb_data_out : out std_logic_vector(31 downto 0);
             ctrl_alu_dmem_out : out std_logic;
-            ctrl_beq_out, ctrl_bgt_out : out std_logic); 
+            ctrl_beq_out, ctrl_bgt_out, ctrl_jal_out : out std_logic); 
 end EX_MEM_latch;
 
 architecture structure of EX_MEM_latch is
@@ -57,7 +57,8 @@ begin
 	ctrl_beq_dffe : dffe port map(ctrl_beq_in, clock, not reset, '1', '1', ctrl_beq_out);
 	ctrl_bgt_dffe : dffe port map(ctrl_bgt_in, clock, not reset, '1', '1', ctrl_bgt_out);
 	ctrl_kb_ack_dffe : dffe port map(ctrl_kb_ack_in, clock, not reset, '1', '1', ctrl_kb_ack_out);
-	
+        ctrl_jal_dffe : dffe port map(ctrl_jal_in, clock, not reset, '1', '1', ctrl_jal_out);	
+
 	isEqual_dffe : dffe port map(isEqual, clock, not reset, '1', '1', isEqual_out);
 	isGreaterThan_dffe : dffe port map(isGreaterThan, clock, not reset, '1', '1', isGreaterThan_out);
 	
