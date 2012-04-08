@@ -1,19 +1,22 @@
 .text
 main:
-ldi $r1, 123
-ldi $r2, 123
-ldi $r3, 130
-beq $r1, $r3, second
-beq $r1, $r2, first
-bgt $r3, $r1, second
 
-first:
-addi $r2, $r2, 10
-bgt $r2, $r3, second
-halt
-
-second:
-addi $r1, $r1, 100
-sub $r1, $r1, $r0
+ldi $r1, 5
+ldi $r2, 2
+ldi $r3, 5
+nop
+nop
+nop
+nop
+beq $r1, $r2, target1
+beq $r1, $r3, target2
+target1:
+add $r0, $r0, $r0
+target2:
+add $r4, $r1, $r2
+nop
+nop
+nop
+nop
 
 .data
