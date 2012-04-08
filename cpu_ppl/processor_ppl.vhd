@@ -454,6 +454,6 @@ begin
      keyboard_ack <= WB_ctrl_kb_ack;
 
      ----------------------- INTERSTAGE COMPONENTS ------------------------
-     jump_mux : mux2to1_32b port map(MEM_branch_addr, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
+     jump_mux : mux2to1_32b port map(MEM_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
      
 end structure;
