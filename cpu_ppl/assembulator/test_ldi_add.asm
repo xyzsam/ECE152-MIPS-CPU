@@ -2,8 +2,22 @@
 main:
 
 ldi $r1, 1
+nop
+nop
+nop
+nop
 ldi $r2, 2
+nop
+nop
+nop
+nop
+nop
 add $r3, $r1, $r2
+nop
+nop
+nop
+nop
+nop
 sub $r3, $r3, $r0 #test subtract AND read $r3
 and $r4, $r1, $r2
 sub $r4, $r4, $r0 # read $r4

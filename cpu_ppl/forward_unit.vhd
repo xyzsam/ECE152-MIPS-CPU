@@ -13,19 +13,17 @@ architecture behavior of forward_unit is
 
 begin
 
-	forward_A <= "00" when (EX_MEM_regwrite = '0' and MEM_WB_regwrite = '0') else
-				 "01" when (MEM_WB_regwrite = '1' and EX_MEM_regwrite = '0' and
+	forward_A <= "01" when (MEM_WB_regwrite = '1' and EX_MEM_regwrite = '0' and
 							not(MEM_WB_rd = "00000") and not(EX_MEM_rd = "00000") and
 							not(EX_MEM_rd = ID_EX_rs) and MEM_WB_rd = ID_EX_rs) else
 				 "10" when (EX_MEM_regwrite = '1' and not(EX_MEM_rd = "00000") and
 							EX_MEM_rd = ID_EX_rs) else
-				 "11";
+				 "00";
 							
-	forward_B <= "00" when (EX_MEM_regwrite = '0' and MEM_WB_regwrite = '0') else
-				 "01" when (MEM_WB_regwrite = '1' and EX_MEM_regwrite = '0' and
+	forward_B <= "01" when (MEM_WB_regwrite = '1' and EX_MEM_regwrite = '0' and
 							not(MEM_WB_rd = "00000") and not(EX_MEM_rd = "00000") and
 							not(EX_MEM_rd = ID_EX_rt) and MEM_WB_rd = ID_EX_rt) else
 				 "10" when (EX_MEM_regwrite = '1' and not(EX_MEM_rd = "00000") and
 							EX_MEM_rd = ID_EX_rt) else
-				 "11";
+				 "00";
 end behavior;

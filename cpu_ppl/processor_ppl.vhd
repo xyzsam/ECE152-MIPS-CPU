@@ -7,12 +7,16 @@ entity processor_ppl is
 			keyboard_ack, lcd_write	:out std_logic;
 			lcd_data			: out std_logic_vector(31 downto 0);
      
-     IF_cur_pc_db, IF_cur_instr_db, IF_pc_plus_1_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db : out std_logic_vector(31 downto 0);
+	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
+	WB_alu_dmem_output_db, EX_alu_output_db, EX_alu_inputA_db, EX_alu_inputB_db,
+     WB_regfile_data_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
-               ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db : out std_logic; -- write enable
-               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db : out std_logic
+               ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
+               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db, WB_reg_kb_mux_db : out std_logic;
+               WB_wb_regw_out_db : out std_logic; 
+               forwardA_db, forwardB_db : out std_logic_vector(1 downto 0)
                
           );
 end processor_ppl;
@@ -332,7 +336,7 @@ begin
 	-- processor output signals	
 	ctrl_keyboard_ack_mux: mux2to1_1b port map(ID_ctrl_kb_ack, '0', ctrl_stall or ctrl_flush, ID_kb_ack_out);
 	
-	registerfile: regfile port map(clock, WB_wb_regw_out, reset, ID_rd, ID_rs, ID_rt,
+	registerfile: regfile port map(clock, WB_wb_regw_out, reset, MEM_WB_rd, ID_rs, ID_rt,
 								   WB_regfile_data, ID_regfile_d1, ID_regfile_d2);
 								   
 	sgn_ext_unit: sgn_ext port map(ID_cur_instr_imm, ID_sgn_ext_out);
@@ -364,7 +368,7 @@ begin
                                        ID_mem_memw_in, ID_wb_regw_in,
                                        ID_pc_plus_1,
                                        ID_regfile_d1, ID_regfile_d2,
-                                       ID_cur_instr_rs, ID_cur_instr_rt, ID_cur_instr_rd,
+                                       ID_cur_instr_rs, ID_cur_instr_rt, ID_rd,
                                        ID_sgn_ext_out, ID_kb_data_in, 
                                        ID_reg_kb_mux_in, ID_ctrl_sgn_ext,
                                        ID_kb_ack_out, ID_lcd_out,
@@ -472,9 +476,8 @@ begin
      jump_mux : mux2to1_32b port map(MEM_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
      
     ------------------------- DEBUGGING SIGNAL ASSIGNMENTS ------------------------
-     IF_cur_pc_db <= IF_cur_pc_out;
-     IF_cur_instr_db <= IF_cur_instr;
-     IF_pc_plus_1_db <= IF_pc_plus_1;
+
+     ID_cur_instr_db <= ID_cur_instr;
      ID_pc_plus_1_db <= ID_pc_plus_1;
      ID_regfile_d1_db <= ID_regfile_d1;
      ID_regfile_d2_db <= ID_regfile_d2;
@@ -491,6 +494,16 @@ begin
      ID_wb_regw_db <= ID_wb_regw_in;
      ID_ctrl_mem_read_db <= ID_ctrl_mem_read;
      ID_ctrl_sgn_ext_db <= ID_ctrl_sgn_ext;
+     EX_alu_output_db <= EX_alu_output;
+     EX_alu_inputA_db <= EX_alu_inputA;
+     EX_alu_inputB_db <= EX_alu_inputB;
+     EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
+     forwardA_db <= forward_A;
+     forwardB_db <= forward_B;
+     WB_alu_dmem_output_db <= WB_alu_dmem_output;
+     WB_regfile_data_db <= WB_regfile_data;
+     WB_reg_kb_mux_db <= WB_reg_kb_mux;
+     WB_wb_regw_out_db <= WB_wb_regw_out;
      ctrl_stall_db <= ctrl_stall;
      ctrl_flush_db <= ctrl_flush;
      ctrl_rt_mux_db <= ctrl_rt_mux;
