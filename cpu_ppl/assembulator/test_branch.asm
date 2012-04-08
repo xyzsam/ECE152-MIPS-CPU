@@ -10,6 +10,8 @@ nop
 nop
 beq $r1, $r2, target1
 beq $r1, $r3, target2
+nop
+nop
 target1:
 add $r0, $r0, $r0
 target2:
@@ -18,5 +20,9 @@ nop
 nop
 nop
 nop
-
+add $r5, $r4, $r1
+nop
+nop
+nop
+nop
 .data

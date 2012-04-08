@@ -9,7 +9,7 @@ entity processor_ppl is
      
 	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
 	WB_alu_dmem_output_db, EX_alu_output_db, 
-     WB_regfile_data_db, MEM_next_pc_br_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
+     WB_regfile_data_db, EX_next_pc_br_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
@@ -225,7 +225,7 @@ component regfile
 end component;
 
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
-signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1 : std_logic_vector(31 downto 0);
+signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1, IF_next_pc_imem : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
 signal pc_addend_input : std_logic_vector(31 downto 0);
 signal IF_pc_wren, IF_ctrl_jump_or_cont, carryout_useless : std_logic;
@@ -251,7 +251,7 @@ signal ctrl_stall, ctrl_flush, ctrl_rt_mux : std_logic;
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
-signal EX_branch_addr, EX_jr_jal_output, EX_kb_data_in : std_logic_vector(31 downto 0);
+signal EX_branch_addr, EX_next_pc_br, EX_jr_jal_output, EX_kb_data_in : std_logic_vector(31 downto 0);
 signal EX_mem_memw_in, EX_wb_regw_in : std_logic; -- write enable
 signal EX_mem_memw_out, EX_wb_regw_out : std_logic; -- write enable for next stage
 signal EX_ctrl_sgn_ext : std_logic;
@@ -266,7 +266,7 @@ signal EX_ctrl_jump, EX_ctrl_jr, EX_ctrl_jal, EX_ctrl_beq_in, EX_ctrl_bgt_in : s
 
 ----------------------- MEMORY STAGE SIGNALS ----------------------------------
 signal MEM_alu_output, MEM_dmem_output, MEM_kb_data_in, 
-		MEM_branch_addr, MEM_next_pc_br, MEM_regfile_d2_in, MEM_pc_plus_1 : std_logic_vector(31 downto 0);
+		MEM_branch_addr, MEM_regfile_d2_in, MEM_pc_plus_1 : std_logic_vector(31 downto 0);
 signal EX_MEM_rd, MEM_WB_rd : std_logic_vector(4 downto 0);
 signal MEM_ctrl_beq_in, MEM_ctrl_bgt_in, MEM_ctrl_beq_out, MEM_ctrl_bgt_out : std_logic; 
 signal MEM_wb_regw_in, MEM_mem_memw : std_logic;
@@ -291,16 +291,24 @@ begin
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
 	pc_addend_input_mux : mux2to1_32b port map(one, zero, ctrl_stall, pc_addend_input);
-	pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
+pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
      pc : reg32 port map(clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
-    instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr); 
-	adder_pc_1  : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
-    jump_or_cont_mux : mux2to1_32b port map(IF_pc_plus_1, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);	
-     IF_ctrl_jump_or_cont <=  EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (MEM_ctrl_beq_in and MEM_isEqual) or (MEM_ctrl_bgt_in and MEM_isGreaterThan);
+    instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr);
+adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
+    jump_or_cont_mux : mux2to1_32b port map(IF_pc_plus_1, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);
+     IF_ctrl_jump_or_cont <= EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (EX_ctrl_beq_in and EX_isEqual) or (EX_ctrl_bgt_in and EX_isGreaterThan);
+
+--     pc_reset_mux : mux2to1_32b port map(IF_pc_plus_1, zero, reset, IF_cur_pc_in);
+--    pc : reg32 port map(clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
+--     instr_mem: imem port map(IF_next_pc_imem(11 downto 0), '1', clock, IF_cur_instr); 
+--    adder_pc_1  : adder port map(pc_addend_input, IF_next_pc, '0', IF_pc_plus_1, carryout_useless);
+--    pc_jump_or_cont_mux : mux2to1_32b port map(IF_cur_pc_out, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);	
+--    imem_jump_or_cont_mux : mux2to1_32b port map(IF_cur_pc_in, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc_imem);	
+--     IF_ctrl_jump_or_cont <=  EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (EX_ctrl_beq_in and EX_isEqual) or (EX_ctrl_bgt_in and EX_isGreaterThan);
 	
 	------------------- IF/ID LATCH  -------------------------
      
-    IFID_latch : IF_ID_latch port map(clock, reset,
+    IFID_latch : IF_ID_latch port map(not clock, reset,
                                        IF_pc_plus_1, IF_cur_instr, IF_ID_latch_wren,
                                       ID_pc_plus_1, ID_cur_instr);
 	
@@ -390,6 +398,8 @@ begin
 	------------------- EXECUTE STAGE -----------------------
 	
 	branch_adder : adder port map(EX_pc_plus_1, EX_sgn_ext_out, '0', EX_branch_addr);
+	branching_unit : branch_unit port map(EX_isEqual, EX_isGreaterThan, EX_ctrl_beq_in, EX_ctrl_bgt_in, EX_pc_plus_1,
+										  EX_branch_addr, EX_next_pc_br, ctrl_flush);
 	alu_unit : alu port map(EX_alu_inputA, EX_alu_inputB, EX_ctrl_alu_opcode, EX_alu_output, EX_isEqual, EX_isGreaterThan);
 	forward: forward_unit port map(ID_EX_rs, ID_EX_rt, ID_EX_rd, EX_MEM_rd, MEM_WB_rd,
 						      MEM_wb_regw_in, WB_wb_regw_out, forward_A, forward_B);
@@ -437,8 +447,6 @@ begin
 	----------------------- MEMORY STAGE ------------------------------
 
      dmem_unit : dmem port map(MEM_alu_output(11 downto 0), not clock, MEM_regfile_d2_in, MEM_mem_memw, MEM_dmem_output);
-	branching_unit : branch_unit port map(MEM_isEqual, MEM_isGreaterThan, MEM_ctrl_beq_in, MEM_ctrl_bgt_in, MEM_pc_plus_1,
-										  MEM_branch_addr, MEM_next_pc_br, ctrl_flush);
 										  
 	-- MEM_next_bc_br is assigned a value but never read. Not sure where it goes.
 										  
@@ -474,7 +482,7 @@ begin
      keyboard_ack <= WB_ctrl_kb_ack;
 
      ----------------------- INTERSTAGE COMPONENTS ------------------------
-     jump_mux : mux2to1_32b port map(MEM_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
+     jump_mux : mux2to1_32b port map(EX_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
      
     ------------------------- DEBUGGING SIGNAL ASSIGNMENTS ------------------------
 
@@ -501,7 +509,7 @@ begin
      EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
      forwardA_db <= forward_A;
      forwardB_db <= forward_B;
-     MEM_next_pc_br_db <= MEM_next_pc_br;
+     EX_next_pc_br_db <= EX_next_pc_br;
      WB_alu_dmem_output_db <= WB_alu_dmem_output;
      WB_regfile_data_db <= WB_regfile_data;
      WB_reg_kb_mux_db <= WB_reg_kb_mux;
