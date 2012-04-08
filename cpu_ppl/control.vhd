@@ -16,7 +16,6 @@ entity control is
                -- branch controls
                ctrl_beq                       : out std_logic;
                ctrl_bgt						 : out std_logic;
-               ctrl_pc_wren                  : out std_logic; -- kept but unused
                ctrl_jump			          : out std_logic;
                ctrl_jr                       : out std_logic;
                ctrl_jal                      : out std_logic;
@@ -91,12 +90,12 @@ begin
 					   '1' when opcode = "01101" else
 					   '0';
 					   
-     ctrl_pc_wren_temp <= '1' when opcode = "01001" else
-                          '1' when opcode = "01010" else
-                          '1' when opcode = "01011" else
-                          '1' when opcode = "01100" else
-                          '1' when opcode = "01101" else
-                          '0';
+--     ctrl_pc_wren_temp <= '1' when opcode = "01001" else
+--                          '1' when opcode = "01010" else
+--                          '1' when opcode = "01011" else
+--                          '1' when opcode = "01100" else
+--                          '1' when opcode = "01101" else
+--                          '0';
     
      ctrl_dmem_wren_temp <= '1' when opcode = "01000" else
                             '0';
@@ -105,7 +104,7 @@ begin
 						   '0';
 						   
      ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
-     ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
+     --ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
      ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
 	 ctrl_dmem_read <= '1' when opcode = "00111" else
 					   '0';

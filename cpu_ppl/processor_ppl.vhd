@@ -12,7 +12,7 @@ entity processor_ppl is
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
                ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db : out std_logic; -- write enable
-               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db, ctrl_pc_wren_db : out std_logic
+               ctrl_stall_db, ctrl_flush_db, ctrl_rt_mux_db : out std_logic                
           );
 end processor_ppl;
 
@@ -113,7 +113,6 @@ component control
                -- branch controls
                ctrl_beq                       : out std_logic;
                ctrl_bgt						 : out std_logic;
-               ctrl_pc_wren                  : out std_logic; -- kept but unused
                ctrl_jump			          : out std_logic;
                ctrl_jr                       : out std_logic;
                ctrl_jal                      : out std_logic;
@@ -222,7 +221,7 @@ end component;
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
 signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1 : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
-signal pc_stall : std_logic_vector(31 downto 0);
+signal pc_addend_input : std_logic_vector(31 downto 0);
 signal IF_pc_wren, carryout_useless : std_logic;
 --signal IF_mem_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
 --signal IF_wb_regw_in, IF_m_regw_in, IF_ex_regw_in : std_logic; -- regfile write enable
@@ -234,14 +233,15 @@ signal ID_kb_data_in : std_logic_vector(31 downto 0);
 signal ID_mem_memw_in, ID_wb_regw_in, ID_ctrl_mem_read, ID_ctrl_sgn_ext : std_logic; -- write enable
 signal ID_rs, ID_rt, ID_rd, ID_cur_instr_rd, ID_cur_instr_rs, ID_cur_instr_rt: std_logic_vector(4 downto 0);
 signal ID_reg_kb_mux_in, ID_lcd_out, ID_sgn_ext_mux : std_logic;
+signal IF_ID_latch_wren : std_logic;
 signal ID_ctrl_alu_dmem_in : std_logic;
 signal ID_ctrl_kb_ack, ID_kb_ack_out : std_logic;
 signal ID_ctrl_alu_opcode : std_logic_vector(2 downto 0);
 signal ID_cur_instr_imm : std_logic_vector(16 downto 0); 
 signal ID_ctrl_beq_in, ID_ctrl_bgt_in, ID_ctrl_jump_in, ID_ctrl_jr_in, ID_ctrl_jal_in  : std_logic; 
 signal ID_ctrl_beq_out, ID_ctrl_bgt_out, ID_ctrl_jump_out, ID_ctrl_jr_out, ID_ctrl_jal_out  : std_logic; 
-signal ctrl_dmem_wren, ctrl_reg_wren : std_logic; -- temp signals into muxes
-signal ctrl_stall, ctrl_flush, ctrl_rt_mux, ctrl_pc_wren : std_logic;
+signal ctrl_dmem_wren, ctrl_reg_wren:  std_logic; -- temp signals into muxes
+signal ctrl_stall, ctrl_flush, ctrl_rt_mux : std_logic;
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
 signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
@@ -284,12 +284,12 @@ begin
 
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
-	pc_stall_mux : mux2to1_32b port map(zero, one, not ctrl_stall, pc_stall);
+	pc_addend_input_mux : mux2to1_32b port map(one, zero, ctrl_stall, pc_addend_input);
 	pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
-     pc : reg32 port map(clock, IF_pc_wren, reset, IF_cur_pc_in, IF_cur_pc_out);
+     pc : reg32 port map(clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
     instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr); 
-	adder_pc_1  : adder port map(pc_stall, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
-    jump_or_cont_mux : mux2to1_32b port map(jump_addr, IF_pc_plus_1, (EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal), IF_next_pc);	
+	adder_pc_1  : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
+    jump_or_cont_mux : mux2to1_32b port map(IF_pc_plus_1, jump_addr, (EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal), IF_next_pc);	
 	
 	------------------- IF/ID LATCH  -------------------------
      
@@ -315,7 +315,7 @@ begin
 	ctrl_reg_wren_mux: mux2to1_1b port map(ctrl_reg_wren, '0', ctrl_stall or ctrl_flush, ID_wb_regw_in);
 	
 	-- ex signals
-    ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_stall or ctrl_flush, IF_pc_wren);
+--    ctrl_pc_wren_mux: mux2to1_1b port map(ctrl_pc_wren, '0', ctrl_stall or ctrl_flush, IF_pc_wren);
 
      -- jump signals
      ctrl_jump_mux : mux2to1_1b port map(ID_ctrl_jump_in, '0', ctrl_stall or ctrl_flush, ID_ctrl_jump_out);
@@ -335,7 +335,7 @@ begin
 								   
 	sgn_ext_unit: sgn_ext port map(ID_cur_instr_imm, ID_sgn_ext_out);
 	
-	hazards: hazard_detect port map(ID_ctrl_mem_read, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt, ctrl_stall);
+    hazards: hazard_detect port map(ID_ctrl_mem_read, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt, IF_ID_latch_wren, ctrl_stall);
 	
 	control_unit : control port map(ID_cur_instr, 
                                    ctrl_reg_wren, -- this is an input to a mux
@@ -345,7 +345,6 @@ begin
                                    ID_ctrl_sgn_ext,
                                    ID_ctrl_beq_in,
                                    ID_ctrl_bgt_in,
-                                   ctrl_pc_wren,
                                    ID_ctrl_jump_in,
                                    ID_ctrl_jr_in,
                                    ID_ctrl_jal_in,
@@ -492,6 +491,5 @@ begin
      ctrl_stall_db <= ctrl_stall;
      ctrl_flush_db <= ctrl_flush;
      ctrl_rt_mux_db <= ctrl_rt_mux;
-     ctrl_pc_wren_db <= ctrl_pc_wren;
 
 end structure;
