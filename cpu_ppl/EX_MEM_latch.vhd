@@ -7,6 +7,7 @@ entity EX_MEM_latch is
 			isEqual, isGreaterThan : in std_logic;
 			alu_output, regfile_d2_in : in std_logic_vector(31 downto 0);
 			pc_plus_1_in, branch_addr : in std_logic_vector(31 downto 0);
+			ex_mem_rd_in : in std_logic_vector(4 downto 0);
 			reg_kb_mux_in : in std_logic;
 			ctrl_kb_ack_in : in std_logic;
             kb_data_in : in std_logic_vector(31 downto 0);
@@ -16,6 +17,7 @@ entity EX_MEM_latch is
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			pc_plus_1_out, branch_addr_out : out std_logic_vector(31 downto 0);
+			ex_mem_rd_out : out std_logic_vector(4 downto 0);
             reg_kb_mux_out : out std_logic;
             ctrl_kb_ack_out : out std_logic;
             kb_data_out : out std_logic_vector(31 downto 0);
@@ -40,7 +42,14 @@ port (	d   : in std_logic;
         q    : out std_logic);
 end component;
 
+signal ex_mem_rd_in32 : std_logic_vector(31 downto 0);
+signal ex_mem_rd_out32 : std_logic_vector(31 downto 0);
+
 begin
+	
+	ex_mem_rd_in32(31 downto 5) <= "000000000000000000000000000";
+	ex_mem_rd_in32(4 downto 0) <= ex_mem_rd_in;
+	ex_mem_rd_out <= ex_mem_rd_out32(4 downto 0);
 
 	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
 	mem_memw_dffe : dffe port map(mem_memw_in, clock, not reset, '1', '1', mem_memw_out);
@@ -54,6 +63,7 @@ begin
 	
 	reg_kb_mux_dffe : dffe port map(reg_kb_mux_in, clock, not reset, '1', '1', reg_kb_mux_out);
 	
+	ex_mem_rd_reg : reg32 port map(clock, '1', reset, ex_mem_rd_in32, ex_mem_rd_out32);
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output, alu_output_out);
 	regfile_d2_reg : reg32 port map(clock, '1', reset, regfile_d2_in, regfile_d2_out);
 	pc_plus_one_reg : reg32 port map(clock, '1', reset, pc_plus_1_in, pc_plus_1_out);

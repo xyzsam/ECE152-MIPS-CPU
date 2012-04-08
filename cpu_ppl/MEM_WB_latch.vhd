@@ -5,11 +5,13 @@ entity MEM_WB_latch is
 	port (	clock, reset : in std_logic;
 			wb_regw_in : in std_logic;
 			dmem_output_in, alu_output_in : in std_logic_vector(31 downto 0);
+			ex_mem_rd : in std_logic_vector(4 downto 0);
 			kb_data_in : in std_logic_vector(31 downto 0);
                ctrl_alu_dmem_in, ctrl_kb_ack_in : in std_logic;
                reg_input_mux_in : std_logic;
 			wb_regw_out : out std_logic;
 			dmem_output_out, alu_output_out : out std_logic_vector(31 downto 0);
+			mem_wb_rd : out std_logic_vector(4 downto 0);
 			kb_data_out : out std_logic_vector(31 downto 0);
                ctrl_alu_dmem_out, ctrl_kb_ack_out : out std_logic;
                reg_input_mux_out : out std_logic);
@@ -32,13 +34,20 @@ port (	d   : in std_logic;
         q    : out std_logic);
 end component;
 
+signal ex_mem_rd32, mem_wb_rd32 : std_logic_vector(31 downto 0);
+
 begin
 
+	ex_mem_rd32(31 downto 5) <= "000000000000000000000000000";
+	ex_mem_rd32(4 downto 0) <= ex_mem_rd;
+	mem_wb_rd <= mem_wb_rd32(4 downto 0);
+	
 	wb_regw_dffe : dffe port map(wb_regw_in, clock, not reset, '1', '1', wb_regw_out);
 	ctrl_alu_dmem_dffe : dffe port map(ctrl_alu_dmem_in, clock, not reset, '1', '1', ctrl_alu_dmem_out);
 	kb_ack_dffe : dffe port map(ctrl_kb_ack_in, clock, not reset, '1', '1', ctrl_kb_ack_out);
 	reg_input_dffe : dffe port map(reg_input_mux_in, clock, not reset, '1', '1', reg_input_mux_out);
 	kb_data_reg : reg32 port map(clock, '1', reset, kb_data_in, kb_data_out);
+	rd_reg : reg32 port map(clock, '1', reset, ex_mem_rd32, mem_wb_rd32);
 	dmem_output_reg : reg32 port map(clock, '1', reset, dmem_output_in, dmem_output_out);
 	alu_output_reg : reg32 port map(clock, '1', reset, alu_output_in, alu_output_out);
 	

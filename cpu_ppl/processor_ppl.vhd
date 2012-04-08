@@ -55,6 +55,7 @@ component EX_MEM_latch
 			isEqual, isGreaterThan : in std_logic;
 			alu_output, regfile_d2_in : in std_logic_vector(31 downto 0);
 			pc_plus_1_in, branch_addr : in std_logic_vector(31 downto 0);
+			ex_mem_rd_in : in std_logic_vector(4 downto 0);
 			reg_kb_mux_in : in std_logic;
 			ctrl_kb_ack_in : in std_logic;
             kb_data_in : in std_logic_vector(31 downto 0);
@@ -64,22 +65,25 @@ component EX_MEM_latch
 			isEqual_out, isGreaterThan_out : out std_logic;
 			alu_output_out, regfile_d2_out : out std_logic_vector(31 downto 0);
 			pc_plus_1_out, branch_addr_out : out std_logic_vector(31 downto 0);
+			ex_mem_rd_out : out std_logic_vector(4 downto 0);
             reg_kb_mux_out : out std_logic;
             ctrl_kb_ack_out : out std_logic;
             kb_data_out : out std_logic_vector(31 downto 0);
             ctrl_alu_dmem_out : out std_logic;
-            ctrl_beq_out, ctrl_bgt_out : out std_logic); 
+            ctrl_beq_out, ctrl_bgt_out : out std_logic);
 end component;
 
 component MEM_WB_latch 
 	port (	clock, reset : in std_logic;
 			wb_regw_in : in std_logic;
 			dmem_output_in, alu_output_in : in std_logic_vector(31 downto 0);
+			ex_mem_rd : in std_logic_vector(4 downto 0);
 			kb_data_in : in std_logic_vector(31 downto 0);
                ctrl_alu_dmem_in, ctrl_kb_ack_in : in std_logic;
                reg_input_mux_in : std_logic;
 			wb_regw_out : out std_logic;
 			dmem_output_out, alu_output_out : out std_logic_vector(31 downto 0);
+			mem_wb_rd : out std_logic_vector(4 downto 0);
 			kb_data_out : out std_logic_vector(31 downto 0);
                ctrl_alu_dmem_out, ctrl_kb_ack_out : out std_logic;
                reg_input_mux_out : out std_logic);
@@ -381,7 +385,7 @@ begin
      jr_jal_mux : mux2to1_32b port map(EX_sgn_ext_mux_out, EX_regfile_d1, EX_ctrl_jr, EX_jr_jal_output);
 	
 	EX_kb_ack_mux : mux2to1_1b port map(EX_kb_ack_in, '0', ctrl_flush, EX_kb_ack_out);
-	
+	EX_alu_dmem_mux : mux2to1_1b port map(EX_ctrl_alu_dmem_in, '0', ctrl_flush, EX_ctrl_alu_dmem_out);
      lcd_data <= EX_regfile_d1;
      lcd_write <= EX_lcd_in;
 
@@ -391,6 +395,7 @@ begin
                                          EX_isEqual, EX_isGreaterThan,
                                          EX_alu_output, EX_regfile_d2,
                                          EX_pc_plus_1, EX_branch_addr, 
+                                         ID_EX_rd,
                                          EX_reg_kb_mux,
                                          EX_kb_ack_out,
                                          EX_kb_data_in,
@@ -400,6 +405,7 @@ begin
                                          MEM_isEqual, MEM_isGreaterThan,
                                          MEM_alu_output, MEM_regfile_d2_in,
                                          MEM_pc_plus_1, MEM_branch_addr,
+                                         EX_MEM_rd,
                                          MEM_reg_kb_mux,
                                          MEM_ctrl_kb_ack,
                                          MEM_kb_data_in,
@@ -414,6 +420,8 @@ begin
 	branching_unit : branch_unit port map(MEM_isEqual, MEM_isGreaterThan, MEM_ctrl_beq_in, MEM_ctrl_bgt_in, MEM_pc_plus_1,
 										  MEM_branch_addr, MEM_next_pc_br, ctrl_flush);
 										  
+	-- MEM_next_bc_br is assigned a value but never read. Not sure where it goes.
+										  
 --	EX_MEM_rd_out <= EX_MEM_rd;
 	
 	
@@ -424,11 +432,13 @@ begin
      MEMWB_latch : MEM_WB_latch port map(clock, reset,
                                          MEM_wb_regw_in, 
                                          MEM_dmem_output, MEM_alu_output,
+                                         EX_MEM_rd,
                                          MEM_kb_data_in,
                                          MEM_ctrl_alu_dmem_in, MEM_ctrl_kb_ack,
                                          MEM_reg_kb_mux,
                                          WB_wb_regw_out,
                                          WB_dmem_output, WB_alu_output,
+                                         MEM_WB_rd,
                                          WB_kb_data,
                                          WB_ctrl_alu_dmem, WB_ctrl_kb_ack,
                                          WB_reg_kb_mux);

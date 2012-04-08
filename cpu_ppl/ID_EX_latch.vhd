@@ -46,6 +46,9 @@ signal instr_regs, instr_regs_out : std_logic_vector(31 downto 0);
 
 begin
 
+	-- Using initial value X (don't care) for net "instr_regs[31...15]"
+	instr_regs(31 downto 15) <= "00000000000000000";
+	
 	instr_regs(14 downto 10) <= instr_rt;
 	instr_regs(9 downto 5) <= instr_rs;
 	instr_regs(4 downto 0) <= instr_rd;
