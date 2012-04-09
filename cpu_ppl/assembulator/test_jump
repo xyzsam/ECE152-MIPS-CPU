@@ -1,0 +1,37 @@
+.text
+main:
+
+ldi $r1, 5
+ldi $r2, 2
+ldi $r3, 26
+nop
+nop
+nop
+nop
+j target1
+add $r6, $r2, $r3
+target3:
+add $r4, $r1, $r2
+jr $r3
+nop
+nop
+nop
+nop
+target1:
+nop
+nop
+nop
+nop
+add $r0, $r1, $r6
+add $r5, $r4, $r1
+jal target3
+nop
+nop
+nop
+nop
+add $r10, $r1, $r2 # PC = 26
+nop
+nop
+nop
+nop
+.data
