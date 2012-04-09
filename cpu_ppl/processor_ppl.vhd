@@ -9,13 +9,14 @@ entity processor_ppl is
      
 	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
 	WB_alu_dmem_output_db, EX_alu_output_db, 
-     WB_regfile_data_db, jump_addr_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
+     WB_regfile_data_db, jump_addr_db, IF_next_pc_db, MEM_dmem_output_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db     : out std_logic_vector(4 downto 0);
                ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_ctrl_beq_db, ID_ctrl_bgt_db, ID_ctrl_jump_db, ID_ctrl_jr_db, ID_ctrl_jal_db  : out std_logic; 
                ID_mem_memw_db, ID_wb_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
+               MEM_mem_memw_db  : out std_logic;
                ctrl_stall_db, ctrl_flush_db, ctrl_bubble_db, ctrl_rt_mux_db, WB_reg_kb_mux_db : out std_logic;
-               WB_wb_regw_out_db : out std_logic; 
+               WB_wb_regw_out_db, WB_ctrl_alu_dmem_db : out std_logic; 
                forwardA_db, forwardB_db : out std_logic_vector(1 downto 0)
                
           );
@@ -343,7 +344,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 								   
 	sgn_ext_unit: sgn_ext port map(ID_cur_instr_imm, ID_sgn_ext_out);
 	
-    hazards: hazard_detect port map(ID_ctrl_mem_read, ID_cur_instr_rs, ID_cur_instr_rt, ID_EX_rs, ID_EX_rt, IF_ID_latch_wren, ctrl_stall);
+    hazards: hazard_detect port map(ID_ctrl_mem_read, ID_rs, ID_rt, ID_EX_rs, ID_EX_rt, IF_ID_latch_wren, ctrl_stall);
 	
 	control_unit : control port map(ID_cur_instr, 
                                    ctrl_reg_wren, -- this is an input to a mux
@@ -439,7 +440,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	
 	----------------------- MEMORY STAGE ------------------------------
 
-     dmem_unit : dmem port map(MEM_alu_output(11 downto 0), not clock, MEM_regfile_d2_in, MEM_mem_memw, MEM_dmem_output);
+     dmem_unit : dmem port map(MEM_alu_output(11 downto 0), clock, MEM_regfile_d2_in, MEM_mem_memw, MEM_dmem_output);
 										  
 	-- MEM_next_bc_br is assigned a value but never read. Not sure where it goes.
 										  
@@ -502,10 +503,13 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
      forwardA_db <= forward_A;
      forwardB_db <= forward_B;
+     MEM_dmem_output_db <= MEM_dmem_output;
+     MEM_mem_memw_db <= MEM_mem_memw;
      WB_alu_dmem_output_db <= WB_alu_dmem_output;
      WB_regfile_data_db <= WB_regfile_data;
      WB_reg_kb_mux_db <= WB_reg_kb_mux;
      WB_wb_regw_out_db <= WB_wb_regw_out;
+     WB_ctrl_alu_dmem_db <= WB_ctrl_alu_dmem;
      ctrl_stall_db <= ctrl_stall;
      ctrl_flush_db <= ctrl_flush;
      ctrl_rt_mux_db <= ctrl_rt_mux;
