@@ -399,9 +399,9 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 
 	--muxes
 	alu_inputA_mux : mux4to1_32b port map(EX_regfile_d1,  MEM_alu_output, 
-								  WB_dmem_output, zero, forward_A, EX_alu_inputA);
+								  WB_alu_dmem_output, zero, forward_A, EX_alu_inputA);
 	alu_inputB_mux : mux4to1_32b port map(EX_sgn_ext_mux_out,  MEM_alu_output, 
-								  WB_dmem_output, zero, forward_B, EX_alu_inputB);										  
+								  WB_alu_dmem_output, zero, forward_B, EX_alu_inputB);										  
 	wb_ctrl_reg_mux : mux2to1_1b port map(EX_wb_regw_in,  '0', ctrl_flush, EX_wb_regw_out);
 	mem_ctrl_mem_mux : mux2to1_1b port map(EX_mem_memw_in,  '0', ctrl_flush, EX_mem_memw_out);
 	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);

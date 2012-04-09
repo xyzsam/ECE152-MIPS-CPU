@@ -19,12 +19,12 @@ begin
 		ctrl_select1_32(i) <= ctrl_select(1);
 	end generate ctrl_gen;
 	
-	temp_data0 <= (( ctrl_select1_32 and in1) or 
-				  (( not ctrl_select1_32) and in0));
-	temp_data1 <= (( ctrl_select1_32 and in3) or 
-				  (( not ctrl_select1_32) and in2));
+	temp_data0 <= (( ctrl_select0_32 and in1) or 
+				  (( not ctrl_select0_32) and in0));
+	temp_data1 <= (( ctrl_select0_32 and in3) or 
+				  (( not ctrl_select0_32) and in2));
 				  
-	data_out <= (( ctrl_select0_32 and temp_data1) or 
-				(( not ctrl_select0_32) and temp_data0));
+	data_out <= (( ctrl_select1_32 and temp_data1) or 
+				(( not ctrl_select1_32) and temp_data0));
 				
 end structure;
