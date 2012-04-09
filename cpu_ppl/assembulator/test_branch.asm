@@ -4,11 +4,9 @@ main:
 ldi $r1, 5
 ldi $r2, 2
 ldi $r3, 5
-nop
-nop
-nop
-nop
-bgt $r1, $r2, target1
+sw $r3, 0($r1)
+lw $r4, 0($r1)
+bgt $r4, $r2, target1
 add $r6, $r2, $r3
 beq $r1, $r3, target2
 target2:
