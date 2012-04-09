@@ -15,7 +15,7 @@ signal isHazard : std_logic;
 
 begin
 
-	isHazard <= '1' when ((ID_EX_memRead = '1') and ((ID_EX_rt = IF_ID_rs) or (ID_EX_rt = IF_ID_rt))) else
+	isHazard <= '1' when ((ID_EX_memRead = '1') and not (ID_EX_rt = "00000") and ((ID_EX_rt = IF_ID_rs) or (ID_EX_rt = IF_ID_rt))) else
 			     '0';
 			 
 --	temp_gen : for i in 0 to 4 generate
