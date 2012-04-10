@@ -6,7 +6,7 @@ entity control is
 
                -- regfile controls
                ctrl_reg_wren                 : out std_logic;
-               ctrl_rt_mux                 : out std_logic;
+               ctrl_rt_mux                 : out std_logic_vector(1 downto 0);
                ctrl_reg_input_mux			: out std_logic;
 			   
                -- alu controls 
@@ -47,11 +47,17 @@ begin
                            '0' when opcode = "01111" else
                            '1';
     
-     ctrl_rt_mux <=   '1' when opcode = "00111" else 
-                      '1' when opcode = "01000" else
-                      '1' when opcode = "01001" else
-                      '1' when opcode = "01010" else
-                      '0'; 
+     ctrl_rt_mux <=   "00" when opcode = "00000" else
+					  "00" when opcode = "00001" else
+					  "00" when opcode = "00010" else
+					  "00" when opcode = "00011" else
+					  "00" when opcode = "00100" else
+					  "00" when opcode = "00101" else
+					  "01" when opcode = "00111" else 
+                      "01" when opcode = "01000" else
+                      "01" when opcode = "01001" else
+                      "01" when opcode = "01010" else
+                      "10"; 
 
      ctrl_sign_ex_mux <= '1' when opcode = "00110" else 
                          '1' when opcode = "00111" else 
