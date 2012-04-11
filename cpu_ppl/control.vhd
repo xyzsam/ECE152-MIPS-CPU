@@ -109,12 +109,12 @@ begin
 	 ctrl_reg_input_mux <= '1' when opcode = "01110" else
 						   '0';
 						   
-     ctrl_reg_wren <= ctrl_reg_wren_temp after 10ns;
+     ctrl_reg_wren <= ctrl_reg_wren_temp;
      --ctrl_pc_wren <= ctrl_pc_wren_temp after 10ns;
-     ctrl_dmem_wren <= ctrl_dmem_wren_temp after 10ns;
+     ctrl_dmem_wren <= ctrl_dmem_wren_temp;
 	 ctrl_dmem_read <= '1' when opcode = "00111" else
 					   '0';
-	 ctrl_jump <= ctrl_jump_temp after 10ns;
+	 ctrl_jump <= ctrl_jump_temp;
 
      ctrl_keyboard_ack <= '1' when opcode = "01110" else
 						  '0';

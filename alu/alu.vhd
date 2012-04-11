@@ -37,8 +37,11 @@ signal shifter_output: std_logic_vector(31 downto 0);
 signal and_output, or_output : std_logic_vector(31 downto 0);
 signal mux_dummy_input : std_logic_vector(31 downto 0);
 signal equal 	: std_logic;
+signal a_xnor_b : std_logic_vector(31 downto 0);
+
 begin
 
+	
 	mux_dummy_input <= "00000000000000000000000000000000";
 	ctrl_rightshift <= (ctrl_ALUopcode(0) xnor '1') and
 					   (ctrl_ALUopcode(1) xnor '0') and
@@ -49,38 +52,40 @@ begin
 	shifter0 : shifter port map(data_operandA, ctrl_rightshift, data_operandB(4 downto 0), shifter_output);
 	mux	   : mux8to1 port map(adder_output0, adder_output1, and_output, or_output, shifter_output, shifter_output, 
 							  mux_dummy_input, mux_dummy_input, ctrl_ALUopcode, data_result );
-	equal <= not (adder_output1(0) or
-					adder_output1(1) or 
-					adder_output1(2) or 
-					adder_output1(3) or 
-					adder_output1(4) or 
-					adder_output1(5) or 
-					adder_output1(6) or 
-					adder_output1(7) or 
-					adder_output1(8) or 
-					adder_output1(9) or 
-					adder_output1(10) or 
-					adder_output1(11) or 
-					adder_output1(12) or 
-					adder_output1(13) or 
-					adder_output1(14) or 
-					adder_output1(15) or 
-					adder_output1(16) or 
-					adder_output1(17) or 
-					adder_output1(18) or 
-					adder_output1(19) or 
-					adder_output1(20) or 
-					adder_output1(21) or 
-					adder_output1(22) or 
-					adder_output1(23) or 
-					adder_output1(24) or 
-					adder_output1(25) or 
-					adder_output1(26) or 
-					adder_output1(27) or 
-					adder_output1(28) or 
-					adder_output1(29) or 
-					adder_output1(30) or 
-					adder_output1(31));
+	equal <= (		a_xnor_b(0) and
+					a_xnor_b(1) and 
+					a_xnor_b(2) and 
+					a_xnor_b(3) and 
+					a_xnor_b(4) and 
+					a_xnor_b(5) and 
+					a_xnor_b(6) and 
+					a_xnor_b(7) and 
+					a_xnor_b(8) and 
+					a_xnor_b(9) and 
+					a_xnor_b(10) and 
+					a_xnor_b(11) and 
+					a_xnor_b(12) and 
+					a_xnor_b(13) and 
+					a_xnor_b(14) and 
+					a_xnor_b(15) and 
+					a_xnor_b(16) and 
+					a_xnor_b(17) and 
+					a_xnor_b(18) and 
+					a_xnor_b(19) and 
+					a_xnor_b(20) and 
+					a_xnor_b(21) and 
+					a_xnor_b(22) and 
+					a_xnor_b(23) and 
+					a_xnor_b(24) and 
+					a_xnor_b(25) and 
+					a_xnor_b(26) and 
+					a_xnor_b(27) and 
+					a_xnor_b(28) and 
+					a_xnor_b(29) and 
+					a_xnor_b(30) and 
+					a_xnor_b(31));
+		
+		a_xnor_b <= data_operandA xnor data_operandB;
 		
 		isEqual <= equal;
 		isGreaterThan <= (not equal) and (adder_output1(31) xnor '1');			
