@@ -11,10 +11,11 @@ entity processor is
 	--IF_cur_instr_pc_db : out std_logic_vector(11 downto 0);
 	IF_jump_db : out std_logic;
 	ID_jump_db : out std_logic;
-	IF_cur_pc_out_db, ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
+	--IF_cur_pc_out_db,
+	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
        EX_alu_inputA_db, EX_alu_inputB_db,
 	EX_alu_output_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
-	--WB_regfile_data_db : out std_logic_vector(31 downto 0);
+	WB_regfile_data_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db, EX_rs_db, EX_rt_db, EX_rd_db, MEM_rd_db, WB_rd_db    : out std_logic_vector(4 downto 0);
                --ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_mem_memw_db, ID_wb_regw_db, MEM_regw_db, WB_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
@@ -507,7 +508,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	 IF_jump_db <= IF_ctrl_jump_or_cont;
      --IF_cur_instr_pc_db <= IF_cur_pc_in(11 downto 0);
      --IF_cur_instr_db <= IF_cur_instr;
-     IF_cur_pc_out_db <= IF_cur_pc_out;
+     --IF_cur_pc_out_db <= IF_cur_pc_out;
      ID_jump_db <= ID_ctrl_jr_out;
      ID_cur_instr_db <= ID_cur_instr;
      ID_pc_plus_1_db <= ID_pc_plus_1;
@@ -542,7 +543,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      -- MEM_dmem_output_db <= MEM_dmem_output;
      MEM_mem_memw_db <= MEM_mem_memw;
      -- WB_alu_dmem_output_db <= WB_alu_dmem_output;
-     --WB_regfile_data_db <= WB_regfile_data;
+     WB_regfile_data_db <= WB_regfile_data;
      --WB_reg_kb_mux_db <= WB_reg_kb_mux;
      WB_wb_regw_out_db <= WB_wb_regw_out;
      WB_ctrl_alu_dmem_db <= WB_ctrl_alu_dmem;
