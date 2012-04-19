@@ -38,26 +38,30 @@ sw $r8, 0($r28)
 sw $r9, 1($r28)
 sw $r10, 2($r28)
 sw $r11, 3($r28)
+sw $r12, 4($r28)
 
 ldi $r4, 1024
-ldi $r5, 1027
-jal mem_shift_down
+ldi $r5, 1028
+jal mem_shift_up
 
 
 lw $r8, 0($r28)
 lw $r9, 1($r28)
 lw $r10, 2($r28)
 lw $r11, 3($r28)
+lw $r12, 4($r28)
 
 addi $r8, $r8, 48
 addi $r9, $r9, 48
 addi $r10, $r10, 48
 addi $r11, $r11, 48
+addi $r12, $r12, 48
 
 output $r8
 output $r9
 output $r10
 output $r11
+output $r12
 
 halt
 
@@ -156,9 +160,9 @@ sw $r16, 1($r29) # callee saved registers
 add $r16, $r5, $r0 # $r16 = current location in mem. put it here to avoid stall
 sw $r17, 2($r29)
 sw $r18, 3($r29)
-sw $r18, 4($r29)
+sw $r19, 4($r29)
 mem_shift_down_loop:
-beq $r16, $r4, mem_shift_ret # if current loc = top of block, return
+beq $r16, $r4, mem_shift_down_ret # if current loc = top of block, return
 sub $r17, $r16, $r4 # distance from top of block
 beq $r17, $r11, mem_dec_1 # if distance is only 1 word
 sub $r16, $r16, $r10 # loop counter, subtract 2 words
@@ -172,7 +176,7 @@ lw $r18, 0($r16)
 sw $r18, 1($r16) # will have to stomach a stall here..
 # continue straight to return code then
 
-mem_shift_ret:
+mem_shift_down_ret:
 lw $r8, 0($r29) # load last word
 lw $r16, 1($r29) # callee saved registers
 lw $r17, 2($r29)
@@ -185,6 +189,51 @@ ret
 mem_dec_1:
 sub $r16, $r16, $r11 # subtract 4 instead
 j mem_shift_down_resume_1
+
+
+#==================MEMORY SHIFT UP=========================
+# circularly shifts a block of dmem up by a word. 
+# arguments are the starting and end word addresses.
+# the top word in the block is moved to the down
+mem_shift_up:
+ldi $r8, 8 # stack offset
+sub $r29, $r29, $r10
+lw $r8, 0($r4) # load top word into $r10
+sub $r9, $r5, $r4 # size of block - 1
+addi $r9, $r9, 1 # size of block
+sw $r8, 0($r29) # save first word into mem
+ldi $r10, 2 # increment of 2 words to avoid lots of stalls
+ldi $r11, 1 # increment of 1 word to account for even cases
+sw $r16, 1($r29) # callee saved registers
+add $r16, $r4, $r0 # $r16 = current location in mem. put it here to avoid stall
+sw $r17, 2($r29)
+sw $r18, 3($r29)
+sw $r19, 4($r29)
+mem_shift_up_loop:
+beq $r16, $r5, mem_shift_up_ret # if current loc = bottom of block, return
+sub $r17, $r5, $r16 # distance from bottom of block
+beq $r17, $r11, mem_shift_up_resume_1 # if distance is only 1 word
+lw $r18, 1($r16) # load two words at a time and interleave stores to avoid stalls
+lw $r19, 2($r16)
+sw $r18, 0($r16)
+sw $r19, 1($r16)
+add $r16, $r16, $r10 # loop counter, add 2 words
+j mem_shift_up_loop
+mem_shift_up_resume_1:
+lw $r18, 1($r16)
+sw $r18, 0($r16) # will have to stomach a stall here..
+
+# continue straight to return code then
+
+mem_shift_up_ret:
+lw $r8, 0($r29) # load top word
+lw $r16, 1($r29) # callee saved registers
+lw $r17, 2($r29)
+lw $r18, 3($r29)
+lw $r18, 4($r29)
+sw $r8, 0($r5) # save top word to last block
+addi $r29, $r29, 8 # push stack back
+ret
 
 halt
 
