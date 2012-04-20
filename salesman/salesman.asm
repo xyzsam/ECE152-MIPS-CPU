@@ -7,7 +7,7 @@
 # $r4-$r7 = $a0-$a3
 # $r8-$r15 = $t0 -$t7 caller saves
 # $r16-$r23 = $s0-$s7 callee saves
-# $r24, $r25 = caller saves
+# $r24, $r25 = start and end loc of availablePoints
 # $r28 = pointer to global data
 # $r29 = stack pointer
 # $r30 = frame pointer
@@ -15,62 +15,248 @@
 #
 # Global variables, in order from $r28
 # numPoints
-# xp1, yp1, xp2, yp2...
 # minPath
-# stl?
+# xp1, yp1, xp2, yp2...
+# availablePoints
 
 
 .text
 #===============MAIN==============================
 main:
-ldi $r29, 32768
-ldi $r28, 1024
+# hardcode addresses
+ldi $r29, 32768 # stack pointer
+ldi $r28, 1024 # start of global data
+ldi $r24, 1030 # start of availablePoints
+ldi $r25, 1031 # end of availablePoints
+
+addi $r29, $r29, -8 # stack
 
 # for testing purposes, I'm hard coding some input
 # coordinates
-ldi $r8, 5
-ldi $r9, 4
-ldi $r10, 3
+ldi $r8, 0
+ldi $r9, 0
+ldi $r10, 2
 ldi $r11, 1
 ldi $r12, 2 # numPoints
+ldi $r13, 268435455 # minPath
+ldi $r2, 1 # for availablePoints
 
-sw $r8, 0($r28)
-sw $r9, 1($r28)
-sw $r10, 2($r28)
-sw $r11, 3($r28)
-sw $r12, 4($r28)
+# store in global area
+sw $r12, 0($r28)
+sw $r13, 1($r28)
+sw $r8, 2($r28)
+sw $r9, 3($r28)
+sw $r10, 4($r28)
+sw $r11, 5($r28)
+sw $r0, 0($r24)
+sw $r2, 1($r24)
 
-ldi $r4, 1024
-ldi $r5, 1028
+# manipulation of queue
+addi $r4, $r24, 0
+addi $r5, $r25, 0
+# no need to save $r8-$r11 - they're already saved
 jal mem_shift_up
 
+addi $r25, $r25, -1 # decrement queue size
 
-lw $r8, 0($r28)
-lw $r9, 1($r28)
-lw $r10, 2($r28)
-lw $r11, 3($r28)
-lw $r12, 4($r28)
+# input arguments to find_path
+addi $r4, $r12, -1 # numPoints - 1
+ldi $r5, 0
+ldi $r6, 0
+jal find_path
 
-addi $r8, $r8, 48
-addi $r9, $r9, 48
-addi $r10, $r10, 48
-addi $r11, $r11, 48
-addi $r12, $r12, 48
-
-output $r8
-output $r9
-output $r10
-output $r11
-output $r12
+lw $r6, 1($r28) # get minPath
+addi $r6, $r6, 48 # ASCII offset
+output $r6
 
 halt
+
+#===============INPUT==========================
+
+input_start:
+add $r29, $r29, -4
+ldi $r9, 10 # line feed
+ldi $r10, 13 # carriage return
+ldi $r11, 44 # comma
+sw $ra, 0($r29)
+sw $r16, 1($r29)
+sw $r17, 2($r29)
+jal input_loop # get number of points
+
+sw $r12, 0($r28) # save numPoints
+sll $r14, $r12, 1 # move numPoints to $r14, multiply by 2 (x and y)
+ldi $r15, 0
+addi $r16, $r28, 3 # global data offset (2 + 1 for first data point)
+
+input_coord_loop:
+beq $r15, $r14, input_end
+jal input_loop
+sw $r12, 0($r16)
+addi $r16, $r16, 1 # increment address offset
+addi $r15, $r15, 1 # increment counter
+addi $r4, $r12, 0 # output argument
+jal output
+j input_coord_loop
+
+input_loop:
+input $r8
+beq $r8, $r11, input_ret
+beq $r8, $r9, input_ret
+beq $r8, $r10, input_ret
+# $r12 holds the number
+sub $r8, $r8, 48
+ldi $r13, 3
+sll $r17, $r12, $r13 # multiply by 10
+add $r17, $r17, $r12
+add $r17, $r17, $r12
+add $r12, $r12, $r8 # add the number just inputted
+j input_loop
+
+input_ret:
+ret
+
+input_end:
+lw $r17, 2($r29)
+lw $r16, 1($r29)
+lw $ra, 0($r29)
+add $r29, $r29, 4
+ret
+
+
+#===============OUTPUT=========================
+# prints the number in $r4
+div:
+ldi $r4,0 #initialize quotient to 0
+ldi $r2,10 #shift 10 left
+ldi $r6,27
+sll $r2,$r2,$r6
+
+divloop:
+ldi $r3,5
+beq $r2,$r3,enddiv
+j skip
+
+skip:
+sub $r3,$r1,$r2 #remainder - divisor
+bgt $r0,$r3,divless
+
+divgreater:
+sub $r1,$r1,$r2 #remainder = remainder - divisor
+ldi $r6,1
+sll $r4,$r4,$r6
+addi $r4,$r4,1 #add 1 into quotient
+srl $r2,$r2,$r6
+j divloop
+
+divless:
+ldi $r6,1
+sll $r4,$r4,$r6 #add 0 into quotient
+srl $r2,$r2,$r6
+j divloop
+
+enddiv:
+ret
+
+
+output:
+addi $r29,$r29,-2 #push stack
+ldi $r3,-1
+sw $r3,0($r29)
+sw $ra,1($r29)
+ldi $r4,1
+
+intloop:
+jal div
+
+addi $r29,$r29,-1 #push stack
+sw $r1,0($r29) #store remainder on stack
+add $r1,$r4,$r0 #move quotient into new dividend
+beq $r1,$r0,outputint
+j intloop
+
+outputint:
+ldi $r2,48 #ascii offset = 48
+ldi $r4,1
+outputloop:
+lw $r1,0($r29)
+addi $r29,$r29,1 #pop stack
+ldi $r3,-1
+beq $r1,$r3,finishoutput
+j outputloop1
+finishoutput:
+lw $ra,0($r29)
+addi $r29,$r29,1
+ret
+
+outputloop1:
+add $r1,$r1,$r2
+output $r1
+j outputloop
+
+#===============FIND PATH======================
+# recursively searches for the path that minimizes the distance traveled
+# $a0($r4) = pointsLeft, $a1($r5) = prevPoint, $a2($r6) = dist
+find_path:
+addi $r29, $r29, -8
+sw $ra, 0($r29)
+sw $r4, 3($r29) # save pointsLeft
+sw $r5, 4($r29) # save prevPoint
+sw $r6, 5($r29) # save dist
+
+beq $r4, $r0, find_path_ret1 # if (points_left == 0) go to ret1
+ldi $r9, 0 # counter = 0
+
+find_path_loop:
+beq $r9, $r4, find_path_ret2 # for loop
+lw $r20, 0($r24) # ptOut = availablePoints.peek()
+sw $r9, 1($r29) # caller saved registers
+sw $r20, 2($r29) # save ptOut for when recursion returns
+addi $r4, $r24, 0 # arguments to mem_shift_up. we can modify mem_shift_up to just use thesedirectly later.
+addi $r5, $r25, 0
+jal mem_shift_up # availablePoints.remove()
+addi $r25, $r25, -1 # decrease size of queue
+lw $r5, 4($r29) # prevPoint argument
+addi $r4, $r20, 0 # ptOut argument
+jal distance # $r2 = distance(ptOut, prevPoint)
+lw $r4, 3($r29)
+addi $r4, $r4, -1 # pointsLeft - 1
+add $r6, $r6, $r2 # dist = dist + toNextPoint ($r2)
+addi $r5, $r20, 0 # move ptout to second argument register
+jal find_path # recursive call
+lw $r20, 2($r29) # load ptOut
+lw $r4, 3($r29) # load pointsLeft
+addi $r25, $r25, 1 # expand size of availablePoints
+sw $r20, 0($r25) # availablePoints.add(ptOut)
+addi $r9, $r9, 1 # counter ++
+j find_path_loop
+
+lw $ra, 0($r29)
+addi $r29, $r29, 8
+ret
+
+find_path_ret1:
+lw $r8, 1($r28)
+bgt $r8, $r6, find_path_new_min # if (minPath > dist)
+lw $ra, 0($r29)
+addi $r29, $r29, 8
+ret
+
+find_path_new_min:
+sw $r6, 1($r28) # minPath = dist
+lw $ra, 0($r29)
+addi $r29, $r29, 8
+ret
+
+find_path_ret2:
+lw $ra, 0($r29)
+addi $r29, $r29, 8
+ret
 
 #===============DISTANCE FORMULA================
 distance:
 # $a0 = pt1, $a1 = pt2
 
-ldi $r8, 16
-sub $r29, $r29, $r8 # push stack down
+addi $r29, $r29, -16  # push stack down
 # save s0-s7?
 add $r8, $r4, $r0 # mov a0 to t0
 add $r9, $r5, $r0 # mov a1 to t1
@@ -79,9 +265,9 @@ add $r9, $r5, $r0 # mov a1 to t1
 ldi $r16, 1
 sll $r17, $r8, $r16 # s1 = a0 * 2 : offset of pt1
 sll $r18, $r9, $r16 # s2 = a1 * 2 : offset of pt2
-addi $r16, $r28, 1
-add $r17, $r16, $r17 # pt1_x_addr = ($r28 + 1) + s1
-add $r18, $r16, $r18 # pt2_x_addr = ($r28 + 1) + s2
+addi $r16, $r28, 2
+add $r17, $r16, $r17 # pt1_x_addr = ($r28 + 2) + s1
+add $r18, $r16, $r18 # pt2_x_addr = ($r28 + 2) + s2
 
 # load in coordinates. use t0-t7 to avoid having to save other registers
 lw $r8, 0($r17)
@@ -109,8 +295,7 @@ ret
 
 #============BOOTH MULTIPLICATION=================
 mult: 
-ldi $r15, 8
-add $r8, $r4, $r0 # mov a0 to t0. tempM
+addi $r8, $r4, 0 # mov a0 to t0. tempM
 ldi $r15, 1
 sll $r9, $r5, $r15 # tempX = $r5 << 1
 ldi $r15, 16 # limit of counter
@@ -148,8 +333,7 @@ ret
 # arguments are the starting and end word addresses.
 # the last word in the block is moved to the top
 mem_shift_down:
-ldi $r8, 8 # stack offset
-sub $r29, $r29, $r10
+addi $r29, $r29, -8 # stack
 lw $r8, 0($r5) # load last word into $r10
 sub $r9, $r5, $r4 # size of block - 1
 addi $r9, $r9, 1 # size of block
@@ -196,8 +380,7 @@ j mem_shift_down_resume_1
 # arguments are the starting and end word addresses.
 # the top word in the block is moved to the down
 mem_shift_up:
-ldi $r8, 8 # stack offset
-sub $r29, $r29, $r10
+addi $r29, $r29, -8
 lw $r8, 0($r4) # load top word into $r10
 sub $r9, $r5, $r4 # size of block - 1
 addi $r9, $r9, 1 # size of block
@@ -205,10 +388,10 @@ sw $r8, 0($r29) # save first word into mem
 ldi $r10, 2 # increment of 2 words to avoid lots of stalls
 ldi $r11, 1 # increment of 1 word to account for even cases
 sw $r16, 1($r29) # callee saved registers
-add $r16, $r4, $r0 # $r16 = current location in mem. put it here to avoid stall
 sw $r17, 2($r29)
 sw $r18, 3($r29)
 sw $r19, 4($r29)
+add $r16, $r4, $r0 # $r16 = current location in mem. 
 mem_shift_up_loop:
 beq $r16, $r5, mem_shift_up_ret # if current loc = bottom of block, return
 sub $r17, $r5, $r16 # distance from bottom of block
