@@ -14,9 +14,12 @@
 # $r31 = return addr
 #
 # Global variables, in order from $r28
-# numPoints
-# minPath
-# xp1, yp1, xp2, yp2...
+# 0($28) numPoints
+# 1($28) minPath
+# 2($28) xp1,
+# 3($28) yp1,
+# 4($28) xp2,
+# 5($28) yp2...
 # availablePoints
 
 
@@ -26,30 +29,15 @@ main:
 # hardcode addresses
 ldi $r29, 32768 # stack pointer
 ldi $r28, 1024 # start of global data
-ldi $r24, 1030 # start of availablePoints
-ldi $r25, 1031 # end of availablePoints
 
 addi $r29, $r29, -8 # stack
-
-# for testing purposes, I'm hard coding some input
-# coordinates
-ldi $r8, 0
-ldi $r9, 0
-ldi $r10, 2
-ldi $r11, 1
-ldi $r12, 2 # numPoints
 ldi $r13, 268435455 # minPath
-ldi $r2, 1 # for availablePoints
-
-# store in global area
-sw $r12, 0($r28)
 sw $r13, 1($r28)
-sw $r8, 2($r28)
-sw $r9, 3($r28)
-sw $r10, 4($r28)
-sw $r11, 5($r28)
-sw $r0, 0($r24)
-sw $r2, 1($r24)
+
+jal input_start
+# store in global area
+#lw $r0, 0($r24)
+#lw $r2, 1($r24)
 
 # manipulation of queue
 addi $r4, $r24, 0
@@ -60,6 +48,7 @@ jal mem_shift_up
 addi $r25, $r25, -1 # decrement queue size
 
 # input arguments to find_path
+lw $r12, 0($r28)
 addi $r4, $r12, -1 # numPoints - 1
 ldi $r5, 0
 ldi $r6, 0
@@ -74,7 +63,7 @@ halt
 #===============INPUT==========================
 
 input_start:
-add $r29, $r29, -4
+addi $r29, $r29, -4
 ldi $r9, 10 # line feed
 ldi $r10, 13 # carriage return
 ldi $r11, 44 # comma
@@ -84,27 +73,35 @@ sw $r17, 2($r29)
 jal input_loop # get number of points
 
 sw $r12, 0($r28) # save numPoints
-sll $r14, $r12, 1 # move numPoints to $r14, multiply by 2 (x and y)
+ldi $r18, 1
+sll $r14, $r12, $r18 # move numPoints to $r14, multiply by 2 (x and y)
 ldi $r15, 0
-addi $r16, $r28, 3 # global data offset (2 + 1 for first data point)
+addi $r16, $r28, 2 # global data offset (1 + 1 for first data point)
+add $r24, $r16, $r14
 
 input_coord_loop:
 beq $r15, $r14, input_end
+ldi $r12, 1
+srl $r18, $r15, $r12 # shift by 1
+add $r20, $r24, $r18 # add the value to $r24
+add $r25, $r0, $r20  # increment $r25 every other time
+sw $r18, 0($r20)
+ldi $r12, 0
 jal input_loop
 sw $r12, 0($r16)
 addi $r16, $r16, 1 # increment address offset
 addi $r15, $r15, 1 # increment counter
-addi $r4, $r12, 0 # output argument
-jal output
+#addi $r4, $r12, 0 # output argument
 j input_coord_loop
 
 input_loop:
 input $r8
+output $r8
 beq $r8, $r11, input_ret
 beq $r8, $r9, input_ret
 beq $r8, $r10, input_ret
 # $r12 holds the number
-sub $r8, $r8, 48
+addi $r8, $r8, -48
 ldi $r13, 3
 sll $r17, $r12, $r13 # multiply by 10
 add $r17, $r17, $r12
@@ -119,39 +116,39 @@ input_end:
 lw $r17, 2($r29)
 lw $r16, 1($r29)
 lw $ra, 0($r29)
-add $r29, $r29, 4
+addi $r29, $r29, 4
 ret
 
 
 #===============OUTPUT=========================
-# prints the number in $r4
+# prints the number in $r11
 div:
-ldi $r4,0 #initialize quotient to 0
-ldi $r2,10 #shift 10 left
-ldi $r6,27
-sll $r2,$r2,$r6
+ldi $r11,0 #initialize quotient to 0
+ldi $r9, 10 #shift 10 left
+ldi $r13,27
+sll $r9,$r9,$r13
 
 divloop:
-ldi $r3,5
-beq $r2,$r3,enddiv
+ldi $r10,5
+beq $r9,$r10,enddiv
 j skip
 
 skip:
-sub $r3,$r1,$r2 #remainder - divisor
-bgt $r0,$r3,divless
+sub $r10,$r8,$r9 #remainder - divisor
+bgt $r0,$r10,divless
 
 divgreater:
-sub $r1,$r1,$r2 #remainder = remainder - divisor
-ldi $r6,1
-sll $r4,$r4,$r6
-addi $r4,$r4,1 #add 1 into quotient
-srl $r2,$r2,$r6
+sub $r8,$r8,$r11 #remainder = remainder - divisor
+ldi $r13,1
+sll $r11,$r11,$r13
+addi $r11,$r11,1 #add 1 into quotient
+srl $r9,$r9,$r13
 j divloop
 
 divless:
-ldi $r6,1
-sll $r4,$r4,$r6 #add 0 into quotient
-srl $r2,$r2,$r6
+ldi $r13,1
+sll $r11,$r11,$r13 #add 0 into quotient
+srl $r9,$r9,$r13
 j divloop
 
 enddiv:
@@ -159,29 +156,30 @@ ret
 
 
 output:
+addi $r9, $r4, 0
 addi $r29,$r29,-2 #push stack
-ldi $r3,-1
-sw $r3,0($r29)
+ldi $r10,-1
+sw $r10,0($r29)
 sw $ra,1($r29)
-ldi $r4,1
+ldi $r11,1
 
 intloop:
 jal div
 
 addi $r29,$r29,-1 #push stack
-sw $r1,0($r29) #store remainder on stack
-add $r1,$r4,$r0 #move quotient into new dividend
-beq $r1,$r0,outputint
+sw $r8,0($r29) #store remainder on stack
+add $r8,$r11,$r0 #move quotient into new dividend
+beq $r8,$r0,outputint
 j intloop
 
 outputint:
-ldi $r2,48 #ascii offset = 48
-ldi $r4,1
+ldi $r9,48 #ascii offset = 48
+ldi $r11,1
 outputloop:
-lw $r1,0($r29)
+lw $r8,0($r29)
 addi $r29,$r29,1 #pop stack
-ldi $r3,-1
-beq $r1,$r3,finishoutput
+ldi $r10,-1
+beq $r8,$r10,finishoutput
 j outputloop1
 finishoutput:
 lw $ra,0($r29)
@@ -189,8 +187,8 @@ addi $r29,$r29,1
 ret
 
 outputloop1:
-add $r1,$r1,$r2
-output $r1
+add $r8,$r8,$r10
+output $r8
 j outputloop
 
 #===============FIND PATH======================
@@ -293,7 +291,7 @@ lw $ra, 3($r29)
 addi $r29, $r29, 16 # stack
 ret
 
-#============BOOTH MULTIPLICATION=================
+#=================BOOTH MULTIPLICATION=================
 mult: 
 addi $r8, $r4, 0 # mov a0 to t0. tempM
 ldi $r15, 1
