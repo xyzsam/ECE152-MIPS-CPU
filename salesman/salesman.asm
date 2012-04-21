@@ -57,6 +57,7 @@ jal find_path
 lw $r4, 1($r28)
 jal output
 
+
 halt
 
 #===============INPUT==========================
@@ -120,7 +121,7 @@ ret
 
 
 #===============OUTPUT=========================
-# prints the number in $r11
+# prints the number in $r4
 div:
 ldi $r11,0 #initialize quotient to 0
 ldi $r9, 10 #shift 10 left
@@ -155,7 +156,7 @@ ret
 
 
 output:
-addi $r9, $r4, 0
+addi $r8, $r4, 0 # mov $r4 to $r8
 addi $r29,$r29,-2 #push stack
 ldi $r10,-1
 sw $r10,0($r29)
