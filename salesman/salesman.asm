@@ -90,6 +90,9 @@ sw $r18, 0($r20)
 ldi $r12, 0
 jal input_loop
 sw $r12, 0($r16)
+addi $r12, $r12, 48
+output $r12
+output $r9
 addi $r16, $r16, 1 # increment address offset
 addi $r15, $r15, 1 # increment counter
 #addi $r4, $r12, 0 # output argument
@@ -228,6 +231,7 @@ lw $r9, 1($r29) # load counter
 addi $r25, $r25, 1 # expand size of availablePoints
 sw $r20, 0($r25) # availablePoints.add(ptOut)
 addi $r9, $r9, 1 # counter ++
+ldi $r6, 0 # clear out toNextPoint
 j find_path_loop
 
 lw $ra, 0($r29)
