@@ -54,9 +54,8 @@ ldi $r5, 0
 ldi $r6, 0
 jal find_path
 
-lw $r6, 1($r28) # get minPath
-addi $r6, $r6, 48 # ASCII offset
-output $r6
+lw $r4, 1($r28)
+jal output
 
 halt
 
@@ -138,7 +137,7 @@ sub $r10,$r8,$r9 #remainder - divisor
 bgt $r0,$r10,divless
 
 divgreater:
-sub $r8,$r8,$r11 #remainder = remainder - divisor
+sub $r8,$r8,$r9 #remainder = remainder - divisor
 ldi $r13,1
 sll $r11,$r11,$r13
 addi $r11,$r11,1 #add 1 into quotient
@@ -187,7 +186,7 @@ addi $r29,$r29,1
 ret
 
 outputloop1:
-add $r8,$r8,$r10
+add $r8,$r8,$r9
 output $r8
 j outputloop
 
@@ -223,6 +222,7 @@ addi $r5, $r20, 0 # move ptout to second argument register
 jal find_path # recursive call
 lw $r20, 2($r29) # load ptOut
 lw $r4, 3($r29) # load pointsLeft
+lw $r9, 1($r29) # load counter
 addi $r25, $r25, 1 # expand size of availablePoints
 sw $r20, 0($r25) # availablePoints.add(ptOut)
 addi $r9, $r9, 1 # counter ++
