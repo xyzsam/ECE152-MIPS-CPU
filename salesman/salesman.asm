@@ -45,6 +45,7 @@ addi $r5, $r25, 0
 # no need to save $r8-$r11 - they're already saved
 jal mem_shift_up
 
+
 addi $r25, $r25, -1 # decrement queue size
 
 # input arguments to find_path
@@ -80,7 +81,7 @@ addi $r16, $r28, 2 # global data offset (1 + 1 for first data point)
 add $r24, $r16, $r14
 
 input_coord_loop:
-beq $r15, $r14, input_end
+beq $r14, $r15, input_end
 ldi $r12, 1
 srl $r18, $r15, $r12 # shift by 1
 add $r20, $r24, $r18 # add the value to $r24
@@ -106,7 +107,7 @@ ldi $r13, 3
 sll $r17, $r12, $r13 # multiply by 10
 add $r17, $r17, $r12
 add $r17, $r17, $r12
-add $r12, $r12, $r8 # add the number just inputted
+add $r12, $r17, $r8 # add the number just inputted
 j input_loop
 
 input_ret:
@@ -271,8 +272,10 @@ add $r18, $r16, $r18 # pt2_x_addr = ($r28 + 2) + s2
 # load in coordinates. use t0-t7 to avoid having to save other registers
 lw $r8, 0($r17)
 lw $r9, 1($r17)
+
 lw $r10, 0($r18)
 lw $r11, 1($r18)
+
 sw $r9, 0($r29) # caller saved registers
 sw $r11, 1($r29)
 sw $ra, 3($r29) # save $ra
