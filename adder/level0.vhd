@@ -4,7 +4,6 @@ use ieee.std_logic_1164.all;
 entity level0 is
 	port( a : in std_logic;
 		  b : in std_logic;
-		  c_in   : in std_logic;
 		  g_out, p_out : out std_logic);
 end level0;
 
