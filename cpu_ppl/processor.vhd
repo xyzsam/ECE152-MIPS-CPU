@@ -5,7 +5,25 @@ entity processor is
 	port (	clock, reset		: in std_logic;
 			keyboard_in			: in std_logic_vector(31 downto 0);
 			keyboard_ack, lcd_write	:out std_logic;
-			lcd_data			: out std_logic_vector(31 downto 0));
+			lcd_data			: out std_logic_vector(31 downto 0);
+				--IF_cur_instr_db : out std_logic_vector(31 downto 0);
+	--IF_cur_instr_pc_db : out std_logic_vector(11 downto 0);
+	IF_jump_db : out std_logic;
+	ID_jump_db : out std_logic;
+	IF_cur_pc_out_db, ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
+       EX_alu_inputA_db, EX_alu_inputB_db,
+	EX_alu_output_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
+	--WB_regfile_data_db : out std_logic_vector(31 downto 0);
+               ID_rs_db, ID_rt_db, ID_rd_db, EX_rs_db, EX_rt_db, EX_rd_db, MEM_rd_db, WB_rd_db    : out std_logic_vector(4 downto 0);
+               --ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
+               ID_mem_memw_db, ID_wb_regw_db, MEM_regw_db, WB_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
+               MEM_mem_memw_db  : out std_logic;
+               ctrl_stall_db, ctrl_flush_db, ctrl_bubble_db : out std_logic;
+               ctrl_rt_mux_db : out std_logic_vector(1 downto 0);
+               WB_wb_regw_out_db, WB_ctrl_alu_dmem_db : out std_logic; 
+               forwardA_db, forwardB_db : out std_logic_vector(1 downto 0)
+               
+          );
 end processor;
 
 architecture structure of processor is
@@ -90,6 +108,14 @@ component MEM_WB_latch
                reg_input_mux_out, ctrl_jal_out  : out std_logic);
 end component;
 
+component dffe
+port (	d   : in std_logic;
+        clk  : in std_logic;
+        clrn : in std_logic;
+        prn  : in std_logic;
+        ena  : in std_logic;
+        q    : out std_logic);
+end component;
 
 component control
      port (    instr : in std_logic_vector(31 downto 0);
@@ -212,10 +238,10 @@ component regfile
 end component;
 
 ---------------------- FETCH STAGE SIGNALS -----------------------------------
-signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_pc_plus_1, IF_next_pc_imem : std_logic_vector(31 downto 0);
+signal IF_next_pc, IF_cur_pc_in, IF_cur_pc_out, IF_cur_instr, IF_cur_instr_temp, IF_pc_plus_1, IF_pc_plus_1_temp, IF_next_pc_imem : std_logic_vector(31 downto 0);
 signal one, zero : std_logic_vector(31 downto 0);
 signal pc_addend_input : std_logic_vector(31 downto 0);
-signal IF_pc_wren, IF_ctrl_jump_or_cont, carryout_useless : std_logic;
+signal IF_pc_wren, IF_ctrl_jump_or_cont, ctrl_pc_addend_input_mux, carryout_useless : std_logic;
 --signal IF_mem_memw_in, IF_m_memw_in, IF_ex_memw_in : std_logic; -- mem write enable
 --signal IF_wb_regw_in, IF_m_regw_in, IF_ex_regw_in : std_logic; -- regfile write enable
 
@@ -283,18 +309,21 @@ begin
 
 	zero <= "00000000000000000000000000000000";
 	one <= "00000000000000000000000000000001"; 
-	pc_addend_input_mux : mux2to1_32b port map(one, zero, ctrl_stall, pc_addend_input);
+	--pc_addend_input_dffe : dffe port map (ctrl_bubble, not clock, not reset, '1', '1', ctrl_pc_addend_input_mux);
+	pc_addend_input_mux : mux2to1_32b port map(one, zero, ctrl_bubble, pc_addend_input);
 pc_reset_mux : mux2to1_32b port map(IF_next_pc, zero, reset, IF_cur_pc_in);
-     pc : reg32 port map(clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
-    instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', clock, IF_cur_instr);
+     pc : reg32 port map(not clock, '1', reset, IF_cur_pc_in, IF_cur_pc_out);
+    instr_mem: imem port map(IF_cur_pc_in(11 downto 0), '1', not clock, IF_cur_instr);
 adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, carryout_useless);
     jump_or_cont_mux : mux2to1_32b port map(IF_pc_plus_1, jump_addr, IF_ctrl_jump_or_cont, IF_next_pc);
      IF_ctrl_jump_or_cont <= EX_ctrl_jump or EX_ctrl_jr or EX_ctrl_jal or (EX_ctrl_beq_in and EX_isEqual) or (EX_ctrl_bgt_in and EX_isGreaterThan);
-
+     
 	------------------- IF/ID LATCH  -------------------------
      
-    IFID_latch : IF_ID_latch port map(not clock, reset,
-                                       IF_pc_plus_1, IF_cur_instr, IF_ID_latch_wren,
+     --IF_pc_flush_mux : mux2to1_32b port map(IF_pc_plus_1, zero, ctrl_bubble, IF_pc_plus_1_temp);
+     IF_instr_flush_mux : mux2to1_32b port map(IF_cur_instr, zero, ctrl_bubble, IF_cur_instr_temp);
+    IFID_latch : IF_ID_latch port map(not clock, reset, 
+                                       IF_pc_plus_1, IF_cur_instr_temp, IF_ID_latch_wren and not (ctrl_stall),
                                       ID_pc_plus_1, ID_cur_instr);
 	
 	------------------- DECODE STAGE -------------------------
@@ -484,4 +513,53 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      ----------------------- INTERSTAGE COMPONENTS ------------------------
      jump_mux : mux2to1_32b port map(EX_next_pc_br, EX_jr_jal_output, EX_ctrl_jump, jump_addr);
 
+    ------------------------- DEBUGGING SIGNAL ASSIGNMENTS ------------------------
+	 IF_jump_db <= IF_ctrl_jump_or_cont;
+     --IF_cur_instr_pc_db <= IF_cur_pc_in(11 downto 0);
+     --IF_cur_instr_db <= IF_cur_instr;
+     IF_cur_pc_out_db <= IF_cur_pc_out;
+     ID_jump_db <= ID_ctrl_jr_out or ID_ctrl_jal_out or ID_ctrl_jump_out;
+     ID_cur_instr_db <= ID_cur_instr;
+     ID_pc_plus_1_db <= ID_pc_plus_1;
+     ID_regfile_d1_db <= ID_regfile_d1;
+     ID_regfile_d2_db <= ID_regfile_d2;
+     ID_rs_db <= ID_rs;
+     ID_rt_db <= ID_rt;
+     ID_rd_db <= ID_rd;
+     EX_rs_db <= ID_EX_rs;
+     EX_rt_db <= ID_EX_rt;
+     EX_rd_db <= ID_EX_rd;
+     MEM_rd_db <= EX_MEM_rd;
+     WB_rd_db <= MEM_WB_rd;
+     MEM_regw_db <= MEM_wb_regw_in;
+     WB_regw_db <= WB_wb_regw_out;
+     --ID_ctrl_alu_opcode_db <= ID_ctrl_alu_opcode;
+ --     ID_ctrl_beq_db <= ID_ctrl_beq_out;
+ --    ID_ctrl_bgt_db <= ID_ctrl_bgt_out;
+ --     ID_ctrl_jump_db <= ID_ctrl_jump_out;
+ --     ID_ctrl_jal_db <= ID_ctrl_jal_out;
+ --     ID_ctrl_jr_db <= ID_ctrl_jr_out;
+     ID_mem_memw_db <= ID_mem_memw_in;
+     ID_wb_regw_db <= ID_wb_regw_in;
+     ID_ctrl_mem_read_db <= ID_ctrl_mem_read;
+     ID_ctrl_sgn_ext_db <= ID_ctrl_sgn_ext;
+     EX_alu_output_db <= EX_alu_output;
+     EX_alu_inputA_db <= EX_alu_inputA;
+     EX_alu_inputB_db <= EX_alu_inputB;
+     EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
+     forwardA_db <= forward_A;
+     forwardB_db <= forward_B;
+     -- MEM_dmem_output_db <= MEM_dmem_output;
+     MEM_mem_memw_db <= MEM_mem_memw;
+     -- WB_alu_dmem_output_db <= WB_alu_dmem_output;
+     --WB_regfile_data_db <= WB_regfile_data;
+     --WB_reg_kb_mux_db <= WB_reg_kb_mux;
+     WB_wb_regw_out_db <= WB_wb_regw_out;
+     WB_ctrl_alu_dmem_db <= WB_ctrl_alu_dmem;
+    ctrl_stall_db <= ctrl_stall;
+     ctrl_flush_db <= ctrl_flush;
+     ctrl_rt_mux_db <= ctrl_rt_mux;
+     IF_next_pc_db <= IF_next_pc;
+     --jump_addr_db <= jump_addr;
+     ctrl_bubble_db <= ctrl_bubble;
 end structure;
