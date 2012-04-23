@@ -10,10 +10,11 @@ entity processor is
 	--IF_cur_instr_pc_db : out std_logic_vector(11 downto 0);
 	IF_jump_db : out std_logic;
 	ID_jump_db : out std_logic;
-	IF_cur_pc_out_db, ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
+	--IF_cur_pc_out_db
+	ID_cur_instr_db, ID_pc_plus_1_db, ID_regfile_d1_db, ID_regfile_d2_db,
        EX_alu_inputA_db, EX_alu_inputB_db,
 	EX_alu_output_db, IF_next_pc_db : out std_logic_vector(31 downto 0);
-	--WB_regfile_data_db : out std_logic_vector(31 downto 0);
+	WB_regfile_data_db : out std_logic_vector(31 downto 0);
                ID_rs_db, ID_rt_db, ID_rd_db, EX_rs_db, EX_rt_db, EX_rd_db, MEM_rd_db, WB_rd_db    : out std_logic_vector(4 downto 0);
                --ID_ctrl_alu_opcode_db    : out std_logic_vector(2 downto 0);
                ID_mem_memw_db, ID_wb_regw_db, MEM_regw_db, WB_regw_db, ID_ctrl_mem_read_db, ID_ctrl_sgn_ext_db, EX_ctrl_sgn_ext_db : out std_logic; 
@@ -21,7 +22,7 @@ entity processor is
                ctrl_stall_db, ctrl_flush_db, ctrl_bubble_db : out std_logic;
                ctrl_rt_mux_db : out std_logic_vector(1 downto 0);
                WB_wb_regw_out_db, WB_ctrl_alu_dmem_db : out std_logic; 
-               forwardA_db, forwardB_db : out std_logic_vector(1 downto 0)
+               forwardA_db, forwardB_db, forward_data_db : out std_logic_vector(1 downto 0)
                
           );
 end processor;
@@ -266,7 +267,7 @@ signal ctrl_rt_zero : std_logic_vector(4 downto 0);
 signal ctrl_bubble_5b : std_logic_vector(4 downto 0);
 
 ---------------------- EXECUTE STAGE SIGNALS ---------------------------------
-signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_sgn_ext_mux_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
+signal EX_regfile_d1, EX_regfile_d2, EX_sgn_ext_out, EX_pc_plus_1: std_logic_vector(31 downto 0);
 signal EX_branch_addr, EX_next_pc_br, EX_jr_jal_output, EX_kb_data_in : std_logic_vector(31 downto 0);
 signal EX_mem_data : std_logic_vector(31 downto 0);
 signal EX_mem_memw_in, EX_wb_regw_in : std_logic; -- write enable
@@ -277,7 +278,7 @@ signal EX_isEqual, EX_isGreaterThan : std_logic;
 signal forward_A, forward_B, forward_data : std_logic_vector(1 downto 0);
 signal ID_EX_rs, ID_EX_rt, ID_EX_rd : std_logic_vector(4 downto 0);
 signal EX_ctrl_alu_opcode : std_logic_vector(2 downto 0);
-signal EX_alu_inputA, EX_alu_inputB, EX_alu_output, EX_kb_data_out, EX_lcd_data_out : std_logic_vector(31 downto 0);
+signal EX_alu_inputA, EX_alu_inputB, EX_alu_inputB_mux_out, EX_alu_output, EX_kb_data_out, EX_lcd_data_out : std_logic_vector(31 downto 0);
 signal EX_kb_ack_in, EX_kb_ack_out, EX_lcd_in : std_logic;
 signal EX_reg_kb_mux, EX_ctrl_alu_dmem_in, EX_ctrl_alu_dmem_out : std_logic;
 signal EX_ctrl_jump, EX_ctrl_jr, EX_ctrl_jal, EX_ctrl_beq_in, EX_ctrl_bgt_in : std_logic; 
@@ -430,20 +431,20 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 
 	--muxes
 	alu_inputA_mux : mux4to1_32b port map(EX_regfile_d1,  MEM_alu_output, 
-								  WB_alu_dmem_output, zero, forward_A, EX_alu_inputA);
-	alu_inputB_mux : mux4to1_32b port map(EX_sgn_ext_mux_out,  MEM_alu_output, 
-								  WB_alu_dmem_output, zero, forward_B, EX_alu_inputB);
+								  WB_regfile_data, zero, forward_A, EX_alu_inputA);
+	alu_inputB_mux : mux4to1_32b port map(EX_regfile_d2,  MEM_alu_output, 
+								  WB_regfile_data, zero, forward_B, EX_alu_inputB_mux_out);
 	
 	EX_wb_regw_out <= EX_wb_regw_in and not ctrl_flush; --wb_ctrl_reg_mux
 	EX_mem_memw_out <= EX_mem_memw_in and not ctrl_flush; --mem_ctrl_mem_mux
 	
-	sgn_ext_mux : mux2to1_32b port map(EX_regfile_d2, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_sgn_ext_mux_out);
+	sgn_ext_mux : mux2to1_32b port map(EX_alu_inputB_mux_out, EX_sgn_ext_out, EX_ctrl_sgn_ext, EX_alu_inputB);
     jr_jal_mux : mux2to1_32b port map(EX_sgn_ext_out, EX_alu_inputA, EX_ctrl_jr, EX_jr_jal_output);
 	
 	EX_kb_ack_out <= EX_kb_ack_in and not ctrl_flush; -- kb ack
 	EX_ctrl_alu_dmem_out <= EX_ctrl_alu_dmem_in and not ctrl_flush; -- alu_dmem
 	
-	forward_data_mux : mux4to1_32b port map(EX_regfile_d2, MEM_alu_output, WB_alu_dmem_output,
+	forward_data_mux : mux4to1_32b port map(EX_regfile_d2, MEM_alu_output, WB_regfile_data,
 										 zero, forward_data, EX_mem_data);
     lcd_data <= EX_alu_inputA;
     lcd_write <= EX_lcd_in;
@@ -517,7 +518,7 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
 	 IF_jump_db <= IF_ctrl_jump_or_cont;
      --IF_cur_instr_pc_db <= IF_cur_pc_in(11 downto 0);
      --IF_cur_instr_db <= IF_cur_instr;
-     IF_cur_pc_out_db <= IF_cur_pc_out;
+     --IF_cur_pc_out_db <= IF_cur_pc_out;
      ID_jump_db <= ID_ctrl_jr_out or ID_ctrl_jal_out or ID_ctrl_jump_out;
      ID_cur_instr_db <= ID_cur_instr;
      ID_pc_plus_1_db <= ID_pc_plus_1;
@@ -549,10 +550,11 @@ adder_pc_1 : adder port map(pc_addend_input, IF_cur_pc_out, '0', IF_pc_plus_1, c
      EX_ctrl_sgn_ext_db <= EX_ctrl_sgn_ext;
      forwardA_db <= forward_A;
      forwardB_db <= forward_B;
+     forward_data_db <= forward_data;
      -- MEM_dmem_output_db <= MEM_dmem_output;
      MEM_mem_memw_db <= MEM_mem_memw;
      -- WB_alu_dmem_output_db <= WB_alu_dmem_output;
-     --WB_regfile_data_db <= WB_regfile_data;
+     WB_regfile_data_db <= WB_regfile_data;
      --WB_reg_kb_mux_db <= WB_reg_kb_mux;
      WB_wb_regw_out_db <= WB_wb_regw_out;
      WB_ctrl_alu_dmem_db <= WB_ctrl_alu_dmem;
