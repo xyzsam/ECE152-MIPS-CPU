@@ -40,18 +40,16 @@ jal input_start
 #lw $r2, 1($r24)
 
 # manipulation of queue
-addi $r4, $r24, 0
-addi $r5, $r25, 0
-# no need to save $r8-$r11 - they're already saved
-jal mem_shift_up
+#addi $r4, $r24, 0
+#addi $r5, $r25, 0
+#jal mem_shift_up
 
 
-addi $r25, $r25, -1 # decrement queue size
+#addi $r25, $r25, -1 # decrement queue size
 
 # input arguments to find_path
-lw $r12, 0($r28)
-addi $r4, $r12, -1 # numPoints - 1
-ldi $r5, 0
+lw $r4, 0($r28)
+ldi $r5, -1
 ldi $r6, 0
 jal find_path
 
@@ -59,6 +57,7 @@ lw $r4, 1($r28)
 jal output
 
 
+addi $r29, $r29, 8
 halt
 
 #===============INPUT==========================
@@ -257,7 +256,16 @@ ret
 #===============DISTANCE FORMULA================
 distance:
 # $a0 = pt1, $a1 = pt2
+ldi $r8, -1 
+beq $r4, $r8, early_ret # if pt1 == -1 return
+beq $r5, $r8, early_ret # if pt2 == -2 return
+j distance_start
 
+early_ret:
+ldi $r2, 0
+ret
+
+distance_start:
 addi $r29, $r29, -16  # push stack down
 # save s0-s7?
 add $r8, $r4, $r0 # mov a0 to t0
