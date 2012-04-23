@@ -13,6 +13,8 @@ public class Salesman {
 
      private static int ptDistance(int pt1, int pt2)
      {
+          if (pt1 == -1 || pt2 == -1) 
+               return 0;
           count++;
           int x1 = xPoints[pt1];
           int y1 = yPoints[pt1]; 
@@ -63,11 +65,11 @@ public class Salesman {
                }
                System.out.println(availablePoints);
                minPath=0x0FFFFFFF;
-               int firstPoint = availablePoints.peek();
-               availablePoints.remove();
+               //int firstPoint = availablePoints.peek();
+               //availablePoints.remove();
                Stack< Integer > currPath = new Stack< Integer >();
-               currPath.push(firstPoint);
-               find_path(numPoints-1, firstPoint, 0, currPath);
+               //currPath.push(firstPoint);
+               find_path(numPoints , -1, 0, currPath);
                System.out.println("Distance: " + minPath);
                Stack< Integer > printStack = new Stack<Integer>();
                while (!bestPath.empty())

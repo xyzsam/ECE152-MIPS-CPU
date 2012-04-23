@@ -31,7 +31,12 @@ ldi $r29, 32768 # stack pointer
 ldi $r28, 1024 # start of global data
 
 addi $r29, $r29, -8 # stack
-ldi $r13, 268435455 # minPath
+
+# store 0x7FFFFFFF while abiding by MIPS conventions of immediate instructions
+ldi $r13, 65535 # minPath
+ldi $r14, 15 # shift amount
+sll $r13, $r13, $r14
+add $r13, $r13, 32767 # this is 0x7FFFFFFF
 sw $r13, 1($r28)
 
 jal input_start
@@ -96,6 +101,7 @@ j input_coord_loop
 
 input_loop:
 input $r8
+nop
 output $r8
 beq $r8, $r11, input_ret
 beq $r8, $r9, input_ret
@@ -425,7 +431,7 @@ lw $r8, 0($r29) # load top word
 lw $r16, 1($r29) # callee saved registers
 lw $r17, 2($r29)
 lw $r18, 3($r29)
-lw $r18, 4($r29)
+lw $r19, 4($r29)
 sw $r8, 0($r5) # save top word to last block
 addi $r29, $r29, 8 # push stack back
 ret
