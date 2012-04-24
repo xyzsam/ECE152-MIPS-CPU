@@ -12,9 +12,9 @@ architecture structure of adder is
 
 component CLA16bit
 	port (data_A, data_B : in std_logic_vector(15 downto 0);
-          c_in : in std_logic;
-          sum : out std_logic_vector(15 downto 0);
-          c_out : out std_logic);
+		  c_in : in std_logic;
+		  sum : out std_logic_vector(15 downto 0);
+		  c_out : out std_logic);
 end component;
 
 component mux2to1_add
